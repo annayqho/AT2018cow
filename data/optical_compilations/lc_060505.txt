@@ -1,0 +1,22 @@
+# source: https://arxiv.org/abs/astro-ph/0703192
+Instrument & Date (UTC 2006) & Exp. Time [s] & Band & AB Mag & Flux (uJy) \\
+GMOS   & 05-06.377 & $5\times180$ & r        & $21.93\pm0.16$ & $6.1\pm1.0$  \\
+GMOS   & 05-06.393 & $5\times240$ & g        & $22.43\pm0.08$ & $3.9\pm0.3$  \\
+GMOS   & 05-12.316 & $5\times180$ & g        & $>24.8$        & $<0.43$      \\
+GMOS   & 05-12.330 & $5\times180$ & r        & $>24.3$        & $<0.69$      \\
+GMOS   & 05-14.353 & $5\times180$ & g        & $>24.6$        & $<0.52$      \\
+GMOS   & 05-14.367 & $5\times180$ & r        & $>24.7$        & $<0.48$      \\
+GMOS   & 05-14.380 & $5\times180$ & i        & $\gtorder23.3$ & $\ltorder1.7$\\
+GMOS   & 05-26.318 &$10\times300$ & g        & \nodata\tablenotemark{b}  & \nodata      \\
+GMOS   & 05-26.294 & $1\times300$ & r        & \nodata\tablenotemark{b}  & \nodata      \\
+UVOT   & 05-10.512 &  $1300.9$    & U        & \nodata\tablenotemark{b}  & \nodata      \\
+UVOT   & 05-05.996 &   $834.6$    & V        & $>20.4$        & $<53$        \\
+UVOT   & 05-21.818 & $11476.5$    & V        & \nodata\tablenotemark{b}  & \nodata      \\
+UVOT   & 05-05.977 &  $1666.3$    & UW1      & $>22.1$        & $<5.8$       \\
+UVOT   & 05-18.241 &  $1735.6$    & UW1      & \nodata\tablenotemark{b}  & \nodata      \\
+UVOT   & 05-05.999 &  $2228.9$    & UM2      & $>23.7$        & $<3.1$       \\
+UVOT   & 05-10.505 &  $3974.5$    & UM2      & \nodata\tablenotemark{b}  & \nodata      \\
+ACS    & 05-19.635 & $9\times783$ & F814W    & $>27.3$        & $<0.044$     \\
+ACS    & 05-19.636 &$18\times783$ & F475W    & $>27.1$        & $<0.053$     \\
+ACS    & 06-06.957 & $9\times760$ & F814W    & \nodata\tablenotemark{b}  & \nodata      \\
+ACS    & 06-07.160 &$18\times760$ & F475W    & \nodata\tablenotemark{b}  & \nodata      \\

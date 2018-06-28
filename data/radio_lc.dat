@@ -1,0 +1,58 @@
+Date & dt & Facility & Frequency & Int & Flux 
+June 21 & 5 & SMA (combined) & 230 & 3.5h & $13.26 pm 0.35$ 
+June 21 & 5 & SMA RxA LO & 223.5 & 3.5h & $13.20 pm 0.46$ 
+June 21 & 5 & SMA RxB LO & 223.5 & 3.5h & $13.23 pm 0.54$ 
+June 21 & 5 & SMA both LSB & 215.5 & 3.5h & $12.65 pm 0.43$ 
+June 21 & 5 & SMA both USB & 231.5 & 3.5h & $13.31 pm 0.50$ 
+June 21 & 5 & SMA RxA LSB & 215.5 & 3.5h & $12.61 pm 0.58$ 
+June 21 & 5 & SMA RxA USB & 231.5 & 3.5h & $13.51 pm 0.69$ 
+June 21 & 5 & SMA RxB LSB & 215.5 & 3.5h & $12.80 pm 0.70$ 
+June 21 & 5 & SMA RxB USB & 231.5 & 3.5h & $13.20 pm 0.72$ 
+June 21 & 5 & AMI & 15 & 2h & $< 0.085$ 
+June 22 & 6 & SMA (combined) & 230 & 10h25m & $33.02 pm 0.46$ 
+June 22 & 6 & SMA RxA LO & 223.5 & & $31.84 pm 0.57 $ 
+June 22 & 6 & SMA RxB LO & 223.5 & & $32.61 pm 0.74$ 
+June 22 & 6 & SMA both LSB & 215.5 & & $28.33 pm 0.59$ 
+June 22 & 6 & SMA both USB & 231.5 & & $29.56 pm 0.67$ 
+June 22 & 6 & SMA RxA LSB & 215.5 & & $28.63 pm 0.69$ 
+June 22 & 6 & SMA RxA USB & 231.5 & & $29.24 pm 0.82$ 
+June 22 & 6 & SMA RxB LSB & 215.5 & & $27.14 pm 1.09$ 
+June 22 & 6 & SMA RxB USB & 231.5 & & $29.16 pm 0.89$ 
+June 22 & 6 & JCMT SCUBA-2 & 353 & & $30.2 pm 1.8$ 
+June 22 & 6 & JCMT SCUBA-2 & 666 & & $<51$ 
+June 22 & 6 & AMI & 15 & 8.8 & $0.5 pm 0.1$ 
+June 23 & 7 & SMA & 230 & 9h40m & $38.32 pm 0.43$ 
+June 23 & 7 & SMA & 345 & 9h40m & $35.1 pm 1.7$ 
+June 23 & 7 & SMA RxA LO & 223.5 & & $38.32 pm 0.43$ 
+June 23 & 7 & SMA RxB LO & 338.8 & & $35.05 pm 1.73$ 
+June 23 & 7 & SMA RxA LSB & 215.5 & & $37.24 pm 0.50$ 
+June 23 & 7 & SMA RxA USB & 231.5 & & $39.51 pm 0.56$ 
+June 23 & 7 & SMA RxB LSB & 330.8 & & $36.30 pm 2.64$ 
+June 23 & 7 & SMA RxB USB & 346.8 & & $30.21 pm 1.57$ 
+June 24 & 8 & SMA & 230 & 9h40m & $40.26 pm 0.41$ 
+June 24 & 8 & SMA & 345 & 9h40m & $23.19 pm 0.90$ 
+June 24 & 8 & SMA RxA LO & 223.5 & & $40.26 pm 0.41$ 
+June 24 & 8 & SMA RxB LO & 352.8 & & $23.19 pm 0.90$ 
+June 24 & 8 & SMA RxA LSB & 215.5 & & $39.97 pm 0.51$ 
+June 24 & 8 & SMA RxA USB & 231.5 & & $40.28 pm 0.54$ 
+June 24 & 8 & SMA RxB LSB & 344.8 & & $23.26 pm 1.00$ 
+June 24 & 8 & SMA RxB USB & 360.8 & & $22.11 pm 1.32$ 
+June 25 & 9 & SMA & 243.3 & 5h15m & $35.11 pm 0.60$ 
+June 25 & 9 & SMA & 259.3 & 5h15m & $33.10 pm 0.75$ 
+June 25 & 9 & SMA & 341.5 & 5h15m & $18.7 pm 1.1$ 
+June 25 & 9 & SMA & 357.5 & 5h15m & $21.2 pm 1.8$ 
+June 25 & 9 & SMA RxA LO & 349.5 & & $20.9 pm 1.0$ 
+June 25 & 9 & SMA RxB LO & 251.3 & & $34.48 pm 0.53$ 
+June 25 & 9 & SMA RxA LSB & 341.5 & & $18.7 pm 1.1$ 
+June 25 & 9 & SMA RxA USB & 357.5 & & $21.2 pm 1.8$  
+June 25 & 9 & SMA RxB LSB & 243.3 & & $35.11 pm 0.60$  
+June 25 & 9 & SMA RxB USB & 259.3  & & $33.10 pm 0.75$  
+June 26 & 10 & SMA RxA LO & 349.5  & & $16.0 pm 1.1$ 
+June 26 & 10 & SMA RxB LO & 251.3  & & $31.80 pm 0.53$ 
+June 26 & 10 & SMA RxA LSB & 341.5  & & $17.0 pm 1.1$ 
+June 26 & 10 & SMA RxA USB & 357.5  & & $12.0 pm 2.0$ 
+June 26 & 10 & RxB LSB & 243.3  & & $32.78 pm 0.56$ 
+June 26 & 10 & RxB USB & 259.3  & & $29.69 pm 0.67$ 
+June 26 & 10 & ATCA & 5.5 & ? & $< 0.15$
+June 26 & 10 & ATCA & 9 & ? & $0.46 pm 0.06$
+June 26 & 10 & ATCA & 34 & ? & $5.6 pm 0.16$

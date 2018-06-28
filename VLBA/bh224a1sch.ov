@@ -1,0 +1,410 @@
+  COVER INFORMATION 
+
+ Station:    VLBA_OV   (Code Ov ) 
+ Experiment: Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+ Exp. Code:  BH224A1 
+
+
+Schedule Version:       1.00
+Processed by SCHED version:  11.40  Release 11.4.  March 14, 2015
+
+PI:       Anna Ho
+
+Address:  Cahill Center for Astrophysics
+          California Institute of Technology, MC 249-17
+          1200 E California Boulevard
+          Pasadena, CA, 91125, USA
+
+Phone:    650 338 9762
+EMAIL:    ah@astro.caltech.edu
+Fax:
+Phone during observation: 650 338 9762
+
+Observing mode: 6cm 128-4-2
+
+Notes:
+ 
+ 
+ 
+
+Schedule for VLBA_OV   (Code Ov )                                   Page   2
+               Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+  UP:  D => Below limits;  H => Below horizon mask;  W => still slewing at end;  blank => Up.
+  Early: Seconds between end of slew and start.   Dwell: On source seconds. 
+  Disk: GBytes recorded to this point.
+  TPStart:  Recording start time.  Frequencies are LO sum (band edge).
+  SYNC: Time correlator is expected to sync up.
+----------------------------------------------------------------------------------------
+Start UT  Source               Start / Stop                 Early    Disk   TPStart
+Stop UT                  LST      EL    AZ   HA  UP   ParA  Dwell   GBytes    SYNC
+----------------------------------------------------------------------------------------
+
+ --- Wed  27 Jun 2018   Day 178 ---
+
+ Next scan frequencies:  4440.25  4440.25  7459.75  7459.75
+ Next BBC frequencies:    840.25   840.25   640.25   640.25
+ Next scan bandwidths:    128.00   128.00   128.00   128.00
+
+01 22 01  J1619+2247   11 49 22  30.9  83.6 -4.5     -59.1     0        0   01 22 01
+01 23 01  =1617+229    11 50 22  31.1  83.7 -4.5     -59.1    60       15   01 22 01
+
+01 23 01  AT2018COW    11 50 22  31.4  84.7 -4.4     -58.9    -8       15   01 23 09
+01 26 30  ---          11 53 52  32.1  85.2 -4.4     -59.0   201       67   01 23 09
+
+01 26 30  J1619+2247   11 53 52  31.8  84.2 -4.4     -59.2    -8       67   01 26 39
+01 27 30  =1617+229    11 54 52  32.0  84.3 -4.4     -59.2    51       80   01 26 39
+
+01 27 30  AT2018COW    11 54 52  32.3  85.3 -4.4     -59.0    -8       80   01 27 39
+01 31 00  ---          11 58 22  33.0  85.8 -4.3     -59.1   201      132   01 27 39
+
+01 31 00  J1619+2247   11 58 22  32.6  84.8 -4.4     -59.3    -8      132   01 31 08
+01 31 59  =1617+229    11 59 22  32.8  85.0 -4.3     -59.3    51      145   01 31 08
+
+01 31 59  AT2018COW    11 59 22  33.2  86.0 -4.3     -59.1    -8      145   01 32 08
+01 35 29  ---          12 02 52  33.9  86.5 -4.2     -59.1   201      197   01 32 08
+
+01 35 29  J1619+2247   12 02 52  33.5  85.5 -4.3     -59.4    -8      197   01 35 37
+01 36 29  =1617+229    12 03 52  33.7  85.6 -4.3     -59.4    51      210   01 35 37
+
+01 36 29  AT2018COW    12 03 52  34.1  86.6 -4.2     -59.2    -8      210   01 36 37
+01 39 58  ---          12 07 22  34.8  87.1 -4.2     -59.2   201      262   01 36 37
+
+01 39 58  J1619+2247   12 07 22  34.4  86.1 -4.2     -59.5    -8      262   01 40 06
+01 40 58  =1617+229    12 08 22  34.6  86.2 -4.2     -59.5    51      275   01 40 06
+
+01 40 58  AT2018COW    12 08 22  35.0  87.3 -4.1     -59.2    -8      275   01 41 06
+01 44 27  ---          12 11 52  35.7  87.8 -4.1     -59.3   201      327   01 41 06
+
+01 44 27  J1619+2247   12 11 52  35.3  86.7 -4.1     -59.5    -8      327   01 44 36
+01 45 27  =1617+229    12 12 52  35.5  86.9 -4.1     -59.6    51      340   01 44 36
+
+01 45 27  AT2018COW    12 12 52  35.9  87.9 -4.1     -59.3    -8      340   01 45 36
+01 48 57  ---          12 16 22  36.6  88.4 -4.0     -59.3   201      392   01 45 36
+
+01 48 57  J1619+2247   12 16 22  36.2  87.4 -4.1     -59.6    -8      392   01 49 05
+01 49 56  =1617+229    12 17 22  36.4  87.5 -4.0     -59.6    51      405   01 49 05
+
+01 49 56  AT2018COW    12 17 22  36.8  88.6 -4.0     -59.3    -8      405   01 50 05
+01 53 26  ---          12 20 52  37.5  89.1 -3.9     -59.3   201      457   01 50 05
+Schedule for VLBA_OV   (Code Ov )                                   Page   3
+               Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+  UP:  D => Below limits;  H => Below horizon mask;  W => still slewing at end;  blank => Up.
+  Early: Seconds between end of slew and start.   Dwell: On source seconds. 
+  Disk: GBytes recorded to this point.
+  TPStart:  Recording start time.  Frequencies are LO sum (band edge).
+  SYNC: Time correlator is expected to sync up.
+----------------------------------------------------------------------------------------
+Start UT  Source               Start / Stop                 Early    Disk   TPStart
+Stop UT                  LST      EL    AZ   HA  UP   ParA  Dwell   GBytes    SYNC
+----------------------------------------------------------------------------------------
+
+ --- Wed  27 Jun 2018   Day 178 ---
+
+01 53 26  J1619+2247   12 20 52  37.1  88.0 -4.0     -59.6    -8      457   01 53 34
+01 54 26  =1617+229    12 21 52  37.3  88.2 -4.0     -59.7    51      470   01 53 34
+
+01 54 26  AT2018COW    12 21 52  37.7  89.2 -3.9     -59.3    -8      470   01 54 34
+01 57 55  ---          12 25 22  38.4  89.8 -3.9     -59.3   201      522   01 54 34
+
+01 57 55  J1619+2247   12 25 22  38.0  88.7 -3.9     -59.7    -8      522   01 58 04
+01 58 55  =1617+229    12 26 22  38.2  88.8 -3.9     -59.7    51      535   01 58 04
+
+01 58 55  AT2018COW    12 26 22  38.6  89.9 -3.8     -59.3    -8      535   01 59 03
+02 02 24  ---          12 29 52  39.3  90.4 -3.8     -59.3   201      587   01 59 03
+
+02 02 24  J1619+2247   12 29 52  38.9  89.4 -3.8     -59.7    -8      587   02 02 33
+02 03 24  =1617+229    12 30 52  39.1  89.5 -3.8     -59.7    51      600   02 02 33
+
+02 03 24  AT2018COW    12 30 52  39.5  90.6 -3.8     -59.3    -8      600   02 03 33
+02 06 54  ---          12 34 22  40.2  91.1 -3.7     -59.3   201      652   02 03 33
+
+02 06 54  J1619+2247   12 34 22  39.8  90.0 -3.8     -59.7    -8      652   02 07 02
+02 07 53  =1617+229    12 35 22  40.0  90.2 -3.7     -59.7    51      665   02 07 02
+
+02 07 53  AT2018COW    12 35 22  40.4  91.3 -3.7     -59.3    -8      665   02 08 02
+02 11 23  ---          12 38 52  41.1  91.8 -3.6     -59.3   201      716   02 08 02
+
+02 11 23  J1619+2247   12 38 52  40.7  90.7 -3.7     -59.7    -8      716   02 11 31
+02 12 23  =1617+229    12 39 52  40.9  90.9 -3.7     -59.7    51      730   02 11 31
+
+02 12 23  AT2018COW    12 39 52  41.3  92.0 -3.6     -59.3    -8      730   02 12 31
+02 15 52  ---          12 43 22  42.0  92.5 -3.6     -59.2   201      781   02 12 31
+
+02 15 52  J1619+2247   12 43 22  41.6  91.4 -3.6     -59.7    -8      781   02 16 01
+02 16 52  =1617+229    12 44 22  41.8  91.6 -3.6     -59.7    51      795   02 16 01
+
+02 16 52  AT2018COW    12 44 22  42.2  92.7 -3.5     -59.2    -8      795   02 17 00
+02 20 21  ---          12 47 52  42.9  93.3 -3.5     -59.2   201      846   02 17 00
+
+02 20 21  J1619+2247   12 47 52  42.5  92.1 -3.5     -59.6    -8      846   02 20 30
+02 21 21  =1617+229    12 48 52  42.7  92.3 -3.5     -59.6    51      859   02 20 30
+
+02 21 21  AT2018COW    12 48 52  43.1  93.4 -3.5     -59.2    -8      859   02 21 30
+02 24 51  ---          12 52 22  43.8  94.0 -3.4     -59.1   201      911   02 21 30
+
+02 24 51  J1619+2247   12 52 22  43.4  92.9 -3.5     -59.6    -8      911   02 24 59
+02 25 51  =1617+229    12 53 22  43.6  93.0 -3.4     -59.6    51      924   02 24 59
+Schedule for VLBA_OV   (Code Ov )                                   Page   4
+               Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+  UP:  D => Below limits;  H => Below horizon mask;  W => still slewing at end;  blank => Up.
+  Early: Seconds between end of slew and start.   Dwell: On source seconds. 
+  Disk: GBytes recorded to this point.
+  TPStart:  Recording start time.  Frequencies are LO sum (band edge).
+  SYNC: Time correlator is expected to sync up.
+----------------------------------------------------------------------------------------
+Start UT  Source               Start / Stop                 Early    Disk   TPStart
+Stop UT                  LST      EL    AZ   HA  UP   ParA  Dwell   GBytes    SYNC
+----------------------------------------------------------------------------------------
+
+ --- Wed  27 Jun 2018   Day 178 ---
+
+02 25 51  AT2018COW    12 53 22  44.0  94.2 -3.4     -59.1    -8      924   02 25 59
+02 29 20  ---          12 56 52  44.7  94.8 -3.3     -59.0   201      976   02 25 59
+
+02 29 20  J1619+2247   12 56 52  44.3  93.6 -3.4     -59.5    -8      976   02 29 28
+02 30 20  =1617+229    12 57 52  44.5  93.7 -3.4     -59.5    51      989   02 29 28
+
+02 30 20  AT2018COW    12 57 52  44.8  94.9 -3.3     -59.0    -9      989   02 30 28
+02 33 49  ---          13 01 22  45.5  95.5 -3.3     -58.9   201     1041   02 30 28
+
+02 33 49  J1619+2247   13 01 22  45.2  94.3 -3.3     -59.4    -9     1041   02 33 58
+02 34 49  =1617+229    13 02 22  45.4  94.5 -3.3     -59.4    51     1054   02 33 58
+
+02 34 49  AT2018COW    13 02 22  45.7  95.7 -3.2     -58.9    -9     1054   02 34 58
+02 38 18  ---          13 05 52  46.4  96.3 -3.2     -58.8   201     1106   02 34 58
+
+02 38 18  J1619+2247   13 05 52  46.1  95.1 -3.2     -59.3    -9     1106   02 38 27
+02 39 18  =1617+229    13 06 52  46.3  95.2 -3.2     -59.3    51     1119   02 38 27
+
+02 40 09  J1642+3948   13 07 43  48.3  69.2 -3.6     -75.6    25     1119   02 40 09
+02 43 09  =3C345       13 10 43  48.9  69.4 -3.5     -75.9   180     1166   02 40 09
+
+02 43 09  J1619+2247   13 10 43  47.0  95.9 -3.2     -59.2   -27     1166   02 43 36
+02 44 09  =1617+229    13 11 43  47.2  96.1 -3.1     -59.2    33     1174   02 43 36
+
+02 44 09  AT2018COW    13 11 43  47.6  97.3 -3.1     -58.5    -9     1174   02 44 17
+02 47 38  ---          13 15 13  48.3  98.0 -3.0     -58.4   201     1226   02 44 17
+
+02 47 38  J1619+2247   13 15 13  47.9  96.7 -3.1     -59.0    -9     1226   02 47 47
+02 48 38  =1617+229    13 16 13  48.1  96.9 -3.1     -59.0    51     1239   02 47 47
+
+02 48 38  AT2018COW    13 16 13  48.5  98.1 -3.0     -58.4    -9     1239   02 48 47
+02 52 07  ---          13 19 43  49.2  98.8 -3.0     -58.2   201     1291   02 48 47
+
+02 52 07  J1619+2247   13 19 43  48.8  97.5 -3.0     -58.9    -9     1291   02 52 16
+02 53 07  =1617+229    13 20 43  49.0  97.7 -3.0     -58.8    51     1304   02 52 16
+
+02 53 07  AT2018COW    13 20 43  49.4  99.0 -2.9     -58.2    -9     1304   02 53 16
+02 56 37  ---          13 24 13  50.1  99.6 -2.9     -58.0   201     1356   02 53 16
+
+02 56 37  J1619+2247   13 24 13  49.7  98.3 -2.9     -58.7    -9     1356   02 56 45
+02 57 37  =1617+229    13 25 13  49.9  98.5 -2.9     -58.6    51     1369   02 56 45
+
+02 57 37  AT2018COW    13 25 13  50.2  99.8 -2.9     -57.9    -9     1369   02 57 45
+03 01 06  ---          13 28 43  50.9 100.5 -2.8     -57.7   201     1421   02 57 45
+Schedule for VLBA_OV   (Code Ov )                                   Page   5
+               Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+  UP:  D => Below limits;  H => Below horizon mask;  W => still slewing at end;  blank => Up.
+  Early: Seconds between end of slew and start.   Dwell: On source seconds. 
+  Disk: GBytes recorded to this point.
+  TPStart:  Recording start time.  Frequencies are LO sum (band edge).
+  SYNC: Time correlator is expected to sync up.
+----------------------------------------------------------------------------------------
+Start UT  Source               Start / Stop                 Early    Disk   TPStart
+Stop UT                  LST      EL    AZ   HA  UP   ParA  Dwell   GBytes    SYNC
+----------------------------------------------------------------------------------------
+
+ --- Wed  27 Jun 2018   Day 178 ---
+
+03 01 06  J1619+2247   13 28 43  50.6  99.2 -2.9     -58.5    -9     1421   03 01 15
+03 02 06  =1617+229    13 29 43  50.8  99.4 -2.8     -58.4    51     1434   03 01 15
+
+03 02 06  AT2018COW    13 29 43  51.1 100.7 -2.8     -57.7    -9     1434   03 02 14
+03 05 35  ---          13 33 13  51.8 101.4 -2.7     -57.5   201     1486   03 02 14
+
+03 05 35  J1619+2247   13 33 13  51.5 100.0 -2.8     -58.2    -9     1486   03 05 44
+03 06 35  =1617+229    13 34 13  51.7 100.2 -2.8     -58.2    51     1499   03 05 44
+
+03 06 35  AT2018COW    13 34 13  52.0 101.6 -2.7     -57.4    -9     1499   03 06 44
+03 10 04  ---          13 37 43  52.7 102.3 -2.7     -57.2   201     1550   03 06 44
+
+03 10 04  J1619+2247   13 37 43  52.3 100.9 -2.7     -58.0    -9     1550   03 10 13
+03 11 04  =1617+229    13 38 43  52.5 101.1 -2.7     -57.9    51     1564   03 10 13
+
+03 11 04  AT2018COW    13 38 43  52.9 102.5 -2.6     -57.1    -9     1564   03 11 13
+03 14 34  ---          13 42 13  53.6 103.3 -2.6     -56.8   201     1615   03 11 13
+
+03 14 34  J1619+2247   13 42 13  53.2 101.8 -2.6     -57.7    -9     1615   03 14 43
+03 15 34  =1617+229    13 43 13  53.4 102.0 -2.6     -57.6    51     1629   03 14 43
+
+03 15 34  AT2018COW    13 43 13  53.8 103.5 -2.6     -56.8    -9     1629   03 15 42
+03 19 03  ---          13 46 43  54.4 104.2 -2.5     -56.5   201     1680   03 15 42
+
+03 19 03  J1619+2247   13 46 43  54.1 102.8 -2.6     -57.4    -9     1680   03 19 12
+03 20 03  =1617+229    13 47 43  54.3 103.0 -2.5     -57.3    51     1693   03 19 12
+
+03 20 03  AT2018COW    13 47 43  54.6 104.5 -2.5     -56.4    -9     1693   03 20 12
+03 23 32  ---          13 51 13  55.3 105.2 -2.4     -56.1   201     1745   03 20 12
+
+03 23 32  J1619+2247   13 51 13  55.0 103.7 -2.5     -57.0    -9     1745   03 23 41
+03 24 32  =1617+229    13 52 13  55.2 104.0 -2.5     -56.9    51     1758   03 23 41
+
+03 24 32  AT2018COW    13 52 13  55.5 105.5 -2.4     -56.0    -9     1758   03 24 41
+03 28 02  ---          13 55 43  56.2 106.3 -2.4     -55.7   201     1810   03 24 41
+
+03 28 02  J1619+2247   13 55 43  55.8 104.7 -2.4     -56.6    -9     1810   03 28 10
+03 29 01  =1617+229    13 56 43  56.0 105.0 -2.4     -56.5    51     1823   03 28 10
+
+03 29 01  AT2018COW    13 56 43  56.4 106.5 -2.3     -55.6    -9     1823   03 29 10
+03 32 31  ---          14 00 13  57.0 107.4 -2.3     -55.2   201     1875   03 29 10
+
+03 32 31  J1619+2247   14 00 13  56.7 105.8 -2.3     -56.2    -9     1875   03 32 40
+03 33 31  =1617+229    14 01 13  56.9 106.0 -2.3     -56.1    51     1888   03 32 40
+Schedule for VLBA_OV   (Code Ov )                                   Page   6
+               Confirmation of Superluminal Motion for Rare Relativistic Supernova AT20
+  UP:  D => Below limits;  H => Below horizon mask;  W => still slewing at end;  blank => Up.
+  Early: Seconds between end of slew and start.   Dwell: On source seconds. 
+  Disk: GBytes recorded to this point.
+  TPStart:  Recording start time.  Frequencies are LO sum (band edge).
+  SYNC: Time correlator is expected to sync up.
+----------------------------------------------------------------------------------------
+Start UT  Source               Start / Stop                 Early    Disk   TPStart
+Stop UT                  LST      EL    AZ   HA  UP   ParA  Dwell   GBytes    SYNC
+----------------------------------------------------------------------------------------
+
+ --- Wed  27 Jun 2018   Day 178 ---
+
+03 33 31  AT2018COW    14 01 13  57.2 107.6 -2.3     -55.1    -9     1888   03 33 40
+03 37 00  ---          14 04 43  57.9 108.5 -2.2     -54.7   201     1940   03 33 40
+
+03 37 00  J1619+2247   14 04 43  57.6 106.8 -2.3     -55.7    -9     1940   03 37 09
+03 38 00  =1617+229    14 05 43  57.7 107.1 -2.2     -55.6    51     1953   03 37 09
+
+03 38 00  AT2018COW    14 05 43  58.1 108.7 -2.2     -54.5    -9     1953   03 38 09
+03 41 29  ---          14 09 13  58.7 109.6 -2.1     -54.1   200     2005   03 38 09
+
+03 41 29  J1619+2247   14 09 13  58.4 108.0 -2.2     -55.2    -9     2005   03 41 38
+03 42 29  =1617+229    14 10 13  58.6 108.2 -2.2     -55.1    51     2018   03 41 38
+
+03 42 29  AT2018COW    14 10 13  58.9 109.9 -2.1     -54.0    -9     2018   03 42 38
+03 45 59  ---          14 13 43  59.6 110.8 -2.1     -53.5   200     2069   03 42 38
+
+03 45 59  J1619+2247   14 13 43  59.3 109.1 -2.1     -54.7    -9     2069   03 46 08
+03 46 58  =1617+229    14 14 43  59.5 109.4 -2.1     -54.5    51     2082   03 46 08
+
+03 46 58  AT2018COW    14 14 43  59.7 111.1 -2.0     -53.4    -9     2082   03 47 07
+03 50 28  ---          14 18 13  60.4 112.1 -2.0     -52.9   200     2134   03 47 07
+
+03 50 28  J1619+2247   14 18 13  60.1 110.3 -2.0     -54.1    -9     2134   03 50 37
+03 51 28  =1617+229    14 19 13  60.3 110.6 -2.0     -53.9    51     2147   03 50 37
+
+03 51 28  AT2018COW    14 19 13  60.6 112.3 -2.0     -52.7    -9     2147   03 51 37
+03 54 57  ---          14 22 43  61.2 113.4 -1.9     -52.1   200     2199   03 51 37
+
+03 54 57  J1619+2247   14 22 43  60.9 111.6 -2.0     -53.4    -9     2199   03 55 06
+03 55 57  =1617+229    14 23 43  61.1 111.8 -1.9     -53.3    51     2212   03 55 06
+
+03 55 57  AT2018COW    14 23 43  61.4 113.7 -1.9     -52.0    -9     2212   03 56 06
+03 59 26  ---          14 27 13  62.0 114.7 -1.8     -51.4   200     2263   03 56 06
+
+03 59 26  J1619+2247   14 27 13  61.8 112.9 -1.9     -52.7    -9     2263   03 59 36
+04 00 26  =1617+229    14 28 13  62.0 113.2 -1.9     -52.5    51     2276   03 59 36
+
+
+SETUP FILE INFORMATION:
+   NOTE: If DOPPLER, FREQ, or BW were used, see the individual scans for the final BBC settings.
+
+
+ ======== Setup file: egvlba.6cm
+   Matching groups in /Users/annaho/Downloads/sched_11.4/catalogs/freq_RDBE.dat:
+     vc_bu
+
+   Setup group:    8         Station: VLBA_OV           Total bit rate:  2048
+   Format: VDIF              Bits per sample: 2         Sample rate:256.000
+   Number of channels:  4    DBE type: RDBE_DDC         Speedup factor:   1.00
+
+   Disk used to record data.
+
+   1st LO=   3600.00   3600.00   8100.00   8100.00
+   Net SB=         L         L         L         L
+   IF SB =         U         U         L         L
+   Pol.  =      RCP       LCP       RCP       LCP 
+   BBC   =         1         2         3         4
+   BBC SB=         L         L         U         U
+   IF    =        A         C         B         D 
+
+   VLBA FE=     6cm      6cm      6cm      6cm 
+   VLBA Synth=   8.1      3.6     10.9
+
+  The following frequency sets based on these setups were used.
+     See the crd files for VLBA legacy system setups and pcal detection details.
+
+   Frequency Set:   1  Setup file default.  Used with PCAL = 1MHz
+   LO sum=   4440.25  4440.25  7459.75  7459.75
+   BBC fr=    840.25   840.25   640.25   640.25
+   Bandwd=    128.00   128.00   128.00   128.00
+   VLBA legacy crd files using  4 channels based on RDBE channels:   1  2  3  4
+   CRD fr=     784.25    784.25    696.25    696.25
+   CRD bw=      16.00     16.00     16.00     16.00
+    Matching frequency sets:   1   2   3   4   5   6   7   8   9  10
+
+   Track assignments are: 
+    track1=   1,  2,  3,  4
+    barrel=roll_off 
+
+ POSITIONS OF SOURCES USED IN RECORDING SCANS
+
+   Source                         Source position (RA/Dec)                        Error
+                        (B1950)             (J2000)             (Date)            (mas)
+
+ * AT2018COW         16 13 51.042142   * 16 16 00.220000     16 16 48.443463       0.00
+                     22 23 28.21154    * 22 16 04.80000      22 13 35.51513        0.00
+                     From catalog imbedded in main SCHED input file.
+
+ * J1619+2247        16 17 06.466939   * 16 19 14.824596     16 20 02.764325       0.11
+   1617+229          22 54 58.47374    * 22 47 47.85098      22 45 23.25287        0.10
+   J1619+22          /Users/annaho/Downloads/sched_11.4/catalogs/sources.vlba.2012jul
+                     rfc_2012b Petrov, 2012, unpublished 4795 observations
+
+ * J1642+3948        16 41 17.606228   * 16 42 58.809965     16 43 37.151254       0.77
+   3C345             39 54 10.81496    * 39 48 36.99402      39 46 48.75097        0.52
+   1641+399          /Users/annaho/Downloads/sched_11.4/catalogs/sources.vlba.2012jul
+   J1642+39          GSFC 2011B astro solution     52621 Observations
+
+
+
+SOURCE SCAN SUMMARY FOR SOURCES LISTED ABOVE
+
+     Scan hours are for recording scans only. 
+     Baseline hours are only counted for scans above horizon at both ends.
+  Source       Setup file             Frequency sets                  Observing hours
+                                   (duplicates not shown)              Scan  Baseline
+  AT2018COW  egvlba.6cm            1                                 1.978    80.949
+  J1619+2247 egvlba.6cm            1                                 0.598    21.374
+  J1642+3948 egvlba.6cm            1                                 0.050     2.244
+
+
+EFFECT OF SOLAR CORONA
+
+  The solar corona can cause unstable phases for sources too close to the Sun.
+  SCHED provides warnings at individual scans for distances less than 10 degrees.
+  The distance from the Sun to each source in this schedule is:
+    Source         Sun distance (deg) 
+   AT2018COW          125.0
+   J1619+2247         125.0
+   J1642+3948         112.7
+
+  Barry Clark estimates from predictions by Ketan Desai of IPM scattering sizes 
+  that the Sun will cause amplitude reductions on the  longest VLBA baselines 
+  at a solar distance of 60deg F^(-0.6) where F is in GHz. 
+  For common VLBI bands, this is: 
+       327 MHz        117. deg 
+       610 MHz         81. deg 
+       1.6 GHz         45. deg 
+       2.3 GHz         36. deg 
+       5.0 GHz         23. deg 
+       8.4 GHz         17. deg 
+      15.0 GHz         12. deg 
+      22.0 GHz          9. deg 
+      43.0 GHz          6. deg 
+
