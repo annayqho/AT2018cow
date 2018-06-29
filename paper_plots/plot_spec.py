@@ -8,6 +8,7 @@ rc("font", family="serif")
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.table import Table
+from astropy.cosmology import Planck15
 
 def spec_sequence(days, freq, flux, flux_err, lims):
     fig,axarr = plt.subplots(len(days), 1, figsize=(4,10))
@@ -44,6 +45,10 @@ def spec_sequence(days, freq, flux, flux_err, lims):
 
 
 def light_curve(t, freq, flux, flux_err):
+    conv = 1e-3 * 10**(-23)
+    d = Planck15.luminosity_distance(z=0.014).cgs.value
+    lum = flux * conv * 4 * np.pi * d**2
+    lum_err = flux_err * conv * 4 * np.pi * d**2
     freq_bins = [230, 340]
     marker_type = ['o', 's']
     line_style = ['-', ':']
@@ -55,23 +60,26 @@ def light_curve(t, freq, flux, flux_err):
         select,ind = np.unique(t[choose], return_index=True)
 
         plt.errorbar(
-                t[choose][ind], flux[choose][ind], yerr=flux_err[choose][ind],
+                t[choose][ind], lum[choose][ind] / 1e28, 
+                yerr=lum_err[choose][ind] / 1e28,
                 mfc='white', mec='black', fmt='.', marker=marker_type[ii], 
                 linestyle=line_style[ii], label="%s GHz" %center_freq, c='k')
-        #plt.plot(
-        #        t[choose][ind], flux[choose][ind], color='k', lw=1.0)
+
+    # put the 1998bw point on there
+    plt.scatter(
+            12, 6.7e28/1e28, marker='X', label="1998bw, SCUBA $150\,$GHz", c='k')
 
     # make it pretty
     plt.xlabel("Days Since Discovery", fontsize=16)
-    plt.ylabel("Flux [mJy]", fontsize=16)
+    plt.ylabel("$L_{\\nu}$ [$10^{28}$ erg/cm$^{2}$/s/Hz]", fontsize=16)
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     
     plt.legend()
     plt.tight_layout()
 
-    plt.show()
-    #plt.savefig("light_curve.png")
+    #plt.show()
+    plt.savefig("light_curve.png")
 
 
 def plot_spectral_index(d, f, lc, lc_err, is_lim, ind_1, ind_2, mtype, lstyle):
@@ -186,6 +194,6 @@ if __name__=="__main__":
     # cols = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
     # cols = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#4a1486']
     #spec_sequence(day_bins, freq, flux, flux_err, lims)
-    #light_curve(t, freq, flux, flux_err)
+    light_curve(t, freq, flux, flux_err)
 
-    spectral_index(t, freq, flux, flux_err, lims)
+    #spectral_index(t, freq, flux, flux_err, lims)

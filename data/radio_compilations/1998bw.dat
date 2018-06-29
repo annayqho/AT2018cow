@@ -1,6 +1,6 @@
 # days & GHz & name & mJy & mJy
-dt   & freq & instrument & flux & e_flux
-12   & 150  & SCUBA      & 39   & 11
+dt   & freq   & instrument & flux & e_flux
+12   & 150    & SCUBA      & 39   & 11
 3    & 4.9    & VLA        & 9    & -99
 4    & 4.9    & VLA        & 9.9  & -99
 9.9  & 4.9    & VLA        & 39   & -99
