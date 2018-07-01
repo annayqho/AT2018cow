@@ -11,37 +11,36 @@ from astropy.table import Table
 from astropy.cosmology import Planck15
 
 def spec_sequence(days, freq, flux, flux_err, lims):
-    fig,axarr = plt.subplots(len(days), 1, figsize=(4,10))
-
+    colors = ['pink', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
     for ii,day in enumerate(days):
         # plot detections
         choose = np.where(np.logical_and(t==day, lims==False))[0]
-        axarr[ii].errorbar(
-                freq[choose], flux[choose], yerr=flux_err[choose], 
-                color='black', fmt='.')
-        axarr[ii].plot(
-                freq[choose], flux[choose], color='k', lw=1.0)
+        #plt.errorbar(
+        #        freq[choose], flux[choose], yerr=flux_err[choose], 
+        #        color=colors[ii], fmt='.')
+        plt.plot(
+                freq[choose], flux[choose], color=colors[ii], lw=2.0)
 
         # plot non-detections
-        choose = np.where(np.logical_and(t==day, lims==True))[0]
-        axarr[ii].scatter(
-                freq[choose], flux[choose]+1, color='black', marker='v')
+        #choose = np.where(np.logical_and(t==day, lims==True))[0]
+        #plt.scatter(
+        #        freq[choose], flux[choose]+1, color=colors[ii], marker='v')
 
-        # formatting
-        axarr[ii].set_xlim(0, 360)
-        #axarr[ii].set_ylim(0, 50)
-        if ii < len(days)-1:
-            axarr[ii].get_xaxis().set_ticks([])
-        axarr[ii].set_ylabel("Flux [mJy]", fontsize=12)
-        axarr[ii].text(
-                0.10, 0.90, "$\Delta t$ = %s d" %day, 
-                horizontalalignment='left', verticalalignment='top',
-                transform=axarr[ii].transAxes)
+    # formatting
+    #plt.xlim(0.1, 360)
+    #plt.ylim(0.1, 42)
+    plt.ylabel("Flux [mJy]", fontsize=12)
+    plt.xscale('log')
+    plt.yscale('log')
+    # plt.text(
+    #         0.10, 0.90, "$\Delta t$ = %s d" %day, 
+    #         horizontalalignment='left', verticalalignment='top',
+    #         transform=axarr[ii].transAxes)
 
-    axarr[ii].set_xlabel("Freq [GHz]", fontsize=12)
+    plt.xlabel("Freq [GHz]", fontsize=12)
     plt.tight_layout()
-    #plt.show()
-    plt.savefig("spec_sequence.png")
+    plt.show()
+    #plt.savefig("spec_sequence.png")
 
 
 def light_curve(t, freq, flux, flux_err):
@@ -194,6 +193,6 @@ if __name__=="__main__":
     # cols = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
     # cols = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#4a1486']
     #spec_sequence(day_bins, freq, flux, flux_err, lims)
-    light_curve(t, freq, flux, flux_err)
+    #light_curve(t, freq, flux, flux_err)
 
-    #spectral_index(t, freq, flux, flux_err, lims)
+    spectral_index(t, freq, flux, flux_err, lims)
