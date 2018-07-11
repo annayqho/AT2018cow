@@ -11,15 +11,25 @@ from astropy.table import Table
 from astropy.cosmology import Planck15
 
 def spec_sequence(days, freq, flux, flux_err, lims):
-    colors = ['pink', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
+    colors = ['pink', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'pink', 'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
+
     for ii,day in enumerate(days):
         # plot detections
+        print(day)
         choose = np.where(np.logical_and(t==day, lims==False))[0]
         #plt.errorbar(
         #        freq[choose], flux[choose], yerr=flux_err[choose], 
         #        color=colors[ii], fmt='.')
-        plt.plot(
-                freq[choose], flux[choose], color=colors[ii], lw=2.0)
+        if ii < 8:
+            plt.plot(
+                    freq[choose], flux[choose], color=colors[ii], 
+                    lw=2.0, ls='--')
+        else:
+            plt.plot(
+                    freq[choose], flux[choose], color=colors[ii], 
+                    lw=2.0, ls='-')
+        plt.show()
+
 
         # plot non-detections
         #choose = np.where(np.logical_and(t==day, lims==True))[0]
@@ -39,40 +49,42 @@ def spec_sequence(days, freq, flux, flux_err, lims):
 
     plt.xlabel("Freq [GHz]", fontsize=12)
     plt.tight_layout()
-    plt.show()
+    #plt.show()
     #plt.savefig("spec_sequence.png")
 
 
 def light_curve(t, freq, flux, flux_err):
-    conv = 1e-3 * 10**(-23)
-    d = Planck15.luminosity_distance(z=0.014).cgs.value
-    lum = flux * conv * 4 * np.pi * d**2
-    lum_err = flux_err * conv * 4 * np.pi * d**2
-    freq_bins = [230, 340]
-    marker_type = ['o', 's']
-    line_style = ['-', ':']
+    #conv = 1e-3 * 10**(-23)
+    #d = Planck15.luminosity_distance(z=0.014).cgs.value
+    #lum = flux * conv * 4 * np.pi * d**2
+    #lum_err = flux_err * conv * 4 * np.pi * d**2
+    freq_bins = [5.5, 9, 34, 230, 340]
+    window = [1, 2, 2, 20, 20]
+    marker_type = ['*', 'o', 's', '^', 'v']
+    line_style = ['--', '-', ':', '--', '-.']
 
     for ii, center_freq in enumerate(freq_bins):
-        choose = np.where(np.abs(freq-center_freq) <= 20)[0]
+        choose = np.where(np.abs(freq-center_freq) <= window[ii])[0]
 
         # choose one instance of every day
         select,ind = np.unique(t[choose], return_index=True)
 
         plt.errorbar(
-                t[choose][ind], lum[choose][ind] / 1e28, 
-                yerr=lum_err[choose][ind] / 1e28,
+                t[choose][ind], flux[choose][ind], 
+                yerr=flux_err[choose][ind],
                 mfc='white', mec='black', fmt='.', marker=marker_type[ii], 
                 linestyle=line_style[ii], label="%s GHz" %center_freq, c='k')
 
     # put the 1998bw point on there
-    plt.scatter(
-            12, 6.7e28/1e28, marker='X', label="1998bw, SCUBA $150\,$GHz", c='k')
+    #plt.scatter(
+    #        12, 6.7e28/1e28, marker='X', label="1998bw, SCUBA $150\,$GHz", c='k')
 
     # make it pretty
     plt.xlabel("Days Since Discovery", fontsize=16)
-    plt.ylabel("$L_{\\nu}$ [$10^{28}$ erg/cm$^{2}$/s/Hz]", fontsize=16)
+    plt.ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
+    #plt.yscale('lin')
     
     plt.legend()
     plt.tight_layout()
@@ -193,6 +205,6 @@ if __name__=="__main__":
     # cols = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
     # cols = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#4a1486']
     #spec_sequence(day_bins, freq, flux, flux_err, lims)
-    #light_curve(t, freq, flux, flux_err)
+    light_curve(t, freq, flux, flux_err)
 
-    spectral_index(t, freq, flux, flux_err, lims)
+    #spectral_index(t, freq, flux, flux_err, lims)

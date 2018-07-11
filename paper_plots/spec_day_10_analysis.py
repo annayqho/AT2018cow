@@ -43,6 +43,16 @@ p=2.5
 y2 = flux[2] * (x/freq[2])**(-p/2)
 plt.fill_between(x, y1, y2, color='grey')
 
+# Plot the relativistic Maxwellian
+
+#a = 9e3
+#b = 0.2
+a = 5e2
+b = 0.05 
+#x = np.linspace(1e5, 1e9)
+x = np.logspace(-1, 3)
+I = a * (2.5651*(1 + 1.92/((b*x)**(1/3)) + 0.9977/((b*x)**(2/3))) * np.exp(-1.8899*((b*x)**(1/3))))
+plt.plot(x,I,color='red')
 
 plt.text(9, 170, "Spectrum at $\Delta t = 10\,$days", fontsize=14)
 
@@ -52,7 +62,9 @@ plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.xscale('log')
 plt.yscale('log')
+plt.xlim(1e1, 1e3)
+plt.ylim(1e-1, 1e2)
 plt.tight_layout()
-#plt.show()
+plt.show()
 
-plt.savefig("spec_day_10.png")
+#plt.savefig("spec_day_10.png")

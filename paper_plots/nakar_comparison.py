@@ -18,13 +18,18 @@ plt.scatter(
 
 # SN 2003L
 plt.scatter(
-        0.2*3*10**5, 1e48, 
-        marker='s', c='k', label='SN2003L, SN2007bg')
+        (1/6)*3*10**5, 1.5e47, 
+        marker='s', c='k', label='SN2003L')
 
+# SN 2003bg
 plt.scatter(
-        0.24*3*10**5, 1e49, 
-        marker='v', c='k', label='SN2003bg')
+        0.13*3*10**5, 1.7e48, 
+        marker='^', c='k', label='SN2003bg')
 
+# SN 2007bg
+plt.scatter(
+        0.2*3*10**5, 1e48, 
+        marker='v', c='k', label='SN2007bg')
 
 for ii,lab in enumerate(labels):
     plt.scatter(v[ii], E[ii], c=colors[ii], label=lab)
