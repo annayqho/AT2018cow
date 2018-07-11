@@ -53,46 +53,6 @@ def spec_sequence(days, freq, flux, flux_err, lims):
     #plt.savefig("spec_sequence.png")
 
 
-def light_curve(t, freq, flux, flux_err):
-    #conv = 1e-3 * 10**(-23)
-    #d = Planck15.luminosity_distance(z=0.014).cgs.value
-    #lum = flux * conv * 4 * np.pi * d**2
-    #lum_err = flux_err * conv * 4 * np.pi * d**2
-    freq_bins = [5.5, 9, 34, 230, 340]
-    window = [1, 2, 2, 20, 20]
-    marker_type = ['*', 'o', 's', '^', 'v']
-    line_style = ['--', '-', ':', '--', '-.']
-
-    for ii, center_freq in enumerate(freq_bins):
-        choose = np.where(np.abs(freq-center_freq) <= window[ii])[0]
-
-        # choose one instance of every day
-        select,ind = np.unique(t[choose], return_index=True)
-
-        plt.errorbar(
-                t[choose][ind], flux[choose][ind], 
-                yerr=flux_err[choose][ind],
-                mfc='white', mec='black', fmt='.', marker=marker_type[ii], 
-                linestyle=line_style[ii], label="%s GHz" %center_freq, c='k')
-
-    # put the 1998bw point on there
-    #plt.scatter(
-    #        12, 6.7e28/1e28, marker='X', label="1998bw, SCUBA $150\,$GHz", c='k')
-
-    # make it pretty
-    plt.xlabel("Days Since Discovery", fontsize=16)
-    plt.ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    #plt.yscale('lin')
-    
-    plt.legend()
-    plt.tight_layout()
-
-    #plt.show()
-    plt.savefig("light_curve.png")
-
-
 def plot_spectral_index(d, f, lc, lc_err, is_lim, ind_1, ind_2, mtype, lstyle):
     # Find the overlap in days
     d_choose = np.intersect1d(d[ind_1], d[ind_2])
