@@ -1,6 +1,6 @@
 # before running, don't forget to
 # delete the lines with AMI
-# run :%s/\\//g
+# run :%s///g
 
 import matplotlib
 from matplotlib import rc
@@ -43,7 +43,7 @@ def spec_sequence(days, freq, flux, flux_err, lims):
     plt.xscale('log')
     plt.yscale('log')
     # plt.text(
-    #         0.10, 0.90, "$\Delta t$ = %s d" %day, 
+    #         0.10, 0.90, "$Delta t$ = %s d" %day, 
     #         horizontalalignment='left', verticalalignment='top',
     #         transform=axarr[ii].transAxes)
 
@@ -54,39 +54,65 @@ def spec_sequence(days, freq, flux, flux_err, lims):
 
 
 if __name__=="__main__":
-    dat = Table.read("../data/radio_lc.dat", delimiter="&", format='ascii')
+    dat = Table.read(
+        "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
+    tel = np.array(dat['col2'])
+    choose = np.logical_or(tel == 'SMA', tel == 'ATCA')
 
-    t = dat['dt']
-    freq = dat['Frequency']
-    flux_raw = dat['Flux']
+    tel = tel[choose]
+    days = np.array(dat['col1'][choose])
+    freq = np.array(dat['col3'][choose]).astype(float)
+    flux_raw = np.array(dat['col4'][choose])
+    flux = np.array(
+            [float(val.split("pm")[0][1:]) for val in flux_raw])
+    flux_err = np.array(
+            [float(val.split("pm")[1][0:-1]) for val in flux_raw]) 
 
-    # put in order of freq
-    order = np.argsort(freq)
-    t = t[order]
-    freq = freq[order]
-    flux_raw = flux_raw[order]
+    # first, try to show the spectrum on one plot
+    fig = plt.figure(figsize=(8,6))
 
-    npts = len(flux_raw)
-    flux = np.zeros(npts)
-    flux_err = np.zeros(npts)
-    lims = np.zeros(npts, dtype=bool)
+    # plot the spectrum from Day 10 data
+    choose = days == 10
+    plt.errorbar(
+            freq[choose], flux[choose], yerr=flux_err[choose],
+            mfc='white', mec='black', fmt='.', marker='o',
+            label="$\Delta t = 10$", c='k')
+    order = np.argsort(freq[choose])
+    plt.plot(
+            freq[choose][order], flux[choose][order], c='k', ls=':')
 
-    # formatting
-    for ii,val in enumerate(flux_raw):
-        if "<" in val:
-            flux[ii] = val.split("$")[1][1:]
-            lims[ii] = True
-        else:
-            temp = val.split("pm")
-            flux[ii] = float(temp[0][1:])
-            flux_err[ii] = float(temp[1][0:-1])
-            lims[ii] = False
+    # plot the spectrum from Day 13-14 data
+    # ATCA from Day 13, SMA and ALMA from Day 14
+    choose = np.logical_or(
+            np.logical_and(days == 13, tel == 'ATCA'),
+            np.logical_and(days == 14, tel == 'SMA'))
 
-    # unique days
-    day_bins = np.unique(t)
-    # cols = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black']
+    plt.errorbar(
+            freq[choose], flux[choose], yerr=flux_err[choose],
+            mfc='white', mec='black', fmt='.', marker='s',
+            label="$\Delta t = 13-14$", c='k')
+
+    order = np.argsort(freq[choose])
+    plt.plot(
+            freq[choose][order], flux[choose][order], c='k', ls='--')
+
+
+    # plot the spectrum from the Day 22 data
+    choose = days == 22
+
+    plt.errorbar(
+            freq[choose], flux[choose], yerr=flux_err[choose],
+            mfc='white', mec='black', fmt='.', marker='v', ms=8,
+            label="$\Delta t = 22$", c='k')
+
+    order = np.argsort(freq[choose])
+    plt.plot(
+            freq[choose][order], flux[choose][order], c='k', ls='-')
+
     # cols = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#4a1486']
     #spec_sequence(day_bins, freq, flux, flux_err, lims)
-    light_curve(t, freq, flux, flux_err)
 
     #spectral_index(t, freq, flux, flux_err, lims)
+
+    #plt.legend()
+    plt.show()
