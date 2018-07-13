@@ -57,7 +57,7 @@ if __name__=="__main__":
     dat = Table.read(
         "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
     tel = np.array(dat['col2'])
-    choose = np.logical_or(tel == 'SMA', tel == 'ATCA')
+    choose = np.array([val in np.array(['SMA', 'ATCA', 'ALMA']) for val in tel])
 
     tel = tel[choose]
     days = np.array(dat['col1'][choose])
@@ -73,13 +73,12 @@ if __name__=="__main__":
 
     # plot the spectrum from Day 10 data
     choose = days == 10
-    plt.errorbar(
-            freq[choose], flux[choose], yerr=flux_err[choose],
-            mfc='white', mec='black', fmt='.', marker='o',
-            label="$\Delta t = 10$", c='k')
     order = np.argsort(freq[choose])
-    plt.plot(
-            freq[choose][order], flux[choose][order], c='k', ls=':')
+    plt.errorbar(
+            freq[choose][order], flux[choose][order], 
+            yerr=flux_err[choose][order],
+            mfc='white', mec='black', fmt=':', marker='o',
+            label="$\Delta t = 10$", c='k')
 
     # plot the spectrum from Day 13-14 data
     # ATCA from Day 13, SMA and ALMA from Day 14
@@ -87,32 +86,32 @@ if __name__=="__main__":
             np.logical_and(days == 13, tel == 'ATCA'),
             np.logical_and(days == 14, tel == 'SMA'))
 
+    order = np.argsort(freq[choose])
     plt.errorbar(
-            freq[choose], flux[choose], yerr=flux_err[choose],
-            mfc='white', mec='black', fmt='.', marker='s',
+            freq[choose][order], flux[choose][order], 
+            yerr=flux_err[choose][order],
+            mfc='white', mec='black', fmt='--', marker='s',
             label="$\Delta t = 13-14$", c='k')
 
-    order = np.argsort(freq[choose])
-    plt.plot(
-            freq[choose][order], flux[choose][order], c='k', ls='--')
-
-
     # plot the spectrum from the Day 22 data
-    choose = days == 22
-
-    plt.errorbar(
-            freq[choose], flux[choose], yerr=flux_err[choose],
-            mfc='white', mec='black', fmt='.', marker='v', ms=8,
-            label="$\Delta t = 22$", c='k')
+    choose = np.logical_and(days >= 22, days <= 24)
 
     order = np.argsort(freq[choose])
-    plt.plot(
-            freq[choose][order], flux[choose][order], c='k', ls='-')
+    plt.errorbar(
+            freq[choose][order], flux[choose][order], 
+            yerr=flux_err[choose][order],
+            mfc='white', mec='black', fmt='-', marker='v', ms=8, ls='-',
+            label="$\Delta t = 22-24$", c='k')
 
-    # cols = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#807dba', '#6a51a3', '#4a1486']
     #spec_sequence(day_bins, freq, flux, flux_err, lims)
 
     #spectral_index(t, freq, flux, flux_err, lims)
 
-    #plt.legend()
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.xlabel("Frequency [GHz]", fontsize=16)
+    plt.ylabel("Flux [mJy]", fontsize=16)
+
+    plt.legend()
+
     plt.show()
