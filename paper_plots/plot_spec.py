@@ -7,10 +7,44 @@ from matplotlib import rc
 rc("font", family="serif")
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 from astropy.table import Table
 from astropy.cosmology import Planck15
 
-if __name__=="__main__":
+
+def synchrotron(x, nu_a, F_a, nu_m, F_m, alpha):
+    """ Fitting function """
+    y = np.zeros(len(x))
+    choose = x <= nu_a
+    y[choose] = F_a * (x[choose]/nu_a)**2
+    choose = np.logical_and(x > nu_a, x <= nu_m)
+    y[choose] = F_a * (x[choose]/nu_a)**(1/3)
+    choose = x > nu_m
+    y[choose] = F_m * (x[choose]/nu_m)**alpha
+    return y
+
+
+def fit_spec(freq, flux, flux_err):
+    """ Fit the spectrum on Day 22 to a synchrotron spectrum """
+    nu_a = 90
+    F_a = 90
+    nu_m = 100
+    F_m = 90
+    alpha = -1.0
+    p0 = [nu_a, F_a, nu_m, F_m, alpha]
+
+    popt, pcov = curve_fit(
+            synchrotron, freq, flux, p0 = p0,
+            sigma = flux_err, absolute_sigma=True)
+
+    xfit = np.linspace(min(freq), max(freq))
+    yfit = synchrotron(xfit, *popt)
+
+
+
+
+def get_data():
+    """ Get the light curves """
     dat = Table.read(
         "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
     days = np.array(dat['col1'])
@@ -26,6 +60,8 @@ if __name__=="__main__":
             flux[ii] = val.split("$")[1]
             if freq[ii] < 200: # bands 3 and 4
                 flux_err[ii] = 0.05*flux[ii]
+            elif freq[ii] > 600: # band 9
+                flux_err[ii] = 0.20*flux[ii]
             else: # bands 7 and 8
                 flux_err[ii] = 0.10*flux[ii]
         elif tel[ii] == 'SMA':
@@ -43,6 +79,11 @@ if __name__=="__main__":
             else:
                 flux_err[ii] = np.sqrt(
                         (0.10*flux[ii])**2 + flux_err_temp**2)
+    return tel, freq, days, flux, flux_err
+
+
+if __name__=="__main__":
+    tel, freq, days, flux, flux_err = get_data()
 
     fig, axarr = plt.subplots(2, 1, figsize=(8,8))
 
@@ -76,6 +117,7 @@ if __name__=="__main__":
             label="$\Delta t = 13, 14$", c='k')
 
     # plot the spectrum from the Day 22 data
+    choose = days == 22
     choose = np.logical_or(days == 22, days == 24)
 
     order = np.argsort(freq[choose])
@@ -93,10 +135,34 @@ if __name__=="__main__":
 
     ax.legend()
 
-    # plot the ALMA Day 22 and SMA Day 24 data by itself as well
+
+    # bottom panel: a fit to the spectrum on Day 22
+    # ALMA data
     choose_alma = np.logical_and(days == 22, tel == 'ALMA')
-    choose_sma = np.logical_and(days == 24, tel == 'SMA')
-    choose = np.logical_or(choose_alma, choose_sma)
+
+    # interpolate the SMA data at 215 and 230 GHz
+    choose_sma_hi = np.logical_and(days == 24, tel == 'SMA')
+    choose_sma_lo = np.logical_and(days == 20, tel == 'SMA')
+    f_hi = flux[choose_sma_hi]
+    f_lo = flux[choose_sma_lo]
+    ef_hi = flux_err[choose_sma_hi]
+    ef_lo = flux_err[choose_sma_lo]
+
+    w = 1/(np.array([ef_hi[freq[choose_sma_hi]==215.5][0],
+                ef_lo[freq[choose_sma_lo]==215.5][0]]))**2
+    f_215 = np.average(
+            [f_hi[freq[choose_sma_hi]==215.5][0],
+            f_lo[freq[choose_sma_lo]==215.5][0]],
+            weights=w)
+    w = 1/(np.array([ef_hi[freq[choose_sma_hi]==231.5][0],
+                ef_lo[freq[choose_sma_lo]==231.5][0]]))**2
+    f_231 = np.average(
+            [f_hi[freq[choose_sma_hi]==231.5][0],
+            f_lo[freq[choose_sma_lo]==231.5][0]],
+            weights=w)
+
+    #choose = np.logical_or(choose_alma, choose_sma)
+    choose = choose_alma
     order = np.argsort(freq[choose])
 
     ax = axarr[1]
@@ -105,37 +171,20 @@ if __name__=="__main__":
             yerr=flux_err[choose][order],
             mec='black', fmt='.', c='k')
     # temporary ATCA point
-    ax.errorbar(34, 12, yerr=0.1*12, mec='black', fmt='.', c='k')
+    ax.errorbar(34, 10, yerr=0.2*12, mec='black', fmt='.', c='k')
+    # temporary SMA points
+    # ax.errorbar(
+    #         [215.5, 231.5], [f_215, f_231], yerr=0.1*np.array([f_215, f_231]), 
+    #         mec='black', fmt='.', c='k')
     ax.text(
-            0.9, 0.1, "ATCA Day 19, ALMA Day 22, SMA Day 24", 
+            0.9, 0.1, "ATCA Day 19, ALMA Day 22", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
-    # show a fit
-    x = np.linspace(34, 90)
-    y = 13*(x/34)**2
-    plt.plot(x, y, c='black', lw=1, ls='-')
-
-    # shallower part
-    x = np.linspace(90, 120)
-    y = 96*(x/103)**(1/3)
-    plt.plot(x, y, c='black', lw=1, ls='-')
-
-    # power-law index
-    x = np.linspace(120, 350)
-    alpha = -1.11
-    y = 80*((x/150)**alpha)
-    plt.plot(x, y, c='black', lw=1, ls='-')
-
-    # show critical frequencies
-    plt.axvline(x=90, c='grey', ls='--', alpha=0.8)
-    plt.axvline(x=120, c='grey', ls='--', alpha=0.8)
-
-    ax.tick_params(axis='both', labelsize=14)
     ax.tick_params(axis='both', labelsize=14)
     ax.set_xlabel("Frequency [GHz]", fontsize=16)
     ax.set_ylabel("Flux [mJy]", fontsize=16)
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")
