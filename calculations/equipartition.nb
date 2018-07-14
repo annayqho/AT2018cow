@@ -1,0 +1,174 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.4' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      4613,        164]
+NotebookOptionsPosition[      3920,        134]
+NotebookOutlinePosition[      4278,        150]
+CellTagsIndexPosition[      4235,        147]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"n", "[", "\[Epsilon]", "]"}], ":=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{
+     SuperscriptBox["\[Epsilon]", "2"], "*", "\[Beta]"}], 
+    RowBox[{"k", "*", "T", "*", "K"}]], "*", 
+   RowBox[{"Exp", "[", 
+    FractionBox[
+     RowBox[{"-", "\[Epsilon]"}], 
+     RowBox[{"\[Theta]", "*", "m", "*", 
+      SuperscriptBox["c", "2"]}]], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.740263930224176*^9, 3.740264000957242*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["U", "e"], "=", 
+  RowBox[{"V", "*", 
+   RowBox[{
+    SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+    RowBox[{"\[Epsilon]", "*", 
+     RowBox[{"n", "[", "\[Epsilon]", "]"}], 
+     RowBox[{"\[DifferentialD]", "\[Epsilon]"}]}]}]}]}]], "Input",
+ CellChangeTimes->{{3.74026399242459*^9, 3.740264025611123*^9}, {
+  3.7402643709387627`*^9, 3.7402643806483192`*^9}, {3.740264686518178*^9, 
+  3.74026468816435*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ConditionalExpression", "[", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"6", " ", 
+     SuperscriptBox["c", "8"], " ", 
+     SuperscriptBox["m", "4"], " ", "V", " ", "\[Beta]", " ", 
+     SuperscriptBox["\[Theta]", "4"]}], 
+    RowBox[{"k", " ", "K", " ", "T"}]], ",", 
+   RowBox[{
+    RowBox[{"Re", "[", 
+     FractionBox["1", 
+      RowBox[{
+       SuperscriptBox["c", "2"], " ", "m", " ", "\[Theta]"}]], "]"}], ">", 
+    "0"}]}], "]"}]], "Output",
+ CellChangeTimes->{3.740264026910074*^9, 3.740264382540872*^9, 
+  3.740264689987956*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"L", "=", 
+  RowBox[{
+   SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+   RowBox[{"A", "*", 
+    SuperscriptBox["B", "2"], "*", 
+    SuperscriptBox["\[Epsilon]", "2"], "*", 
+    RowBox[{"n", "[", "\[Epsilon]", "]"}], 
+    RowBox[{"\[DifferentialD]", "\[Epsilon]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.740264606244355*^9, 3.740264674254526*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ConditionalExpression", "[", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"24", " ", "A", " ", 
+     SuperscriptBox["B", "2"], " ", 
+     SuperscriptBox["c", "10"], " ", 
+     SuperscriptBox["m", "5"], " ", "\[Beta]", " ", 
+     SuperscriptBox["\[Theta]", "5"]}], 
+    RowBox[{"k", " ", "K", " ", "T"}]], ",", 
+   RowBox[{
+    RowBox[{"Re", "[", 
+     FractionBox["1", 
+      RowBox[{
+       SuperscriptBox["c", "2"], " ", "m", " ", "\[Theta]"}]], "]"}], ">", 
+    "0"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.740264662877075*^9, 3.740264676296043*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ FractionBox[
+  SubscriptBox["U", "e"], "L"]], "Input",
+ CellChangeTimes->{{3.740264852476391*^9, 3.7402648597277117`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"ConditionalExpression", "[", 
+  RowBox[{
+   FractionBox["V", 
+    RowBox[{"4", " ", "A", " ", 
+     SuperscriptBox["B", "2"], " ", 
+     SuperscriptBox["c", "2"], " ", "m", " ", "\[Theta]"}]], ",", 
+   RowBox[{
+    RowBox[{"Re", "[", 
+     FractionBox["1", 
+      RowBox[{
+       SuperscriptBox["c", "2"], " ", "m", " ", "\[Theta]"}]], "]"}], ">", 
+    "0"}]}], "]"}]], "Output",
+ CellChangeTimes->{3.740264861576811*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"4", "*", "1.5"}]], "Input",
+ CellChangeTimes->{{3.740264915994862*^9, 3.740264916541971*^9}}],
+
+Cell[BoxData["6.`"], "Output",
+ CellChangeTimes->{3.740264917103773*^9}]
+}, Open  ]]
+},
+WindowSize->{808, 704},
+WindowMargins->{{12, Automatic}, {Automatic, 24}},
+FrontEndVersion->"10.4 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 25, \
+2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 455, 13, 52, "Input"],
+Cell[CellGroupData[{
+Cell[1038, 37, 457, 11, 47, "Input"],
+Cell[1498, 50, 560, 16, 51, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2095, 71, 379, 9, 47, "Input"],
+Cell[2477, 82, 576, 16, 51, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3090, 103, 137, 3, 47, "Input"],
+Cell[3230, 108, 445, 13, 49, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3712, 126, 117, 2, 28, "Input"],
+Cell[3832, 130, 72, 1, 62, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
