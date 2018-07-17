@@ -141,25 +141,17 @@ if __name__=="__main__":
     choose_alma = np.logical_and(days == 22, tel == 'ALMA')
 
     # interpolate the SMA data at 215 and 230 GHz
-    choose_sma_hi = np.logical_and(days == 24, tel == 'SMA')
-    choose_sma_lo = np.logical_and(days == 20, tel == 'SMA')
-    f_hi = flux[choose_sma_hi]
-    f_lo = flux[choose_sma_lo]
-    ef_hi = flux_err[choose_sma_hi]
-    ef_lo = flux_err[choose_sma_lo]
+    choose_days = np.logical_or(days==20, days==24)
+    choose_temp = np.logical_and(tel == 'SMA', freq == 215.5)
+    choose_215 = np.logical_and(choose_days, choose_temp)
+    choose_temp = np.logical_and(tel == 'SMA', freq == 231.5)
+    choose_231 = np.logical_and(choose_days, choose_temp)
 
-    w = 1/(np.array([ef_hi[freq[choose_sma_hi]==215.5][0],
-                ef_lo[freq[choose_sma_lo]==215.5][0]]))**2
+    # take the average
     f_215 = np.average(
-            [f_hi[freq[choose_sma_hi]==215.5][0],
-            f_lo[freq[choose_sma_lo]==215.5][0]],
-            weights=w)
-    w = 1/(np.array([ef_hi[freq[choose_sma_hi]==231.5][0],
-                ef_lo[freq[choose_sma_lo]==231.5][0]]))**2
+            flux[choose_215], weights=1/flux_err[choose_215]**2)
     f_231 = np.average(
-            [f_hi[freq[choose_sma_hi]==231.5][0],
-            f_lo[freq[choose_sma_lo]==231.5][0]],
-            weights=w)
+            flux[choose_231], weights=1/flux_err[choose_231]**2)
 
     #choose = np.logical_or(choose_alma, choose_sma)
     choose = choose_alma
@@ -169,15 +161,16 @@ if __name__=="__main__":
     ax.errorbar(
             freq[choose][order], flux[choose][order], 
             yerr=flux_err[choose][order],
-            mec='black', fmt='.', c='k')
+            mec='black', fmt='o', c='k')
     # temporary ATCA point
-    ax.errorbar(34, 10, yerr=0.2*12, mec='black', fmt='.', c='k')
+    ax.errorbar(34, 12, yerr=0.2*12, mec='black', fmt='o', c='k')
     # temporary SMA points
-    # ax.errorbar(
-    #         [215.5, 231.5], [f_215, f_231], yerr=0.1*np.array([f_215, f_231]), 
-    #         mec='black', fmt='.', c='k')
+    print(f_215, f_231)
+    ax.errorbar(
+            [215.5, 231.5], [f_215, f_231], yerr=0.1*np.array([f_215, f_231]), 
+            mec='black', fmt='o', c='k')
     ax.text(
-            0.9, 0.1, "ATCA Day 19, ALMA Day 22", 
+            0.9, 0.1, "ATCA, ALMA, & SMA, Day 22", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
