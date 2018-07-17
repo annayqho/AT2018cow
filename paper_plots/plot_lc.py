@@ -23,6 +23,8 @@ def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
     ax.set_ylabel("$\\alpha$", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
 
+    return alpha, ealpha
+
 
 def sma(ax):
     dat = Table.read(
@@ -194,7 +196,7 @@ days, nulow, nuhigh, flow, eflow, fhigh, efhigh = sma(ax1)
 plt.setp(ax1.get_xticklabels(), visible=False)
 
 ax2 = plt.subplot(gs0[0], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
-spindex(ax2, days, nulow, nuhigh, flow, eflow, fhigh, efhigh)
+alpha, ealpha = spindex(ax2, days, nulow, nuhigh, flow, eflow, fhigh, efhigh)
 plt.setp(ax2.get_xticklabels(), visible=False)
 
 #plt.savefig("lc.png")
