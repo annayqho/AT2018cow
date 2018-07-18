@@ -12,9 +12,11 @@ from astropy.table import Table
 from astropy.cosmology import Planck15
 
 
-def synchrotron(x, nu_a, F_a, nu_m, F_m, alpha):
+def synchrotron(x, nu_a, F_a, alpha):
     """ Fitting function """
     y = np.zeros(len(x))
+    nu_m = 100
+    F_m = 95
     choose = x <= nu_a
     y[choose] = F_a * (x[choose]/nu_a)**2
     choose = np.logical_and(x > nu_a, x <= nu_m)
@@ -24,14 +26,18 @@ def synchrotron(x, nu_a, F_a, nu_m, F_m, alpha):
     return y
 
 
+def self_abs(x, b):
+    """ Fitting function for self-absorbed part """
+    y = 10**(2*np.log10(x)+b)
+    return y
+
+
 def fit_spec(freq, flux, flux_err):
     """ Fit the spectrum on Day 22 to a synchrotron spectrum """
     nu_a = 90
     F_a = 90
-    nu_m = 100
-    F_m = 90
     alpha = -1.0
-    p0 = [nu_a, F_a, nu_m, F_m, alpha]
+    p0 = [nu_a, F_a, alpha]
 
     popt, pcov = curve_fit(
             synchrotron, freq, flux, p0 = p0,
@@ -40,6 +46,13 @@ def fit_spec(freq, flux, flux_err):
     xfit = np.linspace(min(freq), max(freq))
     yfit = synchrotron(xfit, *popt)
 
+
+def fit_self_abs(freq, flux, flux_err):
+    """ Fit the self-absorbed part of the spectrum """
+    popt, pcov = curve_fit(
+            self_abs, freq, flux,
+            sigma = flux_err, absolute_sigma = True)
+    return popt[0]
 
 
 
@@ -85,7 +98,8 @@ def get_data():
 if __name__=="__main__":
     tel, freq, days, flux, flux_err = get_data()
 
-    fig, axarr = plt.subplots(2, 1, figsize=(8,8))
+    fig, axarr = plt.subplots(
+            3, 1, figsize=(8,8), sharex=True, sharey=True)
 
     # top panel: evolution of spectra
     ax = axarr[0]
@@ -96,12 +110,55 @@ if __name__=="__main__":
     det = flux_err[choose][order] > 0
     ax.errorbar(
             freq[choose][order][det], flux[choose][order][det], 
-            yerr=flux_err[choose][order][det],
-            mfc='white', mec='black', fmt=':', marker='o',
+            yerr=flux_err[choose][order][det], fmt='o',
             label="$\Delta t = 10$", c='k')
+    ax.scatter(
+            5.5, 0.15, marker='v', c='k')
+
+    b = fit_self_abs(
+            freq[choose][order][det][0:2],
+            flux[choose][order][det][0:2],
+            flux_err[choose][order][det][0:2])
+    xfit = np.linspace(5, 200)
+    yfit = 10**(2*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+
+    ax.text(
+            0.4, 0.45, "$F_\\nu \propto \\nu^2$", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
+
+    # fit and plot a nu^something line
+    m,b = np.polyfit(
+            np.log10(freq[choose][order][det][2:]),
+            np.log10(flux[choose][order][det][2:]),
+            deg = 1,
+            w=1/flux_err[choose][order][det][2:]**2)
+    print(m)
+    xfit = np.linspace(80, 500)
+    yfit = 10**(m*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+    ax.text(
+            0.8, 0.85, "$F_\\nu \propto \\nu^{-1.8}$", 
+            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+
+    # the lines join at (144, 92)
+    ax.text(
+            0, 0.9, "$(\\nu_p, F_p) = (144\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
+            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+    ax.text(
+            0.9, 0.1, "ATCA & SMA, Day 10", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
+
+    ax.tick_params(axis='both', labelsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.set_ylabel("Flux [mJy]", fontsize=16)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
 
     # plot the spectrum from Day 13-14 data
     # ATCA from Day 13, SMA and ALMA from Day 14
+    ax = axarr[1]
+
     choose = np.logical_or(
             np.logical_and(days == 13, tel == 'ATCA'),
             np.logical_and(days == 14, tel != 'ATCA'))
@@ -113,28 +170,47 @@ if __name__=="__main__":
     ax.errorbar(
             freq[choose][order][det], flux[choose][order][det], 
             yerr=flux_err[choose][order][det],
-            mfc='white', mec='black', fmt='--', marker='s',
-            label="$\Delta t = 13, 14$", c='k')
+            label="$\Delta t = 13, 14$", fmt='o', c='k')
 
-    # plot the spectrum from the Day 22 data
-    choose = days == 22
-    choose = np.logical_or(days == 22, days == 24)
+    # plot a nu^2 line
+    b = fit_self_abs(
+            freq[choose][order][det][0:5],
+            flux[choose][order][det][0:5],
+            flux_err[choose][order][det][0:5])
+    xfit = np.linspace(5, 150)
+    yfit = 10**(2*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+    ax.text(
+            0.4, 0.5, "$F_\\nu \propto \\nu^2$", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
-    order = np.argsort(freq[choose])
-    ax.errorbar(
-            freq[choose][order], flux[choose][order], 
-            yerr=flux_err[choose][order],
-            mfc='white', mec='black', fmt='-', marker='v', ms=8, ls='-',
-            label="$\Delta t = 22, 24$", c='k')
+    # fit and plot a nu^something line
+    m,b = np.polyfit(
+            np.log10(freq[choose][order][det][5:]),
+            np.log10(flux[choose][order][det][5:]),
+            deg = 1,
+            w=1/flux_err[choose][order][det][5:]**2)
+    print(m)
+    xfit = np.linspace(80, 500)
+    yfit = 10**(m*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+    ax.text(
+            0.9, 0.85, "$F_\\nu \propto \\nu^{-0.8}$", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
+
+    # Explain which day and instruments this is
+    ax.text(
+            0, 0.9, "$(\\nu_p, F_p) = (111\,\mathrm{GHz}, 73\,\mathrm{mJy}$)", 
+            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+    ax.text(
+            0.9, 0.1, "ATCA on Day 13, ALMA & SMA on Day 14", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
     ax.tick_params(axis='both', labelsize=14)
     ax.set_ylabel("Flux [mJy]", fontsize=16)
     ax.set_xscale('log')
     ax.set_yscale('log')
-
-    ax.legend()
-
 
     # bottom panel: a fit to the spectrum on Day 22
     # ALMA data
@@ -157,7 +233,7 @@ if __name__=="__main__":
     choose = choose_alma
     order = np.argsort(freq[choose])
 
-    ax = axarr[1]
+    ax = axarr[2]
     ax.errorbar(
             freq[choose][order], flux[choose][order], 
             yerr=flux_err[choose][order],
@@ -172,12 +248,43 @@ if __name__=="__main__":
     ax.text(
             0.9, 0.1, "ATCA, ALMA, & SMA, Day 22", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
+    ax.text(
+            0, 0.9, "$(\\nu_p, F_p) = (92\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
+            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+
+    ax.text(
+            0.6, 0.8, "$F_\\nu \propto \\nu^2$", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
+
+    # fit a nu^2 line to the ATCA point and the lowest-freq ALMA point
+    x = np.array([34, freq[choose][order][0]])
+    y = np.array([12, flux[choose][order][0]])
+    yerr = np.array([0.1*12, flux_err[choose][order][0]])
+    b = fit_self_abs(x, y, yerr)
+    xfit = np.linspace(20, 150)
+    yfit = 10**(2*np.log10(xfit)+b)
+    plt.plot(xfit, yfit, c='k', ls=':')
+
+    # fit and plot a nu^something line
+    m,b = np.polyfit(
+            np.log10(freq[choose][order][4:]),
+            np.log10(flux[choose][order][4:]),
+            deg = 1,
+            w=1/flux_err[choose][order][4:]**2)
+    print(m)
+    xfit = np.linspace(80, 500)
+    yfit = 10**(m*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+    ax.text(
+            0.95, 0.85, "$F_\\nu \propto \\nu^{-0.7}$", 
+            transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
     ax.set_xlabel("Frequency [GHz]", fontsize=16)
     ax.set_ylabel("Flux [mJy]", fontsize=16)
     ax.set_xscale('log')
     ax.set_yscale('log')
+    ax.set_ylim(0.1,300)
 
-    plt.show()
-    #plt.savefig("spec.png")
+    #plt.show()
+    plt.savefig("spec.png")
