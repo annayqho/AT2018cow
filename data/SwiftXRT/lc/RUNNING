@@ -1,0 +1,4 @@
+USERPROD_71.95.157.4_1530462609164, /swift/srv/autoproc/SGEWork/user_lc_args_aVBuKj5
+ARGS:
+ stem=00010724 t0=551097137 ra=244.00090 dec=22.26800 centroid=yes detmeth=2 maxcentattempts=10 poserr=60 too=1 soft1=0.3 soft2=1.5 hard1=1.5 hard2=10 minen=0.3 maxen=10 grademin=0 grademax=12 pcbin=100 wtbin=10 sigma=3 wthrbinsize=20 pchrbinsize=200 femin=0 allowUL=3 allowB=3 bayesCounts=15 bayesSNR=2.4 sss=0 use1SXPS=1 pcpuprate=0.6 wtpuprate=150
+AT2018cow

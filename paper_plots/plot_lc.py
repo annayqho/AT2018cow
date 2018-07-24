@@ -6,6 +6,23 @@ import numpy as np
 from astropy.table import Table
 
 
+def xray_lc(ax):
+    direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    dat = Table.read(direc + "/xray_lc.txt", format='ascii', delimiter='&')
+    t = dat['t']
+    cts = dat['Lum']
+    ects =dat['elum']
+    ax.errorbar((t-t[0])+3, cts, yerr=ects, fmt='.', c='k')
+    ax.plot((t-t[0])+3, cts, c='k', lw=1.0)
+    ax.set_ylabel("$L_X$", fontsize=14)
+    ax.text(
+            0.9, 0.9, 
+            "Swift/XRT ($10^{43} \, \mathrm{erg s}^{-1} \, \mathrm{cm}^{-2})$", 
+            horizontalalignment ='right', transform=ax.transAxes,
+            verticalalignment = 'top', fontsize=14)
+    ax.yaxis.set_tick_params(labelsize=14)
+
+
 def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
     alpha = np.log10( fhigh / flow ) / np.log10( nulow / nuhigh )
 
@@ -106,6 +123,8 @@ def sma(ax, legend):
     ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
 
+    ax.text(0.05, 0.9, "SMA", transform=ax.transAxes, fontsize=14)
+
     if legend:
         ax.legend()
 
@@ -178,12 +197,15 @@ def atca(ax):
     ax.yaxis.set_tick_params(labelsize=14)
 
     ax.set_yscale('log')
+    ax.text(
+            0.05, 0.9, "ATCA", transform=ax.transAxes, fontsize=14,
+            verticalalignment='top')
 
     ax.legend()
 
 
 if __name__=="__main__":
-    fig = plt.figure(figsize=(6,8))#, tight_layout=True)
+    fig = plt.figure(figsize=(8,8))#, tight_layout=True)
     gs = gridspec.GridSpec(2, 1, height_ratios=[3,1], hspace=0.1)
     gs.update(left=0.15, right=0.9)
 
@@ -191,7 +213,7 @@ if __name__=="__main__":
     atca(atca_ax)
 
     gs0 = gridspec.GridSpecFromSubplotSpec(
-            2, 1, subplot_spec = gs[0], height_ratios=[1,4], hspace=0)
+            3, 1, subplot_spec = gs[0], height_ratios=[1,3,1], hspace=0)
     #gs0.update(hspace=0.05)
     ax1 = plt.subplot(gs0[1], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
     days, nulow, nuhigh, flow, eflow, fhigh, efhigh = sma(ax1, legend=True)
@@ -200,6 +222,10 @@ if __name__=="__main__":
     ax2 = plt.subplot(gs0[0], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
     alpha, ealpha = spindex(ax2, days, nulow, nuhigh, flow, eflow, fhigh, efhigh)
     plt.setp(ax2.get_xticklabels(), visible=False)
+
+    ax3 = plt.subplot(gs0[2], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
+    xray_lc(ax3)
+    plt.setp(ax3.get_xticklabels(), visible=False)
 
     #plt.savefig("lc.png")
     plt.show()

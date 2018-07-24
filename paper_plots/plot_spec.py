@@ -266,17 +266,18 @@ if __name__=="__main__":
     plt.plot(xfit, yfit, c='k', ls=':')
 
     # fit and plot a nu^something line
+    freq_fit = np.hstack((freq[choose][order], 215, 231))
+    flux_fit = np.hstack((flux[choose][order], f_215, f_231))
+    flux_err_fit = np.hstack((flux_err[choose][order], 0.1*f_215, 0.1*f_231))
     m,b = np.polyfit(
-            np.log10(freq[choose][order][4:]),
-            np.log10(flux[choose][order][4:]),
-            deg = 1,
-            w=1/flux_err[choose][order][4:]**2)
+            np.log10(freq_fit[4:]), np.log10(flux_fit[4:]), deg = 1,
+            w=1/flux_err_fit[4:]**2)
     print(m)
     xfit = np.linspace(80, 500)
     yfit = 10**(m*np.log10(xfit)+b)
     ax.plot(xfit, yfit, ls=':', c='k')
     ax.text(
-            0.95, 0.85, "$F_\\nu \propto \\nu^{-0.7}$", 
+            0.95, 0.85, "$F_\\nu \propto \\nu^{-1.2}$", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)

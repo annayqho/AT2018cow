@@ -1,0 +1,42 @@
+skip on
+viewport 0.1 0.1 0.9 0.77
+lw 5
+csize 1.3
+col 2 on 1 2 3
+time off
+
+win 1
+loc 0 0.6 1 1
+yplot 1
+la nx1 off
+r y -0.0018291 0.6100919
+r x -48638.282 1024961.718
+la pos y 3.5
+la y 1.5-10 keV c/s
+la rotate
+
+win 2
+loc 0 0.32 1 0.735
+yplot 2
+la nx1 off
+r y -0.0018291 0.6100919
+r x -48638.282 1024961.718
+la pos y 3.5
+la y 0.3-1.5 keV c/s
+
+win 3
+loc 0 0.05 1 0.455
+yplot 3,6,9
+r y -0.6709885 8.4780861
+r x -48638.282 1024961.718
+la pos y 3.5
+la y Ratio
+
+win 1
+la f red: PC
+la T Hardness ratio of AT2018cow
+
+win all
+win 3
+la x Time since MET=551097137.0 (s)
+plot
