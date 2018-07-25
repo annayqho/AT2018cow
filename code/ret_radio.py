@@ -9,64 +9,98 @@ from astropy.table import Table
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.cosmology import Planck15
+from astropy.time import Time
+import time
 
-drout = Table.read(
-    "../data/drout_transients.txt", format="ascii.no_header", delimiter="&")
-des = Table.read(
-    "../data/des_transients.txt", format="ascii.no_header", delimiter="&")
-ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
+def get_transients():
+    drout = Table.read(
+        "../data/drout_transients.txt", format="ascii.no_header", delimiter="&")
+    des = Table.read(
+        "../data/des_transients.txt", format="ascii.no_header", delimiter="&")
+    des_dates = Table.read(
+        "../data/des_transients_dates.txt", format="ascii.no_header", delimiter="&")
+    ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
 
-ra_raw = np.hstack((drout['col3'], des['col2'], ksn[0]))
-dec_raw = np.hstack((drout['col4'], des['col3'], ksn[1]))
-z_raw = np.hstack((drout['col5'], des['col4'], ksn[2]))
-names_raw = np.hstack((drout['col1'], des['col1'], 'KSN'))
+    ra_raw = np.hstack((drout['col3'], des['col2'], ksn[0]))
+    dec_raw = np.hstack((drout['col4'], des['col3'], ksn[1]))
+    z_raw = np.hstack((drout['col5'], des['col4'], ksn[2]))
+    names_raw = np.hstack((drout['col1'], des['col1'], 'KSN'))
 
-ra = np.array([val for val in ra_raw])
+    names_mjd = des_dates['col1']
+    mjd = des_dates['col2']
 
-# curate the RA and Dec list
-c = SkyCoord(ra_raw, dec_raw, frame='icrs', unit=(u.hourangle, u.deg))
+    dates = []
+    for date_raw in drout['col2']:
+        split = date_raw.split()
+        yyyy = split[0]
+        mm = split[1].strip('\.')
+        mm = mm.strip('\\')
+        # get month as a number
+        try:
+            t = str(time.strptime(mm, '%B').tm_mon).zfill(2)
+        except:
+            t = str(time.strptime(mm, '%b').tm_mon).zfill(2)
+        dd = split[2]
+        date = Time("%s-%s-%s" %(yyyy,t,dd), format='iso')
+        dates.append(date.mjd)
+    for name in des['col1']:
+        if name in names_mjd:
+            ind = np.where(names_mjd==name)[0][0]
+            dates.append((Time(mjd[ind], format='mjd')).mjd)
+        else:
+            dates.append(-1)
+    dates.append((Time(2457232.70, format='jd')).mjd)
+    dates = np.array(dates)
 
-# curate the redshift list
-z = []
-for ii, zval in enumerate(z_raw):
-    try:
-        z.append(float(zval))
-    except:
-        z.append(-1)
-z = np.array(z)
+    ra = np.array([val for val in ra_raw])
 
-# initialize plot
-fig,axarr = plt.subplots(2, 1, figsize=(5,6))
+    # curate the RA and Dec list
+    c = SkyCoord(ra_raw, dec_raw, frame='icrs', unit=(u.hourangle, u.deg))
 
-# redshift distribution of all of them
-choose = z > 0
-axarr[0].hist(z[choose], histtype='step', color='k')
-ax = axarr[0]
-ax.set_xlabel("Redshift", fontsize=14)
-ax.set_ylabel("\# Transients", fontsize=14)
-ax.tick_params(axis='both', labelsize=14)
-ax.axvline(x=0.014, c='k', ls='--', lw=2.0)
+    # curate the redshift list
+    z = []
+    for ii, zval in enumerate(z_raw):
+        try:
+            z.append(float(zval))
+        except:
+            z.append(-1)
+    z = np.array(z)
+    return names_raw, ra_raw, dec_raw, dates
 
-# distribution of peak flux at 230 GHz
-dist = Planck15.luminosity_distance(z=z[choose]).cgs.value
-ref = Planck15.luminosity_distance(z=0.014).cgs.value
-flux = 50e3 * (ref / dist)**2 
-ax = axarr[1]
-ax.hist(
-        flux, histtype='step', color='k', 
-        bins=np.logspace(np.log10(1.1), np.log10(5000), 10))
-ax.set_xscale('log')
-ax.set_xlabel("Peak Flux ($\\mu$Jy) at $230\,$GHz", fontsize=14)
-ax.set_ylabel("\# Transients", fontsize=14)
-ax.tick_params(axis='both', labelsize=14)
-ax.axvline(x=50e3, c='k', ls='--', lw=2.0)
-ax.text(
-        0.94, 0.9, "AT2018cow", transform=ax.transAxes,
-        horizontalalignment='right', fontsize=14)
-ax.text(
-        0.94, 0.8, "$50\,$mJy", transform=ax.transAxes,
-        horizontalalignment='right', fontsize=14)
 
-# formatting
-plt.tight_layout()
-plt.show()
+if __name__=="__main__":
+    # initialize plot
+    fig,axarr = plt.subplots(2, 1, figsize=(5,6))
+
+    # redshift distribution of all of them
+    choose = z > 0
+    axarr[0].hist(z[choose], histtype='step', color='k')
+    ax = axarr[0]
+    ax.set_xlabel("Redshift", fontsize=14)
+    ax.set_ylabel("\# Transients", fontsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.axvline(x=0.014, c='k', ls='--', lw=2.0)
+
+    # distribution of peak flux at 230 GHz
+    dist = Planck15.luminosity_distance(z=z[choose]).cgs.value
+    ref = Planck15.luminosity_distance(z=0.014).cgs.value
+    flux = 50e3 * (ref / dist)**2 
+    ax = axarr[1]
+    ax.hist(
+            flux, histtype='step', color='k', 
+            bins=np.logspace(np.log10(1.1), np.log10(5000), 10))
+    ax.set_xscale('log')
+    ax.set_xlabel("Peak Flux ($\\mu$Jy) at $230\,$GHz", fontsize=14)
+    ax.set_ylabel("\# Transients", fontsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.axvline(x=50e3, c='k', ls='--', lw=2.0)
+    ax.text(
+            0.94, 0.9, "AT2018cow", transform=ax.transAxes,
+            horizontalalignment='right', fontsize=14)
+    ax.text(
+            0.94, 0.8, "$50\,$mJy", transform=ax.transAxes,
+            horizontalalignment='right', fontsize=14)
+
+    # formatting
+    plt.tight_layout()
+    plt.show()
