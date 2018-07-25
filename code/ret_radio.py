@@ -11,14 +11,15 @@ from astropy.coordinates import SkyCoord
 from astropy.cosmology import Planck15
 
 drout = Table.read(
-    "drout_transients.txt", format="ascii.no_header", delimiter="&")
+    "../data/drout_transients.txt", format="ascii.no_header", delimiter="&")
 des = Table.read(
-    "des_transients.txt", format="ascii.no_header", delimiter="&")
+    "../data/des_transients.txt", format="ascii.no_header", delimiter="&")
 ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
 
 ra_raw = np.hstack((drout['col3'], des['col2'], ksn[0]))
 dec_raw = np.hstack((drout['col4'], des['col3'], ksn[1]))
 z_raw = np.hstack((drout['col5'], des['col4'], ksn[2]))
+names_raw = np.hstack((drout['col1'], des['col1'], 'KSN'))
 
 ra = np.array([val for val in ra_raw])
 
