@@ -2,9 +2,12 @@
 
 import numpy as np
 import os
+import pyfits
+import matplotlib.pyplot as plt
 from urllib.request import urlopen
 from astropy.table import Table
 from astropy.coordinates import SkyCoord
+from astropy.wcs import WCS
 
 
 def get_tiles():
@@ -90,9 +93,49 @@ def get_subtiles(tilename):
     return fname, c
 
 
+def get_cutout(imname, name, c):
+    # Position of source
+    ra_deg = c.ra.deg
+    dec_deg = c.dec.deg
+
+    # Open image and establish coordinate system
+    im = pyfits.open(imname)[0].data[0,0]
+    w = WCS(imname)
+
+    # Find the source position in pixels.
+    # This will be the center of our image.
+    src_pix = w.wcs_world2pix([[ra_deg, dec_deg, 0, 0]], 0)
+    x = src_pix[0,0].astype('int')
+    y = src_pix[0,1].astype('int')
+
+    # Set the dimensions of the image
+    # Say we want it to be 13.5 arcseconds on a side,
+    # to match the DES images
+    delt1 = pyfits.open(imname)[0].header['CDELT1']
+    delt2 = pyfits.open(imname)[0].header['CDELT2']
+    cutout_size = 13.5 / 3600 # in degrees
+    dside1 = -int(cutout_size/2./delt1)
+    dside2 = int(cutout_size/2./delt2)
+
+    vmin = -1e-4
+    vmax = 1e-3
+
+    plt.imshow(
+            np.flipud(im[y-dside1:y+dside1,x-dside2:x+dside2]),
+            extent=[-0.5*cutout_size*3600.,0.5*cutout_size*3600.,
+                    -0.5*cutout_size*3600.,0.5*cutout_size*3600],
+            vmin=vmin,vmax=vmax,cmap='YlOrRd')
+
+    plt.title(name)
+    plt.xlabel("Offset in RA (arcsec)")
+    plt.ylabel("Offset in Dec (arcsec)")
+
+    plt.show() 
+
 
 if __name__=="__main__":
     # Take the lowest-redshift object
+    name = 'DES14S2anq'
     ra = '02h45m06.67s'
     dec = '-00d44m42.77s'
 
@@ -111,8 +154,10 @@ if __name__=="__main__":
 
     url_get = "https://archive-new.nrao.edu/vlass/quicklook/VLASS1.1/%s/%s" %(
             tilename, subtile)
-    fname = url_get + "%s.I.iter1.image.pbcor.tt0.subim.fits" %subtile[0:-1]
+    imname = "%s.I.iter1.image.pbcor.tt0.subim.fits" %subtile[0:-1]
+    fname = url_get + imname
     print(fname)
     # and then wget this file
 
+    get_cutout(imname, name, c)
 
