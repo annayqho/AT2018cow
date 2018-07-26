@@ -4,7 +4,7 @@ import numpy as np
 from vlass_search import search_vlass
 from ret_radio import get_transients
 
-headings = np.array(['ID', 'RA', 'Dec', 'Expl Date', 'Limit (uJy)'])
+headings = np.array(['ID', 'RA', 'Dec', '$\Delta t$ (d)', 'Limit ($\\mu$Jy)'])
 label = "vlass"
 caption = "VLASS Limits for Rapidly Evolving Transients"
 names, ra_raw, dec_raw, dates = get_transients()
@@ -37,11 +37,19 @@ outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
 for ii,ID in enumerate(names):
-    if dates[ii] < 0:
-        dates[ii] = '-'
-    if limits[ii] == 'nan':
-        limits[ii] = '-'
-    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], dates[ii], limits[ii])
+    if np.logical_or(dates[ii] < 0, limits[ii] == 'nan'):
+        datestr = '-'
+        limitstr = '-'
+    else:
+        datediff = obsdates[ii] - dates[ii]
+        if datediff < 0:
+            datestr = '-'
+            limitstr = '-'
+        else:
+            datestr = str(datediff)
+            limitstr = str(limits[ii])
+    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], datestr, limitstr)
+    print(row)
     outputf.write(row)
 outputf.write("\enddata \n")
 outputf.write("\end{deluxetable} \n")

@@ -10,6 +10,7 @@ from urllib.request import urlopen
 from astropy.table import Table
 from astropy.coordinates import SkyCoord
 from astropy.wcs import WCS
+from astropy.time import Time
 from ret_radio import get_transients
 
 
@@ -70,7 +71,7 @@ def search_tiles(tiles, ra_h, dec_d):
         print("Error: this source is in more than one tile")
     elif len(name) == 0:
         print("Sorry, no tile found.")
-        return None, None
+        return None, None, None
     else:
         return name[0], epoch[0], date[0]
 
@@ -210,5 +211,5 @@ def search_vlass():
                     median_flux = get_cutout(imname, name, c)
                 print("Upper limit is %s uJy" %(median_flux*1e6))
                 limits[ii] = median_flux*1e6
-                obsdates[ii] = obsdate
+                obsdates[ii] = Time(obsdate, format='iso').mjd
     return limits, obsdates
