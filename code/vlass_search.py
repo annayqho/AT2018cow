@@ -127,6 +127,14 @@ def get_cutout(imname, name, c):
     x = src_pix[0,0]
     y = src_pix[0,1]
 
+    # Check if the source is actually in the image
+    pix1 = pyfits.open(imname)[0].header['CRPIX1']
+    pix2 = pyfits.open(imname)[0].header['CRPIX2']
+    badx = np.logical_or(x < 0, x > 2 * pix1)
+    bady = np.logical_or(y < 0, y > 2 * pix1)
+    if np.logical_or(badx, bady):
+        return -1
+
     # Set the dimensions of the image
     # Say we want it to be 13.5 arcseconds on a side,
     # to match the DES images
@@ -162,6 +170,10 @@ def search_vlass():
     names, ra_raw, dec_raw, dates = get_transients()
     ra = []
     dec =[]
+
+    #names = ['PS1-13ess']
+    #ra_raw = ['02:22:09.428']
+    #dec_raw = ['-03:03:00.51']
 
     limits = np.zeros(len(names))
     obsdates = np.zeros(len(names))
@@ -203,6 +215,7 @@ def search_vlass():
                 url_get = "https://archive-new.nrao.edu/vlass/quicklook/%s/%s/%s" %(
                         epoch, tilename, subtile)
                 imname = "%s.I.iter1.image.pbcor.tt0.subim.fits" %subtile[0:-1]
+                print(imname)
                 if glob.glob(imname):
                     median_flux = get_cutout(imname, name, c)
                 else:
@@ -213,3 +226,7 @@ def search_vlass():
                 limits[ii] = median_flux*1e6
                 obsdates[ii] = Time(obsdate, format='iso').mjd
     return limits, obsdates
+
+
+if __name__=="__main__":
+    search_vlass()
