@@ -227,5 +227,5 @@ if __name__=="__main__":
     xray_lc(ax3)
     plt.setp(ax3.get_xticklabels(), visible=False)
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
