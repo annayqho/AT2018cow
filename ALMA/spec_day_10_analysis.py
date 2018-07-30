@@ -7,11 +7,14 @@ import numpy as np
 alma_bands = [3, 4, 5, 6, 7, 8, 9]
 alma_freq = [98.9, 147, 206, 236, 348, 411, 689]
 
+vla_bands = ['X', 'Ku', 'K', 'Ka', 'Q']
+vla_freq = [10, 15, 22, 33, 45]
+
 # plot these as light shaded regions
-for ii,band in enumerate(alma_bands):
-    plt.axvline(x=alma_freq[ii], color='#8da0cb', alpha=0.2, lw=7)
+for ii,band in enumerate(vla_bands):
+    plt.axvline(x=vla_freq[ii], color='#8da0cb', alpha=0.2, lw=7)
     plt.text(
-             alma_freq[ii], 0.5, "ALMA B%s" %band, 
+             vla_freq[ii], 70, "VLA %s" %band, 
              rotation=90, horizontalalignment='center',
              verticalalignment='center') 
 
@@ -71,20 +74,20 @@ plt.text(100, 33, "$F_\\nu \propto \\nu^{1/3}$", fontsize=14)
 #plt.plot(x, y, linestyle='--', lw=2.0, c='k')
 
 #Plot nu**(-(p-1)/2)
-x = np.linspace(freq[2], 9e2)
-p=2
-y1 = flux[2] * (x/freq[2])**(-(p-1)/2)
-p=2.5
-y2 = flux[2] * (x/freq[2])**(-(p-1)/2)
-plt.fill_between(x, y1, y2, color='grey')
-
-#Plot nu**(-p/2)
-x = np.linspace(freq[2], 9e2)
-p=2
-y1 = flux[2] * (x/freq[2])**(-p/2)
-p=2.5
-y2 = flux[2] * (x/freq[2])**(-p/2)
-plt.fill_between(x, y1, y2, color='grey')
+# x = np.linspace(freq[2], 9e2)
+# p=2
+# y1 = flux[2] * (x/freq[2])**(-(p-1)/2)
+# p=2.5
+# y2 = flux[2] * (x/freq[2])**(-(p-1)/2)
+# plt.fill_between(x, y1, y2, color='grey')
+# 
+# #Plot nu**(-p/2)
+# x = np.linspace(freq[2], 9e2)
+# p=2
+# y1 = flux[2] * (x/freq[2])**(-p/2)
+# p=2.5
+# y2 = flux[2] * (x/freq[2])**(-p/2)
+# plt.fill_between(x, y1, y2, color='grey')
 
 # Plot the relativistic Maxwellian
 
@@ -110,4 +113,4 @@ plt.ylim(1e-1, 4e2)
 plt.tight_layout()
 #plt.show()
 
-plt.savefig("spec_day_10.png")
+plt.savefig("vla_spec_day_10.png")

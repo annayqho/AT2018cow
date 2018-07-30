@@ -28,21 +28,21 @@ plt.scatter(
 
 # Lines
 # v = 0.1c
-plt.plot([4.3,991], [1E25,9E29], ls='--', c='k')
+plt.plot([4.3,991], [1E25,8E29], ls='--', c='k')
 plt.text(
-        8, 2E25, "$R/\Delta t = 0.1c$", fontsize=14, rotation=45,
+        8, 2E25, "$R/\Delta t = 0.1c$", fontsize=14, rotation=50,
         horizontalalignment='left', verticalalignment='bottom')
 
 # v = 0.01c
-plt.plot([43,1000], [1E25, 7.4E27], ls='--', c='k')
+plt.plot([43,6000], [1E25, 3E29], ls='--', c='k')
 plt.text(
-        80, 2E25, "$R/\Delta t = 0.01c$", fontsize=14, rotation=45,
+        80, 2E25, "$R/\Delta t = 0.01c$", fontsize=14, rotation=50,
         horizontalalignment='left', verticalalignment='bottom')
 
 # v = c
-plt.plot([1, 207], [7E25, 4.4E30], ls='--', c='k')
+plt.plot([1, 207], [7E25, 4e30], ls='--', c='k')
 plt.text(
-        2, 1.8E26, "$R/\Delta t = c$", fontsize=14, rotation=45,
+        2, 1.8E26, "$R/\Delta t = c$", fontsize=14, rotation=50,
         horizontalalignment='left', verticalalignment='bottom')
 
 # AT2018cow
@@ -53,9 +53,18 @@ plt.text(
         22*100/5, 3E29, "AT2018cow", 
         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
+# MAXI 140814A
+plt.scatter(
+        4*365*6/5, 8e28,
+        marker='*', s=300, facecolors='white', edgecolors='black')
+plt.text(
+        4*365*6/5, 9e28, "MAXI 140814A", 
+        fontsize=14, verticalalignment='bottom', horizontalalignment='center')
+
+
 plt.legend()
 
-plt.xlim(1, 1000)
+plt.xlim(1, 6000)
 plt.ylim(1E25, 5E30)
 plt.xscale('log')
 plt.yscale('log')
