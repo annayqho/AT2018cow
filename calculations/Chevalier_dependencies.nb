@@ -1,0 +1,198 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.4' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5729,        190]
+NotebookOptionsPosition[      5251,        169]
+NotebookOutlinePosition[      5608,        185]
+CellTagsIndexPosition[      5565,        182]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Clear", "[", 
+  RowBox[{
+  "d", ",", "F", ",", "f", ",", "\[Alpha]", ",", "\[Nu]", ",", "L", ",", "A", 
+   ",", "v"}], "]"}]], "Input",
+ CellChangeTimes->{{3.74179002381454*^9, 3.741790058981501*^9}, {
+  3.741790155284501*^9, 3.741790160219878*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+  "This", " ", "is", " ", "Equation", " ", "11", " ", "in", " ", "Chevalier", 
+   " ", "1998"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.741789749254447*^9, 3.741789754322555*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["R", "p"], "=", 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"(", 
+     FractionBox[
+      RowBox[{"6", "*", 
+       SuperscriptBox[
+        SubscriptBox["c", "6"], 
+        RowBox[{"\[Gamma]", "+", "5"}]], "*", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         SubscriptBox["F", "p"], ")"}], 
+        RowBox[{"\[Gamma]", "+", "6"}]], "*", 
+       SuperscriptBox[
+        RowBox[{"(", "d", ")"}], 
+        RowBox[{
+         RowBox[{"2", "*", "\[Gamma]"}], "+", "12"}]]}], 
+      RowBox[{"\[Alpha]", "*", "f", "*", 
+       RowBox[{"(", 
+        RowBox[{"\[Gamma]", "-", "2"}], ")"}], "*", 
+       SuperscriptBox["\[Pi]", 
+        RowBox[{"\[Gamma]", "+", "5"}]], "*", 
+       SuperscriptBox[
+        SubscriptBox["c", "5"], 
+        RowBox[{"\[Gamma]", "+", "6"}]], "*", 
+       SuperscriptBox["En", 
+        RowBox[{"\[Gamma]", "-", "2"}]]}]], ")"}], 
+    RowBox[{"1", "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"2", "*", "\[Gamma]"}], "+", "13"}], ")"}]}]], "*", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     FractionBox["\[Nu]", 
+      RowBox[{"2", "*", 
+       SubscriptBox["c", "1"]}]], ")"}], 
+    RowBox[{"-", "1"}]]}]}]], "Input",
+ CellChangeTimes->{{3.7417900537119007`*^9, 3.741790056093828*^9}, {
+  3.741790118467712*^9, 3.741790125897772*^9}, {3.7417903066568527`*^9, 
+  3.741790308167492*^9}, {3.7417905421407003`*^9, 3.741790548642708*^9}}],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{
+   SuperscriptBox["2", 
+    RowBox[{"1", "+", 
+     FractionBox["1", 
+      RowBox[{"13", "+", 
+       RowBox[{"2", " ", "\[Gamma]"}]}]]}]], " ", 
+   SuperscriptBox["3", 
+    FractionBox["1", 
+     RowBox[{"13", "+", 
+      RowBox[{"2", " ", "\[Gamma]"}]}]]], " ", 
+   SubscriptBox["c", "1"], " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     FractionBox[
+      RowBox[{
+       SuperscriptBox["d", 
+        RowBox[{"12", "+", 
+         RowBox[{"2", " ", "\[Gamma]"}]}]], " ", 
+       SuperscriptBox["En", 
+        RowBox[{"2", "-", "\[Gamma]"}]], " ", 
+       SuperscriptBox["\[Pi]", 
+        RowBox[{
+         RowBox[{"-", "5"}], "-", "\[Gamma]"}]], " ", 
+       SubsuperscriptBox["c", "5", 
+        RowBox[{
+         RowBox[{"-", "6"}], "-", "\[Gamma]"}]], " ", 
+       SubsuperscriptBox["c", "6", 
+        RowBox[{"5", "+", "\[Gamma]"}]], " ", 
+       SubsuperscriptBox["F", "p", 
+        RowBox[{"6", "+", "\[Gamma]"}]]}], 
+      RowBox[{"f", " ", "\[Alpha]", " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "2"}], "+", "\[Gamma]"}], ")"}]}]], ")"}], 
+    FractionBox["1", 
+     RowBox[{"13", "+", 
+      RowBox[{"2", " ", "\[Gamma]"}]}]]]}], "\[Nu]"]], "Output",
+ CellChangeTimes->{3.741789776587984*^9, 3.741789997156766*^9, 
+  3.741790060641735*^9, 3.74179012705195*^9, 3.7417905561864557`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"In", " ", "terms", " ", "of", " ", "luminosity"}], " ", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.741790558294532*^9, 3.741790560831629*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  SubscriptBox["R", "p"], "=", 
+  RowBox[{
+   SuperscriptBox[
+    RowBox[{"(", 
+     FractionBox[
+      RowBox[{"6", "*", 
+       SuperscriptBox[
+        SubscriptBox["c", "6"], 
+        RowBox[{"\[Gamma]", "+", "5"}]], "*", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         SubscriptBox["F", "p"], ")"}], 
+        RowBox[{"\[Gamma]", "+", "6"}]], "*", 
+       SuperscriptBox[
+        RowBox[{"(", "d", ")"}], 
+        RowBox[{
+         RowBox[{"2", "*", "\[Gamma]"}], "+", "12"}]]}], 
+      RowBox[{"\[Alpha]", "*", "f", "*", 
+       RowBox[{"(", 
+        RowBox[{"\[Gamma]", "-", "2"}], ")"}], "*", 
+       SuperscriptBox["\[Pi]", 
+        RowBox[{"\[Gamma]", "+", "5"}]], "*", 
+       SuperscriptBox[
+        SubscriptBox["c", "5"], 
+        RowBox[{"\[Gamma]", "+", "6"}]], "*", 
+       SuperscriptBox["En", 
+        RowBox[{"\[Gamma]", "-", "2"}]]}]], ")"}], 
+    RowBox[{"1", "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"2", "*", "\[Gamma]"}], "+", "13"}], ")"}]}]], "*", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     FractionBox["\[Nu]", 
+      RowBox[{"2", "*", 
+       SubscriptBox["c", "1"]}]], ")"}], 
+    RowBox[{"-", "1"}]]}]}]], "Input"]
+},
+WindowSize->{808, 704},
+WindowMargins->{{35, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.4 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 25, \
+2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 273, 6, 28, "Input"],
+Cell[834, 28, 231, 5, 28, "Input"],
+Cell[CellGroupData[{
+Cell[1090, 37, 1404, 41, 59, "Input"],
+Cell[2497, 80, 1356, 40, 76, "Output"]
+}, Open  ]],
+Cell[3868, 123, 188, 4, 28, "Input"],
+Cell[4059, 129, 1188, 38, 59, "Input"]
+}
+]
+*)
+
