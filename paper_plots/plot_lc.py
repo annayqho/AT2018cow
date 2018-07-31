@@ -8,12 +8,11 @@ from astropy.table import Table
 
 def xray_lc(ax):
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    dat = Table.read(direc + "/xray_lc.txt", format='ascii', delimiter='&')
-    t = dat['t']
-    cts = dat['Lum']
-    ects =dat['elum']
-    ax.errorbar((t-t[0])+3, cts, yerr=ects, fmt='.', c='k')
-    ax.plot((t-t[0])+3, cts, c='k', lw=1.0)
+    #dat = Table.read(direc + "/xray_lc.txt", format='ascii', delimiter='&')
+    dat = Table.read(direc + "/xrt_plotlum.txt", format='ascii')
+    t = dat['dt']
+    lx = dat['L_X/L_sun'] * 3e33 / 10**(43)
+    ax.plot(t, lx, c='k', lw=1.0)
     ax.set_ylabel("$L_X$", fontsize=14)
     ax.text(
             0.9, 0.9, 
@@ -227,5 +226,5 @@ if __name__=="__main__":
     xray_lc(ax3)
     plt.setp(ax3.get_xticklabels(), visible=False)
 
-    plt.savefig("lc.png")
-    #plt.show()
+    #plt.savefig("lc.png")
+    plt.show()
