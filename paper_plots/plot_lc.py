@@ -79,8 +79,8 @@ def sma(ax, legend):
 
     choose = np.logical_and(freq > 230, freq < 245)
     print(flux[choose])
-    #ax.plot(
-    #        days[choose], flux[choose], linestyle='--', c='k')
+    ax.plot(
+            days[choose], flux[choose], linestyle='--', c='k')
     dlow_return = days[choose]
     flow_return_temp = flux[choose]
     eflow_return_temp = flux_err[choose]
@@ -108,8 +108,8 @@ def sma(ax, legend):
             np.logical_and(freq > 330, freq < 334),
             np.logical_and(freq > 357, freq < 361))
 
-    #ax.plot(
-    #        days[choose], flux[choose], linestyle='-', c='k')
+    ax.plot(
+            days[choose], flux[choose], linestyle='-', c='k')
     days_return = days[choose]
     fhigh_return = flux[choose]
     efhigh_return = flux_err[choose]
@@ -226,5 +226,5 @@ if __name__=="__main__":
     xray_lc(ax3)
     plt.setp(ax3.get_xticklabels(), visible=False)
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
