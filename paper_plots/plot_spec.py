@@ -47,11 +47,15 @@ def fit_spec(freq, flux, flux_err):
     yfit = synchrotron(xfit, *popt)
 
 
-def fit_self_abs(freq, flux, flux_err):
+def fit_self_abs(freq, flux, flux_err=None):
     """ Fit the self-absorbed part of the spectrum """
-    popt, pcov = curve_fit(
-            self_abs, freq, flux,
-            sigma = flux_err, absolute_sigma = True)
+    if flux_err:
+        popt, pcov = curve_fit(
+                self_abs, freq, flux,
+                sigma = flux_err, absolute_sigma = True)
+    else:
+        popt, pcov = curve_fit(
+                self_abs, freq, flux)
     return popt[0]
 
 
@@ -95,23 +99,15 @@ def get_data():
     return tel, freq, days, flux, flux_err
 
 
-if __name__=="__main__":
-    tel, freq, days, flux, flux_err = get_data()
-
-    fig, axarr = plt.subplots(
-            3, 1, figsize=(8,8), sharex=True, sharey=True)
-
-    # top panel: evolution of spectra
-    ax = axarr[0]
-
-    # plot the spectrum from Day 10 data
-    choose = days == 10
+def run_day(day):
+    """ Run this for one day """
+    choose = days == day
     order = np.argsort(freq[choose])
     det = flux_err[choose][order] > 0
     ax.errorbar(
             freq[choose][order][det], flux[choose][order][det], 
             yerr=flux_err[choose][order][det], fmt='o',
-            label="$\Delta t = 10$", c='k')
+            label="$\Delta t = %s$" %day, c='k')
     ax.scatter(
             5.5, 0.15, marker='v', c='k')
 
@@ -146,7 +142,7 @@ if __name__=="__main__":
             0, 0.9, "$(\\nu_p, F_p) = (144\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
             transform=ax.transAxes, horizontalalignment='left', fontsize=14)
     ax.text(
-            0.9, 0.1, "ATCA & SMA, Day 10", 
+            0.9, 0.1, "ATCA & SMA, Day %s" %day, 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
@@ -155,7 +151,16 @@ if __name__=="__main__":
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-    # plot the spectrum from Day 13-14 data
+
+if __name__=="__main__":
+    tel, freq, days, flux, flux_err = get_data()
+
+    fig, axarr = plt.subplots(
+            3, 1, figsize=(8,8), sharex=True, sharey=True)
+
+    # top panel: evolution of spectra
+    ax = axarr[0]
+
     # ATCA from Day 13, SMA and ALMA from Day 14
     ax = axarr[1]
 

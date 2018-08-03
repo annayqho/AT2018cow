@@ -9,22 +9,79 @@ rc("text", usetex=True)
 
 
 def sn2009bb(ax):
+    """ Plot for SN 2009bb """
     dt = [20, 52, 81, 145]
     nu_peak = [6, 3, 1, 0.8]
     ax.scatter(dt, nu_peak, c='grey', marker='o')
     ax.plot(dt, nu_peak, c='grey', lw=2.0)
     ax.text(
-            dt[-1], nu_peak[-1], "2009bb", 
-            horizontalalignment='left', fontsize=12,
+            dt[-1], nu_peak[-1], "SN2009bb", 
+            horizontalalignment='left', fontsize=14,
+            verticalalignment='center')
+
+
+def at2018cow(ax):
+    """ Plot for AT 2018cow """
+
+    dt = np.array([5, 7, 8, 10, 13.5, 22])
+    islim = np.array([1, 0, 0, 0, 0, 0])
+    nu = np.array([231.5, 281.15, 223.5, 144, 111, 92])
+
+    choose = islim == 1
+    ax.scatter(dt[choose], nu[choose], c='black', marker='^')
+
+    choose = islim == 0
+    ax.scatter(dt[choose], nu[choose], c='black', marker='s')
+    ax.text(
+            dt[choose][-1], nu[choose][-1], "AT2018cow", fontsize=14,
+            verticalalignment='center')
+
+
+def get_peak(freq, flux, hfpt):
+    """ Estimate the peak frequency taking two power laws.
+    hfpt refers to the half-way point: it's the index of the
+    first point in the second section
+    Assumes that the first half is self-absorbed
+    """
+    b = fit_self_abs(
+            freq[choose][order][det][0:5],
+            flux[choose][order][det][0:5],
+            flux_err[choose][order][det][0:5])
+    xfit = np.linspace(5, 150)
+    yfit = 10**(2*np.log10(xfit)+b)
+    ax.plot(xfit, yfit, ls=':', c='k')
+    
+
+
+def sn1998bw(ax):
+    """ Plot for SN 1998bw 
+    http://adsabs.harvard.edu/abs/1999A%26AS..138..467W
+    """
+    dat = Table.read(
+            "../data/radio_compilations/1998bw.dat", 
+            format='ascii', delimiter='&')
+    dt = dat['dt']
+    flux = dat['flux']
+
+    dt = np.array([3, 4, 9.9, 11.7, 25.9])
+    nu = np.array([8.64, 8.64, 8.64, 4.80, 4])
+    islim = np.array([1, 1, 1, 0, 0])
+
+    choose = islim == 1
+    ax.scatter(dt[choose], nu[choose], c='grey', marker='^')
+
+    choose = islim == 0
+    ax.scatter(dt[choose], nu[choose], c='grey', marker='s')
+
+    ax.plot(dt, nu, c='grey', lw=2.0)
+    ax.text(
+            dt[choose][-1], nu[choose][-1], "SN1998bw", fontsize=14,
             verticalalignment='center')
 
 
 
 def extra():
-    # I don't know the peak frequency
-
-    plt.errorbar(5, 3.15, yerr=1.75, fmt='.', c='grey') 
-    plt.text(5, 3.15, "1998bw", fontsize=12)
+    """ other stuff """
 
 
     # Some IIn's and stuff
@@ -64,26 +121,21 @@ def extra():
     plt.text(30, 22.5, "2003L")
 
 
+if __name__=="__main__":
+    fig, ax = plt.subplots(1, 1, figsize=(8,6))
 
+    at2018cow(ax)
+    sn2009bb(ax)
+    sn1998bw(ax)
 
-fig, ax = plt.subplots(1, 1, figsize=(10,10))
+    ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
+    ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(2, 2000)
+    ax.set_ylim(0.5, 400)
+    plt.tight_layout()
 
-# AT 2018cow
-ax.scatter(22, 92, c='black', marker='s')
-ax.text(
-        22, 92, "AT2018cow", fontsize=14,
-        verticalalignment='center')
-
-# plot
-
-ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
-ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
-ax.tick_params(axis='both', labelsize=14)
-ax.set_xscale('log')
-ax.set_yscale('log')
-ax.set_xlim(2, 2000)
-ax.set_ylim(0.5, 200)
-plt.tight_layout()
-
-plt.show()
-#plt.savefig("nupeak_evolution.png")
+    plt.show()
+    #plt.savefig("nupeak_evolution.png")
