@@ -113,9 +113,8 @@ def sn1998bw(ax):
     nu = np.array(nu)
     islim = np.array(islim)
 
-    #choose = islim == True
-    #ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='^')
-    #plt.show()
+    choose = islim == True
+    ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='^')
 
     choose = islim == False
     ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='s')
