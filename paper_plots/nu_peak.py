@@ -39,7 +39,7 @@ def at2018cow(ax):
             verticalalignment='center')
 
 
-def get_peak(ax, freq_raw, flux_raw):
+def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
     """ 
     Estimate the peak frequency taking two power laws.
 
@@ -58,6 +58,7 @@ def get_peak(ax, freq_raw, flux_raw):
         xgrid = np.linspace(min(freq), max(freq), 1000)
 
         # the peak flux is the first point of the second half
+        # and the last point of the first half
         ind = np.argmax(flux)
 
         # if the peak is the first or last point, then it's a limit
@@ -69,19 +70,20 @@ def get_peak(ax, freq_raw, flux_raw):
             return (freq[-1], True)
         else:
             # then you can actually do a fit
-            first = freq[0:ind]
-            second = freq[ind:]
             #print(freq[0:ind])
-            b = fit_self_abs(freq[0:ind], flux[0:ind])
+            b = fit_self_abs(
+                    np.log10(freq[0:ind+1]), 
+                    np.log10(flux[0:ind+1]))
             yfit_up = 10**(2*np.log10(xgrid)+b)
-            #ax.plot(xgrid, yfit_up, ls=':', c='k')
+            ax.plot(xgrid, yfit_up, ls=':', c='k')
 
             # plot and fit a nu*something line
             m,b = np.polyfit(np.log10(freq[ind:]), np.log10(flux[ind:]), deg=1)
             yfit_down = 10**(m*np.log10(xgrid)+b)
-            #ax.plot(xgrid, yfit_down, ls=':', c='k')
+            ax.plot(xgrid, yfit_down, ls=':', c='k')
 
             nupeak = xgrid[np.argmin(np.abs(yfit_up-yfit_down))]
+            ax.axvline(x=nupeak, ls='--')
             return (nupeak, False)
  
 
@@ -105,7 +107,16 @@ def sn1998bw(ax):
         choose = dt == day
         if sum(choose) > 1:
             dt_keep.append(day)
-            nupeak_val,islim_val = get_peak(ax, freq[choose], flux[choose])
+            fig, ax = plt.subplots(1,1)
+            nupeak_val,islim_val = get_peak(
+                    ax, freq[choose], flux[choose])
+            ax.scatter(
+                    freq[choose][np.argsort(freq[choose])], 
+                    flux[choose][np.argsort(freq[choose])])
+            ax.set_xscale('log')
+            ax.set_yscale('log')
+            plt.savefig("%s.png" %day)
+            plt.close()
             nu.append(nupeak_val)
             islim.append(islim_val)
 
