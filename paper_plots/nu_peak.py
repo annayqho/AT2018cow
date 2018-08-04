@@ -6,6 +6,8 @@ import numpy as np
 from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
+from astropy.table import Table
+from plot_spec import fit_self_abs
 
 
 def sn2009bb(ax):
@@ -37,20 +39,51 @@ def at2018cow(ax):
             verticalalignment='center')
 
 
-def get_peak(freq, flux, hfpt):
-    """ Estimate the peak frequency taking two power laws.
-    hfpt refers to the half-way point: it's the index of the
-    first point in the second section
-    Assumes that the first half is self-absorbed
+def get_peak(ax, freq_raw, flux_raw):
+    """ 
+    Estimate the peak frequency taking two power laws.
+
+    If there's only one point, you can't do anything.
     """
-    b = fit_self_abs(
-            freq[choose][order][det][0:5],
-            flux[choose][order][det][0:5],
-            flux_err[choose][order][det][0:5])
-    xfit = np.linspace(5, 150)
-    yfit = 10**(2*np.log10(xfit)+b)
-    ax.plot(xfit, yfit, ls=':', c='k')
-    
+    if len(freq_raw) < 2:
+        print("Error: need at least 2 points")
+
+    else:
+        # sort by increasing frequency
+        order = np.argsort(freq_raw)
+        freq = freq_raw[order]
+        flux = flux_raw[order]
+
+        # this is the grid you will interpolate onto
+        xgrid = np.linspace(min(freq), max(freq), 1000)
+
+        # the peak flux is the first point of the second half
+        ind = np.argmax(flux)
+
+        # if the peak is the first or last point, then it's a limit
+        if ind == 0:
+            # if the peak is first
+            return (freq[0], True)
+        elif ind == len(freq)-1:
+            # if the peak is last
+            return (freq[-1], True)
+        else:
+            # then you can actually do a fit
+            first = freq[0:ind]
+            second = freq[ind:]
+            #print(freq[0:ind])
+            b = fit_self_abs(freq[0:ind], flux[0:ind])
+            yfit_up = 10**(2*np.log10(xgrid)+b)
+            #ax.plot(xgrid, yfit_up, ls=':', c='k')
+
+            # plot and fit a nu*something line
+            m,b = np.polyfit(np.log10(freq[ind:]), np.log10(flux[ind:]), deg=1)
+            yfit_down = 10**(m*np.log10(xgrid)+b)
+            #ax.plot(xgrid, yfit_down, ls=':', c='k')
+
+            nupeak = xgrid[np.argmin(np.abs(yfit_up-yfit_down))]
+            return (nupeak, False)
+ 
 
 
 def sn1998bw(ax):
@@ -60,30 +93,43 @@ def sn1998bw(ax):
     dat = Table.read(
             "../data/radio_compilations/1998bw.dat", 
             format='ascii', delimiter='&')
-    dt = dat['dt']
-    flux = dat['flux']
+    dt = np.array(dat['dt'])
+    flux = np.array(dat['flux'])
+    freq = np.array(dat['freq'])
 
-    dt = np.array([3, 4, 9.9, 11.7, 25.9])
-    nu = np.array([8.64, 8.64, 8.64, 4.80, 4])
-    islim = np.array([1, 1, 1, 0, 0])
+    dt_keep = []
+    nu = []
+    islim = []
 
-    choose = islim == 1
-    ax.scatter(dt[choose], nu[choose], c='grey', marker='^')
+    for day in dt:
+        choose = dt == day
+        if sum(choose) > 1:
+            dt_keep.append(day)
+            nupeak_val,islim_val = get_peak(ax, freq[choose], flux[choose])
+            nu.append(nupeak_val)
+            islim.append(islim_val)
 
-    choose = islim == 0
-    ax.scatter(dt[choose], nu[choose], c='grey', marker='s')
+    dt_keep = np.array(dt_keep)
+    nu = np.array(nu)
+    islim = np.array(islim)
 
-    ax.plot(dt, nu, c='grey', lw=2.0)
+    #choose = islim == True
+    #ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='^')
+    #plt.show()
+
+    choose = islim == False
+    ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='s')
+
+    #ax.plot(dt_keep, nu, c='grey', lw=2.0)
     ax.text(
-            dt[choose][-1], nu[choose][-1], "SN1998bw", fontsize=14,
+            dt_keep[choose][-1], nu[choose][-1], "SN1998bw", fontsize=14,
             verticalalignment='center')
 
 
 
 def extra():
     """ other stuff """
-
-
+    print("hi")
     # Some IIn's and stuff
     # http://adsabs.harvard.edu/abs/2015aska.confE..60P
 
@@ -128,14 +174,14 @@ if __name__=="__main__":
     sn2009bb(ax)
     sn1998bw(ax)
 
-    ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
-    ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
-    ax.tick_params(axis='both', labelsize=14)
+    # ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
+    # ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
+    # ax.tick_params(axis='both', labelsize=14)
     ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_xlim(2, 2000)
-    ax.set_ylim(0.5, 400)
-    plt.tight_layout()
+    # ax.set_xlim(2, 2000)
+    # ax.set_ylim(0.5, 400)
+    # plt.tight_layout()
 
     plt.show()
     #plt.savefig("nupeak_evolution.png")
