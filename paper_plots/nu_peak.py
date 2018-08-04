@@ -71,10 +71,9 @@ def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
         else:
             # then you can actually do a fit
             #print(freq[0:ind])
-            b = fit_self_abs(
-                    np.log10(freq[0:ind+1]), 
-                    np.log10(flux[0:ind+1]))
-            yfit_up = 10**(2*np.log10(xgrid)+b)
+            m,b = np.polyfit(
+                    np.log10(freq[0:ind+1]), np.log10(flux[0:ind+1]), deg=1)
+            yfit_up = 10**(m*np.log10(xgrid)+b)
             ax.plot(xgrid, yfit_up, ls=':', c='k')
 
             # plot and fit a nu*something line
