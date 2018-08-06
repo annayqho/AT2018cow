@@ -10,35 +10,6 @@ from astropy.table import Table
 from plot_spec import fit_self_abs
 
 
-def sn2009bb(ax):
-    """ Plot for SN 2009bb """
-    dt = [20, 52, 81, 145]
-    nu_peak = [6, 3, 1, 0.8]
-    ax.scatter(dt, nu_peak, c='grey', marker='o')
-    ax.plot(dt, nu_peak, c='grey', lw=2.0)
-    ax.text(
-            dt[-1], nu_peak[-1], "SN2009bb", 
-            horizontalalignment='left', fontsize=14,
-            verticalalignment='center')
-
-
-def at2018cow(ax):
-    """ Plot for AT 2018cow """
-
-    dt = np.array([5, 7, 8, 10, 13.5, 22])
-    islim = np.array([1, 0, 0, 0, 0, 0])
-    nu = np.array([231.5, 281.15, 223.5, 144, 111, 92])
-
-    choose = islim == 1
-    ax.scatter(dt[choose], nu[choose], c='black', marker='^')
-
-    choose = islim == 0
-    ax.scatter(dt[choose], nu[choose], c='black', marker='s')
-    ax.text(
-            dt[choose][-1], nu[choose][-1], "AT2018cow", fontsize=14,
-            verticalalignment='center')
-
-
 def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
     """ 
     Estimate the peak frequency taking two power laws.
@@ -70,21 +41,49 @@ def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
             return (freq[-1], True)
         else:
             # then you can actually do a fit
-            #print(freq[0:ind])
             m,b = np.polyfit(
-                    np.log10(freq[0:ind+1]), np.log10(flux[0:ind+1]), deg=1)
+                    np.log10(freq[0:2]), np.log10(flux[0:2]), deg=1)
             yfit_up = 10**(m*np.log10(xgrid)+b)
-            ax.plot(xgrid, yfit_up, ls=':', c='k')
+            #ax.plot(xgrid, yfit_up, ls=':', c='k')
 
             # plot and fit a nu*something line
-            m,b = np.polyfit(np.log10(freq[ind:]), np.log10(flux[ind:]), deg=1)
+            m,b = np.polyfit(np.log10(freq[2:]), np.log10(flux[2:]), deg=1)
             yfit_down = 10**(m*np.log10(xgrid)+b)
-            ax.plot(xgrid, yfit_down, ls=':', c='k')
+            #ax.plot(xgrid, yfit_down, ls=':', c='k')
 
             nupeak = xgrid[np.argmin(np.abs(yfit_up-yfit_down))]
-            ax.axvline(x=nupeak, ls='--')
+            #ax.axvline(x=nupeak, ls='--')
             return (nupeak, False)
- 
+
+
+def sn2009bb(ax):
+    """ Plot for SN 2009bb """
+    dt = [20, 52, 81, 145]
+    nu_peak = [6, 3, 1, 0.8]
+    ax.scatter(dt, nu_peak, c='grey', marker='o')
+    ax.plot(dt, nu_peak, c='grey', lw=1.0)
+    ax.text(
+            dt[0], nu_peak[0], "SN2009bb", 
+            horizontalalignment='right', fontsize=14,
+            verticalalignment='center')
+
+
+def at2018cow(ax):
+    """ Plot for AT 2018cow """
+
+    dt = np.array([5, 7, 8, 10, 13.5, 22])
+    islim = np.array([1, 0, 0, 0, 0, 0])
+    nu = np.array([231.5, 281.15, 223.5, 144, 111, 92])
+
+    choose = islim == 1
+    ax.scatter(dt[choose], nu[choose], c='black', marker='^')
+
+    choose = islim == 0
+    ax.scatter(dt[choose], nu[choose], c='black', marker='s')
+    ax.plot(dt[choose], nu[choose], c='black', lw=2.0)
+    ax.text(
+            dt[choose][-1], nu[choose][-1], "AT2018cow", fontsize=14,
+            verticalalignment='center')
 
 
 def sn1998bw(ax):
@@ -106,16 +105,16 @@ def sn1998bw(ax):
         choose = dt == day
         if sum(choose) > 1:
             dt_keep.append(day)
-            fig, ax = plt.subplots(1,1)
+            # fig, ax = plt.subplots(1,1)
             nupeak_val,islim_val = get_peak(
                     ax, freq[choose], flux[choose])
-            ax.scatter(
-                    freq[choose][np.argsort(freq[choose])], 
-                    flux[choose][np.argsort(freq[choose])])
-            ax.set_xscale('log')
-            ax.set_yscale('log')
-            plt.savefig("%s.png" %day)
-            plt.close()
+            # ax.scatter(
+            #         freq[choose][np.argsort(freq[choose])], 
+            #         flux[choose][np.argsort(freq[choose])])
+            # ax.set_xscale('log')
+            # ax.set_yscale('log')
+            # plt.savefig("%s.png" %day)
+            # plt.close()
             nu.append(nupeak_val)
             islim.append(islim_val)
 
@@ -123,17 +122,65 @@ def sn1998bw(ax):
     nu = np.array(nu)
     islim = np.array(islim)
 
-    choose = islim == True
-    ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='^')
+    #choose = islim == True
+    #ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='^')
 
     choose = islim == False
-    ax.scatter(dt_keep[choose], nu[choose], c='grey', marker='s')
-
-    #ax.plot(dt_keep, nu, c='grey', lw=2.0)
+    order = np.argsort(dt_keep[choose])
+    ax.scatter(dt_keep[choose][order], nu[choose][order], c='grey', marker='s')
+    ax.plot(dt_keep[choose][order], nu[choose][order], c='grey', lw=1.0)
     ax.text(
-            dt_keep[choose][-1], nu[choose][-1], "SN1998bw", fontsize=14,
-            verticalalignment='center')
+            dt_keep[choose][0], nu[choose][0], "SN1998bw", fontsize=14,
+            verticalalignment='center', horizontalalignment='right')
 
+
+def sn2003L(ax):
+    """ From Soderberg et al. 2005 """
+    p = 3.2
+    alpha_gamma = 0.075
+    alpha_B = -1.0
+    alpha_r = 0.96
+    exp = (2*(p-2)*alpha_gamma + 2*(3+p/2)*alpha_B + 2*alpha_r)/(p+4)
+    dt = np.linspace(25.2, 573.0)
+    t0 = 30
+    nu_a0 = 22.5
+    nu_a = nu_a0 * (dt/t0)**(exp)
+    ax.plot(dt, nu_a, c='grey', lw=1.0)
+    ax.text(
+            dt[0], nu_a[0], "SN2003L", 
+            horizontalalignment='right', fontsize=14,
+            verticalalignment='center')
+     
+
+def sn2003bg(ax):
+    """ From Soderberg et al. 2006 """
+    p = 3.2
+    alpha_gamma = -0.4
+    alpha_B = -1.0
+    alpha_r = 0.8
+    exp = (2*(p-2)*alpha_gamma + 2*(3+p/2)*alpha_B + 2*alpha_r)/(p+4)
+    dt = np.linspace(10.0, 978)
+    t0 = 35
+    nu_a0 = 22.5
+    nu_a = nu_a0 * (dt/t0)**(exp)
+    ax.plot(dt, nu_a, c='grey', lw=1.0)
+    ax.text(
+            dt[0], nu_a[0], "SN2003bg", 
+            horizontalalignment='right', fontsize=14,
+            verticalalignment='center')
+     
+
+
+def swiftj1644(ax):
+    """ 
+    Plot for Swift J1644 
+    Values directly from the paper
+    """
+    dt = [5, 10, 15, 22]
+    nu_peak = [600, 250, 140, 80]
+    ax.scatter(dt, nu_peak, marker='s', color='grey')
+    ax.plot(dt, nu_peak, color='grey', lw=1.0)
+    ax.text(dt[0], nu_peak[0], "SwiftJ1644", fontsize=14)
 
 
 def extra():
@@ -150,8 +197,6 @@ def extra():
     plt.scatter(dt, nu_peak, c='grey', marker='o')
     plt.plot(dt, nu_peak, c='grey', marker='o')
     plt.text(dt[-1], nu_peak[-1], "SN 2011dh (IIb)", fontsize=12)
-
-
     # https://arxiv.org/pdf/astro-ph/0512413.pdf
     # Table 33
 
@@ -179,18 +224,21 @@ def extra():
 if __name__=="__main__":
     fig, ax = plt.subplots(1, 1, figsize=(8,6))
 
+    swiftj1644(ax)
     at2018cow(ax)
     sn2009bb(ax)
     sn1998bw(ax)
+    sn2003L(ax)
+    sn2003bg(ax)
 
-    # ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
-    # ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
-    # ax.tick_params(axis='both', labelsize=14)
+    ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
+    ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
+    ax.tick_params(axis='both', labelsize=14)
     ax.set_xscale('log')
     ax.set_yscale('log')
-    # ax.set_xlim(2, 2000)
-    # ax.set_ylim(0.5, 400)
-    # plt.tight_layout()
+    ax.set_xlim(2, 2000)
+    ax.set_ylim(0.5, 1000)
+    plt.tight_layout()
 
-    plt.show()
-    #plt.savefig("nupeak_evolution.png")
+    #plt.show()
+    plt.savefig("nupeak_evolution.png")
