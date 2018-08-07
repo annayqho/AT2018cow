@@ -52,7 +52,7 @@ def sma(ax, legend):
             fmt='.', c='k', lw=0.5)
     ax.plot(
             days[choose], flux[choose], linestyle='-', c='k',
-            label="%s-%s GHz" %(low_freq, max_freq))
+            label="%s-%s GHz" %(low_freq, max_freq), lw=2.0)
     dlow_return = days[choose]
     flow_return_temp = flux[choose]
     eflow_return_temp = flux_err[choose]
@@ -64,9 +64,9 @@ def sma(ax, legend):
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            fmt='.', c='grey', lw=0.5)
+            fmt='.', c='black', lw=0.5)
     ax.plot(
-            days[choose], flux[choose], linestyle='-', c='grey',
+            days[choose], flux[choose], linestyle='--', c='black',
             label="%s-%s GHz" %(low_freq, max_freq))
     days_return = days[choose]
     fhigh_return = flux[choose]
@@ -158,14 +158,14 @@ def atca(ax):
 
 if __name__=="__main__":
     fig = plt.figure(figsize=(8,8))#, tight_layout=True)
-    gs = gridspec.GridSpec(2, 1, height_ratios=[3,1], hspace=0.0)
+    gs = gridspec.GridSpec(2, 1, height_ratios=[4,1], hspace=0.0)
     gs.update(left=0.15, right=0.9)
 
     atca_ax = plt.subplot(gs[1])#fig.add_subplot(gs[5:6, :], sharex=ax1)
     atca(atca_ax)
 
     gs0 = gridspec.GridSpecFromSubplotSpec(
-            3, 1, subplot_spec = gs[0], height_ratios=[1,3,1], hspace=0)
+            3, 1, subplot_spec = gs[0], height_ratios=[1,3,0.1], hspace=0)
     #gs0.update(hspace=0.05)
     ax1 = plt.subplot(gs0[1], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
     days, nulow, nuhigh, flow, eflow, fhigh, efhigh = sma(ax1, legend=True)
@@ -175,5 +175,5 @@ if __name__=="__main__":
     alpha, ealpha = spindex(ax2, days, nulow, nuhigh, flow, eflow, fhigh, efhigh)
     plt.setp(ax2.get_xticklabels(), visible=False)
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
