@@ -49,7 +49,7 @@ def sma(ax, legend):
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', fmt='.', marker='o', 
+            fmt='.',
             label="%s-%s GHz" %(low_freq, max_freq), c='k')
 
     choose = np.logical_and(freq > 240, freq < 245)
@@ -58,7 +58,7 @@ def sma(ax, legend):
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', fmt='.', marker='s', 
+            fmt='.', 
             label="%s-%s GHz" %(low_freq, max_freq), c='k')
 
     choose = np.logical_and(freq > 230, freq < 245)
@@ -76,7 +76,7 @@ def sma(ax, legend):
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', ms=8, fmt='.', marker='v', 
+            fmt='.', 
             label="%s-%s GHz" %(low_freq, max_freq), c='k')
 
     choose = np.logical_and(freq > 357, freq < 361)
@@ -85,7 +85,7 @@ def sma(ax, legend):
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', ms=8, fmt='.', marker='^', 
+            ms=8, fmt='.', 
             label="%s-%s GHz" %(low_freq, max_freq), c='k')
 
     choose = np.logical_or(
@@ -206,9 +206,5 @@ if __name__=="__main__":
     alpha, ealpha = spindex(ax2, days, nulow, nuhigh, flow, eflow, fhigh, efhigh)
     plt.setp(ax2.get_xticklabels(), visible=False)
 
-    ax3 = plt.subplot(gs0[2], sharex=atca_ax)#fig.add_subplot(gs[0:5, :])
-    xray_lc(ax3)
-    plt.setp(ax3.get_xticklabels(), visible=False)
-
-    plt.savefig("lc.png")
-    #plt.show()
+    #plt.savefig("lc.png")
+    plt.show()
