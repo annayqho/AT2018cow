@@ -6,22 +6,6 @@ import numpy as np
 from astropy.table import Table
 
 
-def xray_lc(ax):
-    direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    #dat = Table.read(direc + "/xray_lc.txt", format='ascii', delimiter='&')
-    dat = Table.read(direc + "/xrt_plotlum.txt", format='ascii')
-    t = dat['dt']
-    lx = dat['L_X/L_sun'] * 3e33 / 10**(43)
-    ax.plot(t, lx, c='k', lw=1.0)
-    ax.set_ylabel("$L_X$", fontsize=14)
-    ax.text(
-            0.9, 0.9, 
-            "Swift/XRT ($10^{43} \, \mathrm{erg s}^{-1} \, \mathrm{cm}^{-2})$", 
-            horizontalalignment ='right', transform=ax.transAxes,
-            verticalalignment = 'top', fontsize=14)
-    ax.yaxis.set_tick_params(labelsize=14)
-
-
 def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
     alpha = np.log10( fhigh / flow ) / np.log10( nulow / nuhigh )
 
