@@ -43,34 +43,22 @@ def sma(ax, legend):
     # add 10% systematic uncertainty to everything
     flux_err = np.sqrt(eflux**2 + (0.10 * flux)**2)
 
-    choose = np.logical_and(freq > 230, freq < 235)
-    low_freq = min(freq[choose])
-    max_freq = max(freq[choose])
-
-    ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            fmt='.',
-            label="%s-%s GHz" %(low_freq, max_freq), c='k')
-
-    choose = np.logical_and(freq > 240, freq < 245)
-    low_freq = min(freq[choose])
-    max_freq = max(freq[choose])
-
-    ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            fmt='.', 
-            label="%s-%s GHz" %(low_freq, max_freq), c='k')
-
     choose = np.logical_and(freq > 230, freq < 245)
-    print(flux[choose])
+    low_freq = min(freq[choose])
+    max_freq = max(freq[choose])
+
+    ax.errorbar(
+            days[choose], flux[choose], flux_err[choose], 
+            fmt='.', c='k', lw=0.5)
     ax.plot(
-            days[choose], flux[choose], linestyle='--', c='k')
+            days[choose], flux[choose], linestyle='-', c='k',
+            label="%s-%s GHz" %(low_freq, max_freq))
     dlow_return = days[choose]
     flow_return_temp = flux[choose]
     eflow_return_temp = flux_err[choose]
     nulow_return_temp = freq[choose]
 
-    choose = np.logical_and(freq > 330, freq < 334)
+    choose = np.logical_and(freq > 330, freq < 361)
     low_freq = min(freq[choose])
     max_freq = max(freq[choose])
 
@@ -78,22 +66,8 @@ def sma(ax, legend):
             days[choose], flux[choose], flux_err[choose],
             fmt='.', 
             label="%s-%s GHz" %(low_freq, max_freq), c='k')
-
-    choose = np.logical_and(freq > 357, freq < 361)
-    low_freq = min(freq[choose])
-    max_freq = max(freq[choose])
-
-    ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            ms=8, fmt='.', 
-            label="%s-%s GHz" %(low_freq, max_freq), c='k')
-
-    choose = np.logical_or(
-            np.logical_and(freq > 330, freq < 334),
-            np.logical_and(freq > 357, freq < 361))
-
-    ax.plot(
-            days[choose], flux[choose], linestyle='-', c='k')
+    #ax.plot(
+    #        days[choose], flux[choose], linestyle='-', c='k')
     days_return = days[choose]
     fhigh_return = flux[choose]
     efhigh_return = flux_err[choose]
