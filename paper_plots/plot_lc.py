@@ -41,7 +41,7 @@ def sma(ax, legend):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
 
     # add 10% systematic uncertainty to everything
-    flux_err = np.sqrt(eflux**2 + (0.10 * flux)**2)
+    flux_err = eflux
 
     choose = np.logical_and(freq > 230, freq < 245)
     low_freq = min(freq[choose])
@@ -58,16 +58,16 @@ def sma(ax, legend):
     eflow_return_temp = flux_err[choose]
     nulow_return_temp = freq[choose]
 
-    choose = np.logical_and(freq > 330, freq < 361)
+    choose = np.logical_and(freq > 330, freq < 345)
     low_freq = min(freq[choose])
     max_freq = max(freq[choose])
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            fmt='.', 
-            label="%s-%s GHz" %(low_freq, max_freq), c='k')
-    #ax.plot(
-    #        days[choose], flux[choose], linestyle='-', c='k')
+            fmt='.', c='grey', lw=0.5)
+    ax.plot(
+            days[choose], flux[choose], linestyle='-', c='grey',
+            label="%s-%s GHz" %(low_freq, max_freq))
     days_return = days[choose]
     fhigh_return = flux[choose]
     efhigh_return = flux_err[choose]
@@ -103,7 +103,7 @@ def atca(ax):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
 
     # add 10% systematic uncertainty to everything
-    flux_err = np.sqrt(eflux**2 + (0.10 * flux)**2)
+    flux_err = eflux
     flux_err[eflux < 0] = -99 # non-detections
 
     choose_freq = freq==5.5
@@ -113,9 +113,7 @@ def atca(ax):
     choose = np.logical_and(choose_freq, det)
 
     ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', 
-            fmt='.', marker='o', label="5.5 GHz", c='k')
+            days[choose], flux[choose], flux_err[choose], fmt='.', c='k')
 
     # for non-detections
     choose = np.logical_and(choose_freq, ~det)
@@ -126,27 +124,24 @@ def atca(ax):
     # plot a line between all of them to make it clear
     # which frequency it corresponds to
     ax.plot(
-            days[choose_freq], flux[choose_freq], linestyle='-', c='k')
+            days[choose_freq], flux[choose_freq], 
+            linestyle=':', c='k', label="5.5 GHz")
 
     choose = freq == 9
 
     ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', 
-            fmt='.', marker='s', label="9 GHz", c='k')
+            days[choose], flux[choose], flux_err[choose], fmt='.', c='k')
 
     ax.plot(
-            days[choose], flux[choose], linestyle='--', c='k')
+            days[choose], flux[choose], linestyle='--', c='k', label="9 GHz")
 
     choose = freq == 34
 
     ax.errorbar(
             days[choose], flux[choose], flux_err[choose],
-            mfc='white', mec='black', ms=8,
-            fmt='.', marker='v', label="34 GHz", c='k')
-
+            fmt='.', c='k')
     ax.plot(
-            days[choose], flux[choose], linestyle=':', c='k')
+            days[choose], flux[choose], linestyle='-', c='k', label="34 GHz")
 
     ax.set_xlabel("Days Since Discovery", fontsize=16)
     ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
@@ -163,7 +158,7 @@ def atca(ax):
 
 if __name__=="__main__":
     fig = plt.figure(figsize=(8,8))#, tight_layout=True)
-    gs = gridspec.GridSpec(2, 1, height_ratios=[3,1], hspace=0.1)
+    gs = gridspec.GridSpec(2, 1, height_ratios=[3,1], hspace=0.0)
     gs.update(left=0.15, right=0.9)
 
     atca_ax = plt.subplot(gs[1])#fig.add_subplot(gs[5:6, :], sharex=ax1)
