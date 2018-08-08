@@ -26,7 +26,7 @@ def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
     return alpha, ealpha
 
 
-def sma(ax, legend):
+def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     dat = Table.read(
         "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
     tel = np.array(dat['col2'])
@@ -40,50 +40,64 @@ def sma(ax, legend):
     eflux = np.array(
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
 
-    # add 10% systematic uncertainty to everything
-    flux_err = eflux
-
     choose = np.logical_and(freq > 230, freq < 245)
     low_freq = min(freq[choose])
     max_freq = max(freq[choose])
 
-    ax.errorbar(
-            days[choose], flux[choose], flux_err[choose], 
-            fmt='.', c='k', lw=0.5)
-    ax.plot(
-            days[choose], flux[choose], linestyle='-', c='k',
-            label="%s-%s GHz" %(low_freq, max_freq), lw=2.0)
+    if plot230:
+        if unit=='cgs':
+            plot_flux = flux[choose] * 1e-3 * 1e-23 # cgs units from mJy
+            plot_eflux = eflux[choose] * 1e-3 * 1e-23
+        elif unit=='mjy':
+            plot_flux = flux[choose]
+            plot_eflux = eflux[choose]
+        elif unit=='nufnu':
+            plot_flux = flux[choose] * 1e-3 * 1e-23 * freq[choose] * 1e9
+            plot_eflux = eflux[choose] * 1e-3 * 1e-23 * freq[choose] * 1e9
+        else:
+            print("error: I don't recognize this unit")
+        ax.errorbar(
+                days[choose], plot_flux, plot_eflux, 
+                fmt='.', c='k', lw=0.5)
+        ax.plot(
+                days[choose], plot_flux, linestyle='-', c='k',
+                label="%s-%s GHz" %(low_freq, max_freq), lw=2.0)
     dlow_return = days[choose]
     flow_return_temp = flux[choose]
-    eflow_return_temp = flux_err[choose]
+    eflow_return_temp = eflux[choose]
     nulow_return_temp = freq[choose]
 
     choose = np.logical_and(freq > 330, freq < 345)
     low_freq = min(freq[choose])
     max_freq = max(freq[choose])
 
-    ax.errorbar(
-            days[choose], flux[choose], flux_err[choose],
-            fmt='.', c='black', lw=0.5)
-    ax.plot(
-            days[choose], flux[choose], linestyle='--', c='black',
-            label="%s-%s GHz" %(low_freq, max_freq))
+    if plot340:
+        ax.errorbar(
+                days[choose], flux[choose], eflux[choose],
+                fmt='.', c='black', lw=0.5)
+        ax.plot(
+                days[choose], flux[choose], linestyle='--', c='black',
+                label="%s-%s GHz" %(low_freq, max_freq))
+
+    # You need all these things to get the spectral index plot...
     days_return = days[choose]
     fhigh_return = flux[choose]
-    efhigh_return = flux_err[choose]
+    efhigh_return = eflux[choose]
     nuhigh_return = freq[choose]
     ind = np.array([np.where(dlow_return==val)[0][0] for val in days_return])
     flow_return = flow_return_temp[ind]
     eflow_return = eflow_return_temp[ind]
     nulow_return = nulow_return_temp[ind]
 
-    ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
-    ax.yaxis.set_tick_params(labelsize=14)
+    if np.logical_or(plot230, plot340):
+        ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
+        ax.yaxis.set_tick_params(labelsize=14)
 
-    ax.text(0.05, 0.9, "SMA", transform=ax.transAxes, fontsize=14)
+        ax.text(0.05, 0.9, "SMA", transform=ax.transAxes, 
+                fontsize=14, verticalalignment='top')
 
-    if legend:
-        ax.legend()
+        if legend:
+            ax.legend()
 
     return days_return, nulow_return, nuhigh_return, flow_return, eflow_return, fhigh_return, efhigh_return
 

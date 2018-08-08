@@ -8,6 +8,7 @@ rc("font", family="serif")
 rc("text", usetex=True)
 from astropy.table import Table
 from plot_spec import fit_self_abs
+from get_1993J import format_1993J
 
 
 def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
@@ -56,12 +57,12 @@ def get_peak(ax, freq_raw, flux_raw, flux_raw_err=None):
             return (nupeak, False)
 
 
-def sn2009bb(ax):
+def sn2009bb(ax, color, label):
     """ Plot for SN 2009bb """
     dt = [20, 52, 81, 145]
     nu_peak = [6, 3, 1, 0.8]
-    ax.scatter(dt, nu_peak, c='grey', marker='o')
-    ax.plot(dt, nu_peak, c='grey', lw=1.0)
+    ax.scatter(dt[0:2], nu_peak[0:2], c=color, marker='o')
+    ax.plot(dt[0:2], nu_peak[0:2], c=color, lw=1.0, label=label)
     ax.text(
             dt[0], nu_peak[0], "SN2009bb", 
             horizontalalignment='right', fontsize=14,
@@ -86,7 +87,24 @@ def at2018cow(ax):
             verticalalignment='center')
 
 
-def sn1998bw(ax):
+def sn1993J(ax, color):
+    """ Plot for SN 1993J """
+    dt, freq, flux = format_1993J()
+    order = np.argsort(dt)
+    choose = flux[order] > 0
+    dt = dt[order][choose]
+    freq = freq[order][choose]
+    flux = flux[order][choose]
+    ax.scatter(11, 87, marker='v', c=color) 
+    ax.scatter(32, 25, marker='v', c=color)
+    ax.scatter(75, 15, marker='v', c=color)
+    ax.scatter(95, 15, marker='v', c=color)
+    ax.plot([11, 32, 75, 95], [87, 25, 15, 15], ls='--', c=color)
+    ax.text(
+            11, 87, "SN1993J", fontsize=14, horizontalalignment='right')
+
+
+def sn1998bw(ax, color, label):
     """ Plot for SN 1998bw 
     http://adsabs.harvard.edu/abs/1999A%26AS..138..467W
     """
@@ -127,59 +145,62 @@ def sn1998bw(ax):
 
     choose = islim == False
     order = np.argsort(dt_keep[choose])
-    ax.scatter(dt_keep[choose][order], nu[choose][order], c='grey', marker='s')
-    ax.plot(dt_keep[choose][order], nu[choose][order], c='grey', lw=1.0)
+    ax.scatter(dt_keep[choose][order], nu[choose][order], c=color, marker='s')
+    ax.plot(dt_keep[choose][order], nu[choose][order], c=color, lw=1.0)
     ax.text(
             dt_keep[choose][0], nu[choose][0], "SN1998bw", fontsize=14,
             verticalalignment='center', horizontalalignment='right')
 
 
-def sn2003L(ax):
+def sn2003L(ax, color):
     """ From Soderberg et al. 2005 """
     p = 3.2
     alpha_gamma = 0.075
     alpha_B = -1.0
     alpha_r = 0.96
     exp = (2*(p-2)*alpha_gamma + 2*(3+p/2)*alpha_B + 2*alpha_r)/(p+4)
-    dt = np.linspace(25.2, 573.0)
+    dt = np.linspace(44.5, 573.0)
     t0 = 30
     nu_a0 = 22.5
     nu_a = nu_a0 * (dt/t0)**(exp)
-    ax.plot(dt, nu_a, c='grey', lw=1.0)
+    ax.plot(dt, nu_a, c=color, lw=1.0)
     ax.text(
             dt[0], nu_a[0], "SN2003L", 
             horizontalalignment='right', fontsize=14,
             verticalalignment='center')
      
 
-def sn2003bg(ax):
+def sn2003bg(ax, color, label):
     """ From Soderberg et al. 2006 """
     p = 3.2
     alpha_gamma = -0.4
     alpha_B = -1.0
     alpha_r = 0.8
     exp = (2*(p-2)*alpha_gamma + 2*(3+p/2)*alpha_B + 2*alpha_r)/(p+4)
-    dt = np.linspace(10.0, 978)
+    dt = np.linspace(35.0, 351)
     t0 = 35
     nu_a0 = 22.5
     nu_a = nu_a0 * (dt/t0)**(exp)
-    ax.plot(dt, nu_a, c='grey', lw=1.0)
+    plt.scatter(dt[0], nu_a[0], c=color, marker='o')
+    ax.plot(dt, nu_a, c=color, lw=1.0, label=label)
     ax.text(
             dt[0], nu_a[0], "SN2003bg", 
-            horizontalalignment='right', fontsize=14,
-            verticalalignment='center')
-     
+            horizontalalignment='left', fontsize=14,
+            verticalalignment='bottom')
 
 
-def swiftj1644(ax):
+def swiftj1644(ax, color, label=None):
     """ 
     Plot for Swift J1644 
     Values directly from the paper
     """
     dt = [5, 10, 15, 22]
     nu_peak = [600, 250, 140, 80]
-    ax.scatter(dt, nu_peak, marker='s', color='grey')
-    ax.plot(dt, nu_peak, color='grey', lw=1.0)
+    ax.scatter(dt, nu_peak, marker='s', color=color)
+    if label:
+        ax.plot(dt, nu_peak, color=color, lw=1.0, label=label)
+    else:
+        ax.plot(dt, nu_peak, color=color, lw=1.0)
     ax.text(dt[0], nu_peak[0], "SwiftJ1644", fontsize=14)
 
 
@@ -224,21 +245,24 @@ def extra():
 if __name__=="__main__":
     fig, ax = plt.subplots(1, 1, figsize=(8,6))
 
-    swiftj1644(ax)
+    swiftj1644(ax, '#a6cee3', 'Rel. TDE')
+
     at2018cow(ax)
-    sn2009bb(ax)
-    sn1998bw(ax)
-    sn2003L(ax)
-    sn2003bg(ax)
+    sn2009bb(ax, '#1f78b4', "Rel. SN")
+    sn1998bw(ax, '#1f78b4', "Rel. SN")
+    sn2003L(ax, '#33a02c')
+    sn2003bg(ax, '#33a02c', 'Interacting SN')
+    sn1993J(ax, '#33a02c')
 
     ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
     ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
     ax.tick_params(axis='both', labelsize=14)
     ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_xlim(2, 2000)
+    ax.set_xlim(2, 100)
     ax.set_ylim(0.5, 1000)
     plt.tight_layout()
+    plt.legend(fontsize=14)
 
     #plt.show()
     plt.savefig("nupeak_evolution.png")
