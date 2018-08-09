@@ -5,6 +5,7 @@
 import matplotlib
 from matplotlib import rc
 rc("font", family="serif")
+rc("text", usetex=True)
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
@@ -47,9 +48,9 @@ def fit_spec(freq, flux, flux_err):
     yfit = synchrotron(xfit, *popt)
 
 
-def fit_self_abs(freq, flux, flux_err=None):
+def fit_self_abs(freq, flux, flux_err=[]):
     """ Fit the self-absorbed part of the spectrum """
-    if flux_err:
+    if len(flux_err) > 0:
         popt, pcov = curve_fit(
                 self_abs, freq, flux,
                 sigma = flux_err, absolute_sigma = True)
@@ -57,7 +58,6 @@ def fit_self_abs(freq, flux, flux_err=None):
         popt, pcov = curve_fit(
                 self_abs, freq, flux)
     return popt[0]
-
 
 
 def get_data():
@@ -99,7 +99,7 @@ def get_data():
     return tel, freq, days, flux, flux_err
 
 
-def run_day(day):
+def run_day(ax, day):
     """ Run this for one day """
     choose = days == day
     order = np.argsort(freq[choose])
@@ -142,7 +142,7 @@ def run_day(day):
             0, 0.9, "$(\\nu_p, F_p) = (144\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
             transform=ax.transAxes, horizontalalignment='left', fontsize=14)
     ax.text(
-            0.9, 0.1, "ATCA & SMA, Day %s" %day, 
+            0.9, 0.1, "ATCA and SMA, Day %s" %day, 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
@@ -160,6 +160,8 @@ if __name__=="__main__":
 
     # top panel: evolution of spectra
     ax = axarr[0]
+
+    run_day(ax, 10)
 
     # ATCA from Day 13, SMA and ALMA from Day 14
     ax = axarr[1]
@@ -208,7 +210,7 @@ if __name__=="__main__":
             0, 0.9, "$(\\nu_p, F_p) = (111\,\mathrm{GHz}, 73\,\mathrm{mJy}$)", 
             transform=ax.transAxes, horizontalalignment='left', fontsize=14)
     ax.text(
-            0.9, 0.1, "ATCA on Day 13, ALMA & SMA on Day 14", 
+            0.9, 0.1, "ATCA on Day 13, ALMA and SMA on Day 14", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     ax.tick_params(axis='both', labelsize=14)
@@ -251,7 +253,7 @@ if __name__=="__main__":
             [215.5, 231.5], [f_215, f_231], yerr=0.1*np.array([f_215, f_231]), 
             mec='black', fmt='o', c='k')
     ax.text(
-            0.9, 0.1, "ATCA, ALMA, & SMA, Day 22", 
+            0.9, 0.1, "ATCA, ALMA, and SMA, Day 22", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
     ax.text(
             0, 0.9, "$(\\nu_p, F_p) = (92\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
@@ -292,5 +294,5 @@ if __name__=="__main__":
     ax.set_yscale('log')
     ax.set_ylim(0.1,300)
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")
