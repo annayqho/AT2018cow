@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc("font", family="serif")
+rc("text", usetex=True)
 import matplotlib.gridspec as gridspec
 import numpy as np
 from astropy.table import Table
@@ -61,7 +62,7 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
                 fmt='.', c='k', lw=0.5)
         ax.plot(
                 days[choose], plot_flux, linestyle='-', c='k',
-                label="%s-%s GHz" %(low_freq, max_freq), lw=2.0)
+                label="%s--%s GHz" %(low_freq, max_freq), lw=2.0)
     dlow_return = days[choose]
     flow_return_temp = flux[choose]
     eflow_return_temp = eflux[choose]
@@ -77,7 +78,7 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
                 fmt='.', c='black', lw=0.5)
         ax.plot(
                 days[choose], flux[choose], linestyle='--', c='black',
-                label="%s-%s GHz" %(low_freq, max_freq))
+                label="%s--%s GHz" %(low_freq, max_freq))
 
     # You need all these things to get the spectral index plot...
     days_return = days[choose]
@@ -97,7 +98,7 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
                 fontsize=14, verticalalignment='top')
 
         if legend:
-            ax.legend()
+            ax.legend(fontsize=14)
 
     return days_return, nulow_return, nuhigh_return, flow_return, eflow_return, fhigh_return, efhigh_return
 
@@ -167,7 +168,7 @@ def atca(ax):
             0.05, 0.9, "ATCA", transform=ax.transAxes, fontsize=14,
             verticalalignment='top')
 
-    ax.legend()
+    ax.legend(fontsize=14)
 
 
 if __name__=="__main__":

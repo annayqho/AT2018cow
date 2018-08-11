@@ -7,6 +7,9 @@ from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
 from scipy.optimize import curve_fit
 from astropy.table import Table
@@ -138,9 +141,9 @@ def run_day(ax, day):
             transform=ax.transAxes, horizontalalignment='left', fontsize=14)
 
     # the lines join at (144, 92)
-    ax.text(
-            0, 0.9, "$(\\nu_p, F_p) = (144\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
-            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+    #ax.text(
+    #        0, 0.9, "$(\\nu_p, F_p) = (144\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
+    #        transform=ax.transAxes, horizontalalignment='left', fontsize=14)
     ax.text(
             0.9, 0.1, "ATCA and SMA, Day %s" %day, 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
@@ -160,7 +163,6 @@ if __name__=="__main__":
 
     # top panel: evolution of spectra
     ax = axarr[0]
-
     run_day(ax, 10)
 
     # ATCA from Day 13, SMA and ALMA from Day 14
@@ -206,9 +208,9 @@ if __name__=="__main__":
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
     # Explain which day and instruments this is
-    ax.text(
-            0, 0.9, "$(\\nu_p, F_p) = (111\,\mathrm{GHz}, 73\,\mathrm{mJy}$)", 
-            transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+    #ax.text(
+    #        0, 0.9, "$(\\nu_p, F_p) = (111\,\mathrm{GHz}, 73\,\mathrm{mJy}$)", 
+    #        transform=ax.transAxes, horizontalalignment='left', fontsize=14)
     ax.text(
             0.9, 0.1, "ATCA on Day 13, ALMA and SMA on Day 14", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
@@ -245,6 +247,7 @@ if __name__=="__main__":
             freq[choose][order], flux[choose][order], 
             yerr=flux_err[choose][order],
             mec='black', fmt='o', c='k')
+
     # temporary ATCA point
     ax.errorbar(34, 12, yerr=0.2*12, mec='black', fmt='o', c='k')
     # temporary SMA points
@@ -252,11 +255,12 @@ if __name__=="__main__":
     ax.errorbar(
             [215.5, 231.5], [f_215, f_231], yerr=0.1*np.array([f_215, f_231]), 
             mec='black', fmt='o', c='k')
+
     ax.text(
             0.9, 0.1, "ATCA, ALMA, and SMA, Day 22", 
             transform=ax.transAxes, horizontalalignment='right', fontsize=14)
     ax.text(
-            0, 0.9, "$(\\nu_p, F_p) = (92\,\mathrm{GHz}, 92\,\mathrm{mJy}$)", 
+            0, 0.9, "$(\\nu_p, F_p) = (100\,\mathrm{GHz}, 94\,\mathrm{mJy}$)", 
             transform=ax.transAxes, horizontalalignment='left', fontsize=14)
 
     ax.text(
@@ -294,5 +298,26 @@ if __name__=="__main__":
     ax.set_yscale('log')
     ax.set_ylim(0.1,300)
 
-    plt.show()
-    #plt.savefig("spec.png")
+    # Zoomed-in window
+    axins = inset_axes(
+            ax, 2, 1, loc=1,
+            bbox_to_anchor=(0.4,0.8),
+            bbox_transform=ax.transAxes)
+    #axins.errorbar(freq[choose][order], flux[choose][order],
+    #        yerr=flux_err[choose][order],
+    #        mec='black', fmt='o', c='k')
+    axins.scatter(freq[choose][order], flux[choose][order], c='k')
+    axins.set_xlim(88, 106)
+    axins.set_ylim(90, 95)
+    axins.tick_params(axis='both', labelsize=12)
+    #axins.set_yscale('log')
+    #axins.set_xscale('log')
+    #plt.setp(axins.get_xticklabels(), visible=False)
+    #plt.setp(axins.get_yticklabels(), visible=False)
+    mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec="0.5")
+    #axins.xaxis.set_major_locator(MaxNLocator(nbins=1, prune='lower'))
+    
+
+
+    #plt.show()
+    plt.savefig("spec.png")
