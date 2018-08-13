@@ -5,15 +5,22 @@ import numpy as np
 from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
-from plot_spec import get_data
+import sys
+sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
+from get_radio import get_data_all, get_spectrum
 
-tel, freq, days, flux, flux_err = get_data()
 
-fig = plt.figure(figsize=(4,4))
+fig = plt.figure(figsize=(6,4))
 
-choose = np.logical_or(days == 22, days == 24)
+# Plot the Band 9 point
+tel, freq, days, flux, eflux_form, eflux_sys = get_data_all()
+choose = freq > 600
+plt.errorbar(
+        freq[choose], flux[choose], yerr=eflux_sys[choose], 
+        fmt='o', c='k')
 
-plt.scatter(freq[choose], flux[choose], c='k')
+nu,flux = get_spectrum(24)
+plt.scatter(nu, flux, c='k', marker='.')
 plt.gca().tick_params(axis='both', labelsize=14)
 plt.xlabel("Frequency [GHz]", fontsize=16)
 plt.ylabel("Flux [mJy]", fontsize=16)
