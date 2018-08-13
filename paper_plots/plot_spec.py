@@ -306,7 +306,19 @@ if __name__=="__main__":
     #axins.errorbar(freq[choose][order], flux[choose][order],
     #        yerr=flux_err[choose][order],
     #        mec='black', fmt='o', c='k')
-    axins.scatter(freq[choose][order], flux[choose][order], c='k')
+
+    # Choose the Band 3 measurements
+    freq_fit = freq[choose][order]
+    flux_fit = flux[choose][order]
+    choosefit = np.logical_and(freq_fit < 107.5, freq_fit > 87.5)
+    axins.scatter(freq_fit[choosefit], flux_fit[choosefit], c='k')
+
+    # Fit a quadratic function to the data to find the peak
+    out = np.polyfit(freq_fit[choosefit], flux_fit[choosefit], deg=2)
+    xlab = np.linspace(87.5, 107.5)
+    ylab = out[0]*xlab**2 + out[1]*xlab + out[2]
+    axins.plot(xlab, ylab, c='k', ls='--')
+
     axins.set_xlim(88, 106)
     axins.set_ylim(90, 95)
     axins.tick_params(axis='both', labelsize=12)
