@@ -54,5 +54,5 @@ plt.xlim(5e10, 1e18)
 plt.ylim(0.0005, 100)
 plt.tight_layout()
 
-plt.savefig("xray_spec_index.png")
-#plt.show()
+#plt.savefig("xray_spec_index.png")
+plt.show()
