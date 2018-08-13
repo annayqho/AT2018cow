@@ -1,15 +1,13 @@
-import the package
+import sys
+sys.path.append("/Users/annaho/Github/Query_VLASS")
+from vlass_search import search_vlass
 from ret_radio import get_transients
 
 
 def run_ret():
-    names, ra_raw, dec_raw, dates = get_transients()
+    names, ra_raw, dec_raw, dates, z = get_transients()
     ra = []
     dec =[]
-
-    #names = ['PS1-13ess']
-    #ra_raw = ['02:22:09.428']
-    #dec_raw = ['-03:03:00.51']
 
     limits = np.zeros(len(names))
     obsdates = np.zeros(len(names))
