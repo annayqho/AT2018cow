@@ -183,4 +183,13 @@ def get_spectrum(day):
     nus.append(345)
     spec.append(np.interp(day, d[order], f_hi[order]))
 
+    # Finally: ALMA
+    # For any ALMA points, you should just return the value on the day
+    # if it exists.
+    # Nothing to interpolate.
+    choose_tel = tel == 'ALMA'
+    for ii,nuval in enumerate(freq[choose_tel]):
+        nus.append(nuval)
+        spec.append(flux[choose_tel][ii])
+
     return nus, spec
