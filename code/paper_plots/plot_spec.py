@@ -11,7 +11,6 @@ from matplotlib.ticker import MaxNLocator
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
-from scipy.optimize import curve_fit
 from astropy.table import Table
 from astropy.cosmology import Planck15
 
@@ -30,12 +29,6 @@ def synchrotron(x, nu_a, F_a, alpha):
     return y
 
 
-def self_abs(x, b):
-    """ Fitting function for self-absorbed part """
-    y = 10**(2*np.log10(x)+b)
-    return y
-
-
 def fit_spec(freq, flux, flux_err):
     """ Fit the spectrum on Day 22 to a synchrotron spectrum """
     nu_a = 90
@@ -49,18 +42,6 @@ def fit_spec(freq, flux, flux_err):
 
     xfit = np.linspace(min(freq), max(freq))
     yfit = synchrotron(xfit, *popt)
-
-
-def fit_self_abs(freq, flux, flux_err=[]):
-    """ Fit the self-absorbed part of the spectrum """
-    if len(flux_err) > 0:
-        popt, pcov = curve_fit(
-                self_abs, freq, flux,
-                sigma = flux_err, absolute_sigma = True)
-    else:
-        popt, pcov = curve_fit(
-                self_abs, freq, flux)
-    return popt[0]
 
 
 def run_day(ax, day):
