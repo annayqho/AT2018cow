@@ -5,7 +5,8 @@ from astropy.table import Table
 
 
 def get_opt_data():
-    dat = Table.read("../data/physevol.dat", format='ascii.no_header')
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    dat = Table.read("%s/physevol.dat" %data_dir, format='ascii.no_header')
     mjd = dat['col1']
     lum = dat['col12'] * 4e33
     return mjd-mjd[0], lum
