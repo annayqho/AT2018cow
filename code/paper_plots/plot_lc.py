@@ -209,9 +209,14 @@ def atca(ax):
 
 
 if __name__=="__main__":
+    """ Plot ATCA and SMA light curves """
     fig = plt.figure(figsize=(6,6))
     gs = gridspec.GridSpec(2, 1, height_ratios=[3,2], hspace=0.0)
     gs.update(left=0.15, right=0.9)
+
+    day_grid = np.arange(5, 45)
+    flux_grid = []
+    for day in day_grid:
 
     atca_ax = plt.subplot(gs[1])
     sma_ax = plt.subplot(gs[0], sharex=atca_ax)
