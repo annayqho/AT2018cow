@@ -1,4 +1,10 @@
-""" Radio analysis of rapidly evolving transients """
+""" Radio analysis of rapidly evolving transients
+
+Assuming they have the same 230 GHz luminosity as AT2018cow,
+what would their flux densities be given their redshift distribution?
+
+And what is the distribution across redshift?
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +19,7 @@ from astropy.time import Time
 import time
 
 def get_transients():
+    """ Get data on the rapidly volving transients """
     drout = Table.read(
         "../data/drout_transients.txt", format="ascii.no_header", delimiter="&")
     des = Table.read(
@@ -65,10 +72,13 @@ def get_transients():
         except:
             z.append(-1)
     z = np.array(z)
-    return names_raw, ra_raw, dec_raw, dates
+    return names_raw, ra_raw, dec_raw, dates, z
 
 
 if __name__=="__main__":
+    # Retrieve data
+    names, ra, dec, dates, z = get_transients()
+
     # initialize plot
     fig,axarr = plt.subplots(2, 1, figsize=(5,6))
 
