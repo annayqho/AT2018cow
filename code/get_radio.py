@@ -65,7 +65,9 @@ def get_spectrum(day):
     """
     # First, get *all* of the data
     tel, freq, days, flux, eflux_form, eflux_sys = get_data_all()
-    eflux_tot = np.sqrt(eflux_form**2 + eflux_sys**2)
+    print(day)
+    # Don't generate eflux_tot here,
+    # because the right thing to do depends on the telescope
 
     # The way we interpolate depends on the telescope.
     # For ATCA data, you can assume that the data is rising as a power law
@@ -81,6 +83,8 @@ def get_spectrum(day):
     for val in ufreq:
         # fit a power law in log-log space
         choose = np.logical_and(choose_tel, freq==val)
+        # no upper limits
+
         # only bother if there's >1 point at this frequency
         if sum(choose) > 1:
             nus.append(val)
@@ -187,9 +191,9 @@ def get_spectrum(day):
     # For any ALMA points, you should just return the value on the day
     # if it exists.
     # Nothing to interpolate.
-    choose_tel = tel == 'ALMA'
-    for ii,nuval in enumerate(freq[choose_tel]):
+    choose = np.logical_and(days == day, tel == 'ALMA')
+    for ii,nuval in enumerate(freq[choose]):
         nus.append(nuval)
-        spec.append(flux[choose_tel][ii])
+        spec.append(flux[choose][ii])
 
     return nus, spec
