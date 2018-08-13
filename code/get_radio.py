@@ -196,4 +196,4 @@ def get_spectrum(day):
         nus.append(nuval)
         spec.append(flux[choose][ii])
 
-    return nus, spec
+    return np.array(nus), np.array(spec)
