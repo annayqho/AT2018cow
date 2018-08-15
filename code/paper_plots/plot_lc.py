@@ -8,26 +8,6 @@ from astropy.table import Table
 from xray_lc import get_xray
 
 
-def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
-    alpha = np.log10( fhigh / flow ) / np.log10( nulow / nuhigh )
-
-    # estimate the uncertainty
-    a = (1 / np.log10(nulow / nuhigh)) 
-    b = flow/fhigh
-    c = np.log10(np.e)
-    dadf_hi = a*b*c* (1/flow) * efhigh
-    dadf_low = a*b*c* (-fhigh/flow**2) * eflow
-    ealpha = np.sqrt(dadf_hi**2 + dadf_low**2)
-
-    #ax.scatter(d, alpha, c='k')
-    ax.errorbar(d, alpha, yerr=ealpha, c='k', fmt='.')
-    ax.plot(d, alpha, c='k', lw=1.0)
-    ax.set_ylabel("$\\alpha$", fontsize=16)
-    ax.yaxis.set_tick_params(labelsize=14)
-
-    return alpha, ealpha
-
-
 def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
@@ -40,8 +20,10 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     flux_raw = np.array(dat['col4'][choose])
     flux = np.array(
             [float(val.split("pm")[0][1:]) for val in flux_raw])
-    eflux = np.array(
+    eflux_sys = np.array([0.1*f for f in flux])
+    eflux_form = np.array(
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
+    eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
 
     #choose = np.logical_and(freq > 230, freq < 245)
     choose = freq == 231.5
@@ -68,7 +50,6 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
                 fmt='s', c='k', lw=1.5)
         ax.plot(
                 days[choose], plot_flux, linestyle='-', c='k', lw=1.5)
-
 
     choose = np.logical_and(freq >= 341.5, freq <= 349)
 
@@ -104,12 +85,9 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
         ax.set_xscale('log')
         ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
         ax.yaxis.set_tick_params(labelsize=14)
-
-        #ax.text(0.05, 0.9, "SMA", transform=ax.transAxes, 
-        #        fontsize=, verticalalignment='top')
-
         if legend:
             ax.legend(fontsize=12, loc='lower left')
+
 
 def atca(ax):
     # Get the X-ray data
@@ -132,10 +110,12 @@ def atca(ax):
     flux_raw = np.array(dat['col4'][choose])
     flux = np.array(
             [float(val.split("pm")[0][1:]) for val in flux_raw])
-    eflux = np.array(
+    eflux_sys = np.array(
+            [0.1*f for f in flux])
+    eflux_form = np.array(
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
-
-    eflux[eflux < 0] = -99 # non-detections
+    eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
+    eflux[eflux_form < 0] = -99 # non-detections
 
     choose_freq = freq==5.5
 
@@ -180,6 +160,7 @@ def atca(ax):
 
     ax.set_xlim(3,50)
     ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
+    ax.locator_params(axis='y', nbins=2)
     ax.xaxis.set_tick_params(labelsize=14)
     ax.yaxis.set_tick_params(labelsize=14)
 
@@ -201,7 +182,8 @@ if __name__=="__main__":
     sma_ax = plt.subplot(gs[0], sharex=atca_ax)
     atca(atca_ax)
     sma(sma_ax, legend=True)
+    sma_ax.locator_params(axis='y', nbins=5)
     plt.setp(sma_ax.get_xticklabels(), visible=False)
 
-    plt.savefig("lc.png")
-    #plt.show()
+    #plt.savefig("lc.png")
+    plt.show()
