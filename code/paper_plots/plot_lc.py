@@ -54,9 +54,6 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     choose = np.logical_and(freq >= 341.5, freq <= 349)
 
     if plot340:
-        #ax.scatter(
-        #        days[choose], flux[choose], 
-        #        marker='*', c='grey', alpha=0.8, s=13,
         ax.errorbar(
                 days[choose], flux[choose], eflux[choose],
                 fmt='*', c='grey', lw=0.5, alpha=0.8, ms=13,
@@ -79,14 +76,12 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
             label="34 GHz")
     ax.plot(x, y, ls='--', c='k')
 
-    if np.logical_or(plot230, plot340):
-        ax.set_ylim(4,70)
-        ax.set_yscale('log')
-        ax.set_xscale('log')
-        ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
-        ax.yaxis.set_tick_params(labelsize=14)
-        if legend:
-            ax.legend(fontsize=12, loc='lower left')
+    ax.set_ylim(4,70)
+    ax.set_yscale('log')
+    ax.set_xscale('log')
+    ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
+    ax.yaxis.set_tick_params(labelsize=14)
+    ax.legend(fontsize=12, loc='lower left')
 
 
 def atca(ax):
@@ -174,16 +169,15 @@ def atca(ax):
 
 if __name__=="__main__":
     """ Plot ATCA and SMA light curves """
-    fig = plt.figure(figsize=(6,6))
-    gs = gridspec.GridSpec(2, 1, height_ratios=[3,2], hspace=0.0)
-    gs.update(left=0.15, right=0.9)
+    fig,axarr = plt.subplots(2,1, figsize=(6,6), sharex=True)
 
-    atca_ax = plt.subplot(gs[1])
-    sma_ax = plt.subplot(gs[0], sharex=atca_ax)
+    atca_ax = axarr[1]
+    sma_ax = axarr[0]
     atca(atca_ax)
     sma(sma_ax, legend=True)
     sma_ax.locator_params(axis='y', nbins=5)
     plt.setp(sma_ax.get_xticklabels(), visible=False)
+    plt.tight_layout()
 
     #plt.savefig("lc.png")
     plt.show()
