@@ -30,7 +30,6 @@ def get_date(dt):
     return "%s %s" %(day, month)
 
 
-
 def mjy_to_lum(f):
     """ Convert flux from mJy to erg/s/Hz """
     lum = f * 1e-3 * 1e-23 * 4 * np.pi * d**2
