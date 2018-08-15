@@ -139,14 +139,13 @@ plt.errorbar(
         nu_opt, lum_opt, 
         fmt='*', mec='k', mfc='white', label=r"Day 24", ms=13, mew=0.5)
 
-
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel("Frequency [Hz]", fontsize=16)
 plt.ylabel(r"$\nu L_\nu$ (erg/s)", fontsize=16)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
-plt.legend()
+plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
