@@ -3,6 +3,7 @@ and Swift J1644 on top """
 
 from matplotlib import rc
 rc("font", family="serif")
+rc("text", usetex=True)
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.table import Table
@@ -10,7 +11,7 @@ from astropy.table import Table
 direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
 inputf = direc + "/Soderberg2009Fig4.1"
 
-fig = plt.figure(figsize=(7,6))
+fig = plt.figure(figsize=(6,5))
 
 dat = Table.read(inputf, format='ascii')
 x = dat['col1']
@@ -18,17 +19,17 @@ y = dat['col2']
 
 choose = np.logical_and(y < 1e50, x < 0.8)
 plt.scatter(
-        x[choose], y[choose], marker='o', c='k', s=150,
+        x[choose], y[choose], marker='o', c='k', s=100,
         label="SNe Ibc")
 
 choose = np.logical_and(x > 0.5, x < 1.2)
 plt.scatter(
-        x[choose], y[choose], marker='s', c='k', s=150,
+        x[choose], y[choose], marker='s', c='k', s=100,
         label="Rel. SNe")
 
 choose = y > 7e49
 plt.scatter(
-        x[choose], y[choose], marker='o', edgecolors='k', s=150,
+        x[choose], y[choose], marker='o', edgecolors='k', s=100,
         facecolors='none', label="GRBs")
 
 
@@ -41,10 +42,16 @@ plt.text(
         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
 
-plt.legend()
+# Swift J1644
+plt.scatter(
+        0.5*1.2, 2.9E50 + 0.1*2.9E50, 
+        marker='s', s=100, facecolors='white', edgecolors='black',
+        label="Rel. TDE")
 
-plt.xlim(0.02, 12)
-plt.ylim(1E45, 1E53)
+plt.legend(loc='upper left', fontsize=14)
+
+plt.xlim(0.03, 8)
+plt.ylim(1E45, 1E52)
 plt.xscale('log')
 plt.yscale('log')
 plt.xticks(fontsize=14)

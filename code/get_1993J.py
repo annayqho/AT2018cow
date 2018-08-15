@@ -21,8 +21,9 @@ def format_1993J():
     flux = [] # mJy
 
     # all these values are in mJy
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
-        "../data/radio_compilations/1993J.dat", 
+        "%s/radio_compilations/1993J.dat" %data_dir, 
         delimiter='&', guess=False, format='ascii.no_header')
     dt_temp = dat['col2']
 

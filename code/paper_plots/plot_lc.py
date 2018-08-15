@@ -29,8 +29,9 @@ def spindex(ax, d, nulow, nuhigh, flow, eflow, fhigh, efhigh):
 
 
 def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
-        "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
+        "%s/radio_lc.dat" %data_dir, delimiter="&", format='ascii.no_header')
     tel = np.array(dat['col2'])
     choose = np.logical_or(tel == 'SMA', tel == 'ATCA')
 
@@ -42,9 +43,8 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     eflux = np.array(
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
 
-    choose = np.logical_and(freq > 230, freq < 245)
-    low_freq = min(freq[choose])
-    max_freq = max(freq[choose])
+    #choose = np.logical_and(freq > 230, freq < 245)
+    choose = freq == 231.5
 
     if plot230:
         if unit=='cgs':
@@ -62,20 +62,15 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
         ax.scatter(
                 days[choose], plot_flux, 
                 marker='s', c='k',
-                label="230 GHz")
+                label="231.5 GHz")
         ax.errorbar(
                 days[choose], plot_flux, plot_eflux, 
                 fmt='s', c='k', lw=1.5)
         ax.plot(
                 days[choose], plot_flux, linestyle='-', c='k', lw=1.5)
-    dlow_return = days[choose]
-    flow_return_temp = flux[choose]
-    eflow_return_temp = eflux[choose]
-    nulow_return_temp = freq[choose]
 
-    choose = np.logical_and(freq > 330, freq < 345)
-    low_freq = min(freq[choose])
-    max_freq = max(freq[choose])
+
+    choose = np.logical_and(freq >= 341.5, freq <= 349)
 
     if plot340:
         #ax.scatter(
@@ -84,19 +79,9 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
         ax.errorbar(
                 days[choose], flux[choose], eflux[choose],
                 fmt='*', c='grey', lw=0.5, alpha=0.8, ms=13,
-                label="340 GHz")
+                label="341.5--349 GHz")
         ax.plot(
                 days[choose], flux[choose], linestyle='-', c='grey', lw=1.5)
-
-    # You need all these things to get the spectral index plot...
-    days_return = days[choose]
-    fhigh_return = flux[choose]
-    efhigh_return = eflux[choose]
-    nuhigh_return = freq[choose]
-    ind = np.array([np.where(dlow_return==val)[0][0] for val in days_return])
-    flow_return = flow_return_temp[ind]
-    eflow_return = eflow_return_temp[ind]
-    nulow_return = nulow_return_temp[ind]
 
     # Do 34 GHz
     choose = freq == 34
@@ -126,9 +111,6 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
         if legend:
             ax.legend(fontsize=12, loc='lower left')
 
-    return days_return, nulow_return, nuhigh_return, flow_return, eflow_return, fhigh_return, efhigh_return
-
-
 def atca(ax):
     # Get the X-ray data
     x,y,yerr = get_xray() # in erg/cm^2/s
@@ -139,8 +121,9 @@ def atca(ax):
             label="0.3-10 keV($\\times %s$)" %fact)
 
     ax.set_xlabel("Time Since June 16 UT [d]", fontsize=16)
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
-        "../data/radio_lc.dat", delimiter="&", format='ascii.no_header')
+        "%s/radio_lc.dat" %data_dir, delimiter="&", format='ascii.no_header')
     tel = np.array(dat['col2'])
     choose = tel == 'ATCA'
 
@@ -214,15 +197,10 @@ if __name__=="__main__":
     gs = gridspec.GridSpec(2, 1, height_ratios=[3,2], hspace=0.0)
     gs.update(left=0.15, right=0.9)
 
-    day_grid = np.arange(5, 45)
-    flux_grid = []
-    for day in day_grid:
-
     atca_ax = plt.subplot(gs[1])
     sma_ax = plt.subplot(gs[0], sharex=atca_ax)
     atca(atca_ax)
-
-    days, nulow, nuhigh, flow, eflow, fhigh, efhigh = sma(sma_ax, legend=True)
+    sma(sma_ax, legend=True)
     plt.setp(sma_ax.get_xticklabels(), visible=False)
 
     plt.savefig("lc.png")

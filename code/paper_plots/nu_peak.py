@@ -108,8 +108,9 @@ def sn1998bw(ax, color, label):
     """ Plot for SN 1998bw 
     http://adsabs.harvard.edu/abs/1999A%26AS..138..467W
     """
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
-            "../data/radio_compilations/1998bw.dat", 
+            "%s/radio_compilations/1998bw.dat" %data_dir, 
             format='ascii', delimiter='&')
     dt = np.array(dat['dt'])
     flux = np.array(dat['flux'])
@@ -204,6 +205,21 @@ def swiftj1644(ax, color, label=None):
     ax.text(dt[0], nu_peak[0], "SwiftJ1644", fontsize=14)
 
 
+def grb130427A(ax, color, label):
+    """
+    From Perley et al
+    """
+    dt = [10]
+    nu_peak = [1E9]
+    ax.scatter(dt, nu_peak, marker='s', color=color)
+    if label:
+        ax.plot(dt, nu_peak, color=color, lw=1.0, label=label)
+    else:
+        ax.plot(dt, nu_peak, color=color, lw=1.0)
+    ax.text(dt[0], nu_peak[0], "GRB 130427A", fontsize=14)
+
+
+
 def extra():
     """ other stuff """
     print("hi")
@@ -230,17 +246,6 @@ def extra():
     for ii,val in enumerate(dt):
         plt.text(val, nu_peak[ii], names[ii], fontsize=10)
 
-    # 2003bg
-    plt.scatter([23, 351], [25, 2.2], c='grey', marker='s')
-    plt.plot([23, 351], [25, 2.2], c='grey', marker='s')
-    plt.text(351, 2.2, "2003bg", fontsize=14)
-
-
-    # 2003L
-    # http://iopscience.iop.org/article/10.1086/427649/pdf
-    plt.scatter([30], [22.5], c='grey', marker='s')
-    plt.text(30, 22.5, "2003L")
-
 
 if __name__=="__main__":
     fig, ax = plt.subplots(1, 1, figsize=(8,6))
@@ -253,6 +258,7 @@ if __name__=="__main__":
     sn2003L(ax, '#33a02c')
     sn2003bg(ax, '#33a02c', 'Interacting SN')
     sn1993J(ax, '#33a02c')
+    grb130427A(ax, 'black', 'GRB')
 
     ax.set_ylabel("$\\nu_p$ [GHz]", fontsize=16)
     ax.set_xlabel("$\\Delta t$ [days]", fontsize=16)
@@ -264,5 +270,5 @@ if __name__=="__main__":
     plt.tight_layout()
     plt.legend(fontsize=14)
 
-    #plt.show()
-    plt.savefig("nupeak_evolution.png")
+    plt.show()
+    #plt.savefig("nupeak_evolution.png")
