@@ -144,5 +144,5 @@ plt.legend()
 
 plt.tight_layout()
 
-#plt.savefig("xray_spec_index.png")
-plt.show()
+plt.savefig("sed.png")
+#plt.show()
