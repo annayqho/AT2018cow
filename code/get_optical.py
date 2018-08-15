@@ -25,7 +25,11 @@ def get_opt_sed(day):
         wl = filters[col]
         nu = (3e18 / wl)
         freq.append(nu)
-        flux.append(dat[col][choose][0])
+
+        # ab mag
+        ab = dat[col][choose][0]
+        flux.append(10**(ab/(-2.5)) * 3631 * 1e3)
+        # return in mJy
     return np.array(freq), np.array(flux)
 
 

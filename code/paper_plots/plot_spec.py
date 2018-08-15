@@ -86,7 +86,7 @@ if __name__=="__main__":
 
     # middle panel: spectrum on Day 14
     ax = axarr[1]
-    run_day(ax, 14)
+    run_day(ax, 24)
 
     # bottom panel: spectrum on Day 22
     ax = axarr[2]
@@ -108,5 +108,5 @@ if __name__=="__main__":
 
 
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")

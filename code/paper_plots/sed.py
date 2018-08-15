@@ -13,7 +13,7 @@ import numpy as np
 from astropy.cosmology import Planck15
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
-from get_optical import get_opt_data
+from get_optical import get_opt_sed
 from xray_lc import get_xray
 from get_radio import get_spectrum, get_data_all
 
@@ -53,17 +53,16 @@ def get_sed(day):
     nu_rad, fnu_rad = get_spectrum(day)
     for ii,val in enumerate(nu_rad):
         freq.append(val*1E9)
-        nufnu.append(val * 1E9 * mjy_to_lum(fnu_rad[ii]))
+        nufnu.append(val*1E9*mjy_to_lum(fnu_rad[ii]))
         band.append('r')
 
     # optical
-    # goes from 1,000 -- 20,000 A
-    # which is 10^14 -- 10^15 Hz
-    # I need to ask Dan for the SED
-    t_o, lum_o = get_opt_data()
-    freq.append(1E14)
-    nufnu.append(np.interp(day, t_o, lum_o))
-    band.append('o')
+    nu_opt, fnu_opt = get_opt_sed(day)
+    for ii,val in enumerate(nu_opt):
+        freq.append(val)
+        print(fnu_opt[ii])
+        nufnu.append(val*mjy_to_lum(fnu_opt[ii]))
+        band.append('o')
 
     freq = np.array(freq)
     nufnu = np.array(nufnu)
@@ -131,7 +130,15 @@ f = 31.5
 lum = mjy_to_lum(f)
 plt.errorbar(
         nu, nu*lum, yerr=0.2*lum,
+        fmt='*', mec='k', mfc='white', ms=13, mew=0.5)
+        #label=r"Day 24")
+
+nu_opt, fnu_opt = get_opt_sed(24)
+lum_opt = nu_opt*mjy_to_lum(fnu_opt)
+plt.errorbar(
+        nu_opt, lum_opt, 
         fmt='*', mec='k', mfc='white', label=r"Day 24", ms=13, mew=0.5)
+
 
 plt.xscale('log')
 plt.yscale('log')
