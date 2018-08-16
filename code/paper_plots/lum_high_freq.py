@@ -27,11 +27,12 @@ def at2018cow():
 
 def tde():
     """  Peak of the 200 GHz light curve: 14.1 mJy, 16.12 days """
-    d = Planck15.luminosity_distance(z=0.354).cgs.value
+    z = 0.354
+    d = Planck15.luminosity_distance(z=z).cgs.value
     nu = 200E9
     lum = 14.1 * 1e-23 * 1e-3 * 4 * np.pi * d**2
     name = 'Swift1644+57'
-    t = 16.12
+    t = 16.12 / (1+z)
     #velocity.append(0.5*1.1)
     #density.append(0.2E4)
     return name, t, nu*lum
@@ -62,29 +63,36 @@ def sn2011dh():
     return t, lum, lum_err
 
 
+def grb030329():
+    """ Sheth et al. 2003 """
+    freq = 100E9
+    z = 0.1686
+    t = 3 / (1+z)
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    lum = freq * 70 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = freq * 6 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    return t, lum, lum_err
+
+
+def grb130427A():
+    """ Perley et al
+    They have data from CARMA/PdBI at 90 GHz (3mm)
+    But by the time they caught it, it was fading
+    """
+    freq = 93E9
+    z = 0.340
+    t = 0.76900 / (1+z)
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    lum = freq * 3.416 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = 0.365 * freq * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    return t, lum, lum_err
+
+
 def grb():
     """ GRBs and Rel SNe """
     names = []
     t = []
     lum = []
-
-    names.append("GRB 030329")
-    freq = 100E9
-    t.append(12)
-    d = Planck15.luminosity_distance(z=0.1686).cgs.value
-    lum.append(freq * 25.8 * 1e-23 * 1e-3 * 4 * np.pi * d**2)
-    # 2E17 at 15 days (Berger et al) corresponds to
-    #V = 2E17 / (15*86400)
-    #velocity.append(5.14)
-    #density.append(1.8)
-
-    names.append("GRB 130427A")
-    freq = 100E9
-    t.append(10.35)
-    d = Planck15.luminosity_distance(z=0.340).cgs.value
-    lum.append(freq * 0.368 * 1e-23 * 1e-3 * 4 * np.pi * d**2)
-    #velocity.append(130)
-    #density.append()
 
     # first GRB detected by ALMA
     #names.append("GRB 110715A")
@@ -138,53 +146,76 @@ if __name__=="__main__":
 
     fig, ax = plt.subplots(1, 1, figsize=(7,5))
     t, lum = at2018cow()
-    plt.scatter(t, lum, c='k', marker='*', s=200)
-    plt.text(t, lum, 'AT2018cow', verticalalignment='bottom', fontsize=14)
+    plt.scatter(t, lum, c='k', marker='*', s=250)
+    plt.text(t+2, lum, 'AT2018cow', 
+            verticalalignment='center', fontsize=14)
 
     name, t, lum = tde()
     plt.scatter(
             t, lum, marker='o', edgecolor='k', facecolor='white',
             label="Rel. TDE", s=100)
+    plt.text(t+1, lum, 'SwiftJ1644+57', 
+            verticalalignment='center', fontsize=11)
 
     t, lum, lum_err = sn1993J()
     plt.scatter(
         t, lum, marker='o', s = 100, c='k',
         label="Interacting SN")
-    plt.text(t, lum, "SN1993J")
+    plt.text(
+            t+4, lum, "SN1993J", fontsize=11, 
+            verticalalignment='center')
 
     t, lum, lum_err = sn2011dh()
     plt.errorbar(
             t, lum, yerr=lum_err, fmt='o', ms=10, c='k')
-    plt.annotate('', xy=(0.5,0.5), xytext=(0.05, 0.05),
-            #xycoords='data',
-            textcoords='figure fraction')
-            #arrowprops=dict(facecolor='black', shrink=0.005))
-    plt.text(t, lum, "SN2011dh")
+    plt.annotate('', xy=(3.5,lum), xytext=(t,lum),
+            arrowprops=dict(
+                facecolor='black', headwidth=10, width=1, headlength=7))
+    plt.annotate('', xy=(t,1E38), xytext=(t,lum),
+            arrowprops=dict(
+                facecolor='black', headwidth=10, width=1, headlength=7))
+    plt.text(
+            t+0.3, lum, "SN2011dh", fontsize=11,
+            horizontalalignment='left', verticalalignment='center')
 
-    names, t, lum = grb()
-    for ii,name in enumerate(names):
-        if ii == 0:
-            plt.scatter(t[ii], lum[ii], marker='s', s=100,
-                edgecolor='k', facecolor='white', label="GRB")
-            #plt.text(t[ii], lum[ii], name)
-        else:
-            plt.scatter(t[ii], lum[ii], marker='s', s=100,
-                edgecolor='k', facecolor='white')
-            #plt.text(t[ii], lum[ii], name)
 
+    # GRBs
+    t, lum, lum_err = grb030329()
+    plt.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
+                 mec='k', mfc='white', label="GRB")
+    plt.text(
+            t*1.1, lum, "GRB030329", fontsize=11,
+            horizontalalignment='left', verticalalignment='center')
+
+
+    t, lum, lum_err = grb130427A()
+    plt.text(
+            t+0.06, lum, "GRB130427A", fontsize=11,
+            horizontalalignment='left', verticalalignment='center')
+    plt.annotate('', xy=(0.6,lum), xytext=(t,lum),
+            arrowprops=dict(
+                facecolor='white', headwidth=10, width=1, headlength=7))
+    plt.annotate('', xy=(t,3E42), xytext=(t,lum),
+            arrowprops=dict(
+                facecolor='white', headwidth=10, width=1, headlength=7))
+    plt.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
+                 mec='k', mfc='white')
+
+
+    # Make pretty plot
     ax.set_ylabel(
             r"Peak Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
-    ax.set_xlabel(r"Time to Peak [days]", fontsize=16)
+    ax.set_xlabel(r"Time to Peak [days; rest frame]", fontsize=16)
 
     #ax.set_ylabel("Number of Objects", fontsize=16)
     ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_xlim(3, 100) 
+    ax.set_xlim(0.5, 120) 
     #ax.get_yaxis().set_visible(False)
     ax.set_ylim(1E37, 1E44)
     plt.tight_layout()
-    plt.legend(fontsize=12)
+    plt.legend(fontsize=12, loc='lower left')
     ax.tick_params(axis='both', labelsize=14)
     plt.show()
     #plt.savefig("early_nu_lnu.png")
