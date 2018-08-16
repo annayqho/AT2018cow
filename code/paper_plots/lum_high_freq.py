@@ -140,65 +140,66 @@ def grb():
 
 
 if __name__=="__main__":
-    # you could populate it with GRBs, some supernovae, and TDEs. 
-    # I would do two symbols: one for measurements at >80 GHz, 
-    # and one for all others. 
+    fig, axarr = plt.subplots(1, 2, figsize=(9,5), sharey=True)
 
-    fig, ax = plt.subplots(1, 1, figsize=(7,5))
+    # freq > 90 GHz
+    ax = axarr[0] 
+    ax.text(0.1, 0.9, r"$\nu > 90\,$GHz", fontsize=14, transform=ax.transAxes)
+
     t, lum = at2018cow()
-    plt.scatter(t, lum, c='k', marker='*', s=250)
-    plt.text(t+2, lum, 'AT2018cow', 
+    ax.scatter(t, lum, c='k', marker='*', s=250)
+    ax.text(t+2, lum, 'AT2018cow', 
             verticalalignment='center', fontsize=14)
 
     name, t, lum = tde()
-    plt.scatter(
+    ax.scatter(
             t, lum, marker='o', edgecolor='k', facecolor='white',
             label="Rel. TDE", s=100)
-    plt.text(t+1, lum, 'SwiftJ1644+57', 
+    ax.text(t+1, lum, 'SwiftJ1644+57', 
             verticalalignment='center', fontsize=11)
 
     t, lum, lum_err = sn1993J()
-    plt.scatter(
+    ax.scatter(
         t, lum, marker='o', s = 100, c='k',
         label="Interacting SN")
-    plt.text(
+    ax.text(
             t+4, lum, "SN1993J", fontsize=11, 
             verticalalignment='center')
 
     t, lum, lum_err = sn2011dh()
-    plt.errorbar(
+    ax.errorbar(
             t, lum, yerr=lum_err, fmt='o', ms=10, c='k')
-    plt.annotate('', xy=(3.5,lum), xytext=(t,lum),
+    ax.annotate('', xy=(t/1.5,lum), xytext=(t,lum),
             arrowprops=dict(
                 facecolor='black', headwidth=10, width=1, headlength=7))
-    plt.annotate('', xy=(t,1E38), xytext=(t,lum),
+    ax.annotate('', xy=(t,1E38), xytext=(t,lum),
             arrowprops=dict(
                 facecolor='black', headwidth=10, width=1, headlength=7))
-    plt.text(
+    ax.text(
             t+0.3, lum, "SN2011dh", fontsize=11,
             horizontalalignment='left', verticalalignment='center')
 
 
     # GRBs
     t, lum, lum_err = grb030329()
-    plt.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
+    ax.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
                  mec='k', mfc='white', label="GRB")
-    plt.text(
+    ax.text(
             t*1.1, lum, "GRB030329", fontsize=11,
             horizontalalignment='left', verticalalignment='center')
 
 
     t, lum, lum_err = grb130427A()
-    plt.text(
+    ax.text(
             t+0.06, lum, "GRB130427A", fontsize=11,
             horizontalalignment='left', verticalalignment='center')
-    plt.annotate('', xy=(0.6,lum), xytext=(t,lum),
+    ax.annotate('', xy=(t/1.5,lum), xytext=(t,lum),
             arrowprops=dict(
                 facecolor='white', headwidth=10, width=1, headlength=7))
-    plt.annotate('', xy=(t,3E42), xytext=(t,lum),
+    ax.annotate('', xy=(t,3E42), xytext=(t,lum),
             arrowprops=dict(
                 facecolor='white', headwidth=10, width=1, headlength=7))
-    plt.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
+    ax.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
                  mec='k', mfc='white')
 
 
@@ -211,11 +212,12 @@ if __name__=="__main__":
     #ax.set_ylabel("Number of Objects", fontsize=16)
     ax.set_xscale('log')
     ax.set_yscale('log')
-    ax.set_xlim(0.5, 120) 
+    ax.set_xlim(0.3, 230) 
     #ax.get_yaxis().set_visible(False)
     ax.set_ylim(1E37, 1E44)
-    plt.tight_layout()
-    plt.legend(fontsize=12, loc='lower left')
+    ax.legend(fontsize=12, loc='center left')
     ax.tick_params(axis='both', labelsize=14)
+
+    plt.tight_layout()
     plt.show()
     #plt.savefig("early_nu_lnu.png")
