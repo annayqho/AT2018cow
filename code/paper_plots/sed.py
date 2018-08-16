@@ -48,6 +48,7 @@ def get_sed(day):
     freq.append(1E17)
     nufnu.append(np.interp(day, t_x, lum_x))
     band.append('x')
+
     
     # radio
     nu_rad, fnu_rad = get_spectrum(day)

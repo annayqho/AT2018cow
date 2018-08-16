@@ -86,12 +86,13 @@ if __name__=="__main__":
 
     # middle panel: spectrum on Day 14
     ax = axarr[1]
-    run_day(ax, 24)
+    run_day(ax, 14)
 
     # bottom panel: spectrum on Day 22
     ax = axarr[2]
-    run_day(ax, 22, fit_peak=False)
+    run_day(ax, 22)
     ax.set_xlabel("Frequency [GHz]", fontsize=16)
+    ax.errorbar(671, 31.5, yerr=0.2*31.5, c='r')
 
     # Zoomed-in window
     axins = inset_axes(

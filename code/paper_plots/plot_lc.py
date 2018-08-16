@@ -2,13 +2,14 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
+import matplotlib
 import matplotlib.gridspec as gridspec
 import numpy as np
 from astropy.table import Table
 from xray_lc import get_xray
 
 
-def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
+def sma(ax):
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
         "%s/radio_lc.dat" %data_dir, delimiter="&", format='ascii.no_header')
@@ -28,38 +29,27 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     #choose = np.logical_and(freq > 230, freq < 245)
     choose = freq == 231.5
 
-    if plot230:
-        if unit=='cgs':
-            plot_flux = flux[choose] * 1e-3 * 1e-23 # cgs units from mJy
-            plot_eflux = eflux[choose] * 1e-3 * 1e-23
-        elif unit=='mjy':
-            plot_flux = flux[choose]
-            plot_eflux = eflux[choose]
-        elif unit=='nufnu':
-            plot_flux = flux[choose] * 1e-3 * 1e-23 * freq[choose] * 1e9
-            plot_eflux = eflux[choose] * 1e-3 * 1e-23 * freq[choose] * 1e9
-        else:
-            print("error: I don't recognize this unit")
-        # just for the label
-        ax.scatter(
-                days[choose], plot_flux, 
-                marker='s', c='k',
-                label="231.5 GHz")
-        ax.errorbar(
-                days[choose], plot_flux, plot_eflux, 
-                fmt='s', c='k', lw=1.5)
-        ax.plot(
-                days[choose], plot_flux, linestyle='-', c='k', lw=1.5)
+    plot_flux = flux[choose]
+    plot_eflux = eflux[choose]
+
+    ax.scatter(
+            days[choose], plot_flux, 
+            marker='s', c='k',
+            label="231.5 GHz")
+    ax.errorbar(
+            days[choose], plot_flux, plot_eflux, 
+            fmt='s', c='k', lw=1.5)
+    ax.plot(
+            days[choose], plot_flux, linestyle='-', c='k', lw=1.5)
 
     choose = np.logical_and(freq >= 341.5, freq <= 349)
 
-    if plot340:
-        ax.errorbar(
-                days[choose], flux[choose], eflux[choose],
-                fmt='*', c='grey', lw=0.5, alpha=0.8, ms=13,
-                label="341.5--349 GHz")
-        ax.plot(
-                days[choose], flux[choose], linestyle='-', c='grey', lw=1.5)
+    ax.errorbar(
+            days[choose], flux[choose], eflux[choose],
+            fmt='*', c='grey', lw=0.5, alpha=0.8, ms=13,
+            label="341.5--349 GHz")
+    ax.plot(
+            days[choose], flux[choose], linestyle='-', c='grey', lw=1.5)
 
     # Do 34 GHz
     choose = freq == 34
@@ -82,6 +72,9 @@ def sma(ax, legend, plot230=True, plot340=True, unit='mjy'):
     ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.legend(fontsize=12, loc='lower left')
+    ax.set_yticks([10,50])
+    ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+
 
 
 def atca(ax):
@@ -158,26 +151,25 @@ def atca(ax):
     ax.locator_params(axis='y', nbins=2)
     ax.xaxis.set_tick_params(labelsize=14)
     ax.yaxis.set_tick_params(labelsize=14)
-
     ax.set_yscale('log')
-    #ax.text(
-    #        0.05, 0.9, "ATCA", transform=ax.transAxes, fontsize=14,
-    #        verticalalignment='top')
-
     ax.legend(fontsize=12, loc='lower center', ncol=3)
+    ax.set_yticks([0.1,1])
+    ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+
 
 
 if __name__=="__main__":
     """ Plot ATCA and SMA light curves """
-    fig,axarr = plt.subplots(2,1, figsize=(6,6), sharex=True)
+    fig = plt.subplots(figsize=(6,6))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[3,2], hspace=0.0)
+    gs.update(left=0.15, right=0.9)
 
-    atca_ax = axarr[1]
-    sma_ax = axarr[0]
+    atca_ax = plt.subplot(gs[1])
+    sma_ax = plt.subplot(gs[0], sharex=atca_ax)
     atca(atca_ax)
-    sma(sma_ax, legend=True)
-    sma_ax.locator_params(axis='y', nbins=5)
+    sma(sma_ax)
     plt.setp(sma_ax.get_xticklabels(), visible=False)
-    plt.tight_layout()
+    #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()

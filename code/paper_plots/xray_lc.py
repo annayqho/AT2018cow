@@ -1,10 +1,4 @@
-""" Plot the X-ray light curve vs. the SMA light curves
-
-X ray: 2018 Jun 19 at 10:34:30.742 UT was T0
-First SMA track was 2018 Jun 21, 03:58:25 - 14:18:09 UTC (10h 19m)
-I call this Day 5. That means that the XRT point is Day 3.
-So I need to add 3 days to all XRT points.
-"""
+""" Plot the X-ray light curve """
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,8 +10,13 @@ rc("font", family="serif")
 rc("text", usetex=True)
 
 
-def get_xray():
-    """ Get the X-ray data """
+def get_xrt():
+    """ Get the X-ray data
+    X ray: 2018 Jun 19 at 10:34:30.742 UT was T0
+    First SMA track was 2018 Jun 21, 03:58:25 - 14:18:09 UTC (10h 19m)
+    I call this Day 5. That means that the XRT point is Day 3.
+    So I need to add 3 days to all XRT points.
+    """
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(direc + "/xray_lc.txt", format='ascii')
     t = dat['col1'] / (3600*24) # in days
@@ -26,6 +25,24 @@ def get_xray():
     eflux = dat['col5']
     t_xray = (t-t[0])+3
     return t_xray, flux, eflux
+
+
+def get_nustar():
+    """ Get the NuSTAR data provided by Varun
+    Explosion date MJD 58285
+    """
+    dat = Table.read(direc + "/nustar.txt", format='ascii')
+    dt = dat['mjd'] - 58285
+    flux380 = 10**(dat['flux380'])
+    flux380_low = 10**dat(['flux380_low'])
+    flux380_high = 10**dat(['flux380_high'])
+    flux380_err = (flux380_high-flux380_low)/2
+    flux320 = 10**dat(['flux320'])
+    flux320_low = 10**dat(['flux320_low'])
+    flux320_high = 10**dat(['flux320_high'])
+    flux320_err = (flux320_high-flux320_low)/2
+    return dt, flux380, flux380_err, flux320, flux320_err
+
 
 
 #def plot():
