@@ -1,9 +1,6 @@
-""" Histogram of luminosities at high frequencies
-
-"High" includes: 215.5, 200 GHz, 99.4 GHz
-GRBs
-SNe
-TDEs
+""" 
+A Tau Mv plot showing that we expect there to have been
+more luminous millimeter transients
 """
 
 
@@ -16,16 +13,18 @@ import numpy as np
 from astropy.cosmology import Planck15
 
 
-def at2018cow():
+def at2018cow(ax):
     """ Peak of 215.5 GHz light curve """
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     t = 20
     nu = 215.5E9
-    lum = 53.32 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, nu*lum
+    lum = nu * 53.32 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    ax.scatter(t, lum, c='k', marker='*', s=250)
+    ax.text(t+2, lum, 'AT2018cow', 
+            verticalalignment='center', fontsize=14)
 
 
-def tde():
+def tde(ax):
     """  Peak of the 200 GHz light curve: 14.1 mJy, 16.12 days """
     z = 0.354
     d = Planck15.luminosity_distance(z=z).cgs.value
@@ -33,18 +32,25 @@ def tde():
     flux = np.array([2.11, 14.1])
     lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     t = np.array([19.73, 16.12]) / (1+z)
-    return t, lum
+    ax.scatter(
+            t[0], lum[0], marker='o', edgecolor='k', facecolor='white', s=100)
+    ax.scatter(
+            t[1], lum[1], marker='o', edgecolor='k', facecolor='black', s=100)
+    ax.plot(
+            t, lum, ls='--', c='k')
+    ax.text(t[1]*1.3, lum[1], 'SwiftJ1644+57', 
+            verticalalignment='center', fontsize=11)
 
 
-def sn2003L():
+def sn2003L(ax):
     """ Soderberg et al """
     d = 2.8432575937224894e+26
     nu = 8.5E9
-    flux =2.776
+    flux = 2.776
     flux_err = 0.051
     lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     t = 85.4
-    return t, lum
+    ax.scatter(t, lum, marker='s', edgecolor='k', facecolor='white')
     
 
 def sn1979c():
@@ -220,17 +226,6 @@ def hifreq(ax):
     """
     ax.text(0.1, 0.9, r"$\nu > 90\,$GHz", fontsize=14, transform=ax.transAxes)
 
-    t, lum = at2018cow()
-    ax.scatter(t, lum, c='k', marker='*', s=250)
-    ax.text(t+2, lum, 'AT2018cow', 
-            verticalalignment='center', fontsize=14)
-
-    t, lum = tde()
-    ax.scatter(
-            t[1], lum[1], marker='o', edgecolor='k', facecolor='white',
-            label="Rel. TDE", s=100)
-    ax.text(t[1]*1.3, lum[1], 'SwiftJ1644+57', 
-            verticalalignment='center', fontsize=11)
 
     t, lum = sn1993J()
     ax.scatter(
@@ -277,110 +272,23 @@ def hifreq(ax):
                 facecolor='white', headwidth=10, width=1, headlength=7))
 
 
-    # Make pretty plot
+
+if __name__=="__main__":
+    fig, ax = plt.subplots(1, 1, figsize=(8,5), sharex=True, sharey=True)
+
+    at2018cow(ax)
+    tde(ax)
+    sn2003L(ax)
+
+    ax.tick_params(axis='both', labelsize=14)
+    ax.set_xlim(0.3, 230) 
+    ax.set_ylim(1E38, 1E44)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
     ax.set_ylabel(
             r"Peak Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
     ax.set_xlabel(r"Time to Peak [days; rest frame]", fontsize=16)
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlim(0.3, 230) 
     #ax.legend(fontsize=12, loc='center left')
-    ax.tick_params(axis='both', labelsize=14)
 
-
-
-if __name__=="__main__":
-    fig, axarr = plt.subplots(1, 2, figsize=(9,5), sharex=True, sharey=True)
-
-    ### HIGH-FREQUENCY PLOT
-    ax = axarr[0] 
-    hifreq(ax)
-
-    ### LOW-FREQUENCY PLOT
-    ax = axarr[1]
-    ax.text(0.1, 0.9, r"$\nu < 10\,$GHz", fontsize=14, transform=ax.transAxes)
-    t, lum, lum_err = sn2007bg()
-    ax.scatter(
-        t, lum, marker='o', s = 100, c='k')
-    # ax.text(
-    #         t*1.2, lum, "SN2007bg", fontsize=11, 
-    #         verticalalignment='center')
-
-    t, lum, lum_err = sn2003bg()
-    ax.scatter(
-        t, lum, marker='o', s = 100, c='k')
-    # ax.text(
-    #         t*1.2, lum, "SN2003bg", fontsize=11, 
-    #         verticalalignment='center')
-
-    t, lum, lum_err = grb130427A()
-    # lo first, hi second
-    ax.errorbar(t[0], lum[0], yerr=lum_err[0], fmt='s', ms=10,
-                 mec='k', mfc='white')
-    ax.text(
-            t[0]*1.2, lum[0], "GRB130427A", fontsize=11, 
-            verticalalignment='center')
-
-    t, lum, lum_err = sn2009bb()
-    ax.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
-                 mec='k', mfc='white')
-    # ax.text(
-    #         t, lum/1.5, "SN2009bb", fontsize=11, horizontalalignment='center',
-    #         verticalalignment='top')
-    ax.annotate('', xy=(t/1.5,lum), xytext=(t,lum),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-    ax.annotate('', xy=(t,lum*3), xytext=(t,lum),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-
-
-    t, lum = sn1993J()
-    print(t[0], lum[0])
-    ax.scatter(
-        t[0], lum[0], marker='o', s = 100, c='k')
-    ax.text(
-            t[0]/1.2, lum[0], "SN1993J", fontsize=11, 
-            verticalalignment='center',
-            horizontalalignment='right')
-    
-    t, lum = sn2003L()
-    ax.scatter(
-        t, lum, marker='o', s = 100, c='k')
-    #ax.text(
-    #        t/1.2, lum, "SN2003L", fontsize=11, 
-    #        verticalalignment='center',
-    #        horizontalalignment='right')
-
-
-    t, lum = sn1979c()
-    ax.scatter(
-        t, lum, marker='o', s = 100, c='k')
-
-    t, lum = tde()
-    ax.scatter(
-            t[0], lum[0], marker='o', edgecolor='k', facecolor='white',
-            label="Rel. TDE", s=100)
-    ax.text(t[0], lum[0]/3, 'SwiftJ1644+57', 
-            verticalalignment='center', 
-            horizontalalignment='center', fontsize=11)
-    ax.annotate('', xy=(t[0]*1.5,lum[0]), xytext=(t[0],lum[0]),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-    ax.annotate('', xy=(t[0],lum[0]*3), xytext=(t[0],lum[0]),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlabel(r"Time to Peak [days; rest frame]", fontsize=16)
-    ax.tick_params(axis='both', labelsize=14)
-    ax.set_xlim(0.1,3E3)
-
-    ax.set_ylim(1E36, 1E44)
-    plt.tight_layout()
     plt.show()
-    #plt.savefig("early_nu_lnu.png")
