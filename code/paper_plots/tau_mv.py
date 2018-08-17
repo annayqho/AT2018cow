@@ -13,14 +13,24 @@ import numpy as np
 from astropy.cosmology import Planck15
 
 
+def plot_limits(ax, x, y, ratiox, ratioy, col):
+    """ Plot two arrows from the point """
+    ax.annotate('', xy=(x*ratiox, y), xytext=(x, y),
+            arrowprops=dict(
+                facecolor=col, headwidth=10, width=1, headlength=7))
+    ax.annotate('', xy=(x, y*ratioy), xytext=(x, y),
+            arrowprops=dict(
+                facecolor=col, headwidth=10, width=1, headlength=7))
+
+
 def at2018cow(ax):
     """ Peak of 215.5 GHz light curve """
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     t = 20
     nu = 215.5E9
     lum = nu * 53.32 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    ax.scatter(t, lum, c='k', marker='*', s=250)
-    ax.text(t+2, lum, 'AT2018cow', 
+    ax.scatter(t, lum, c='k', marker='*', s=400)
+    ax.text(t*1.2, lum, 'AT2018cow', 
             verticalalignment='center', fontsize=14)
 
 
@@ -50,10 +60,10 @@ def sn2003L(ax):
     flux_err = 0.051
     lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     t = 85.4
-    ax.scatter(t, lum, marker='s', edgecolor='k', facecolor='white')
+    ax.scatter(t, lum, marker='s', edgecolor='k', facecolor='white', s=100)
     
 
-def sn1979c():
+def sn1979c(ax):
     """ Weiler 1986 
     This is a IIL """
     d = 5.341805643483106e+25
@@ -61,11 +71,10 @@ def sn1979c():
     flux = 10
     lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     t = 1300 # very approximate
-    return t, lum
+    ax.scatter(t, lum, marker='s', edgecolor='k', facecolor='white', s=100)
     
 
-
-def sn1993J():
+def sn1993J(ax):
     """ SN 1993J from Weiler et al. 
     This is the peak of the 99.4 GHz light curve
     There is also a 110 GHz point, but only one,
@@ -81,34 +90,63 @@ def sn1993J():
     lum = freq * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     # lower freq has no uncertainty
     #lum_err = freq * 4.5 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum
+    ax.scatter(
+            t[0], lum[0], marker='s', edgecolor='k', 
+            facecolor='white', s=100)
+    ax.scatter(t[1], lum[1], marker='s', edgecolor='k', 
+            facecolor='black', s=100)
+    ax.plot(t, lum, ls='--', c='k')
+    ax.text(t[0]/1.5, lum[0], "SN1993J", fontsize=11,
+            horizontalalignment='right')
 
 
-def sn2011dh():
-    # SN 2011dh
-    # data at the youngest phase ever of a CC SN: days 3-12
-    # M51: d = 8.03 Mpc; expl date May 31.58
-    # There are limits... peak was earlier and more luminous
+def sn2011dh(ax):
+    """ SN 2011dh
+    M51: d = 8.03 Mpc; expl date May 31.58
+    The high-freq points are limits. The peak was earlier and more luminous.
+    The low-freq points are limits. The peak was later and more luminous.
+    """
     d = 2.5E25
-    nu = 107E9
-    t = 4.08
-    lum = nu * 4.55 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    lum_err = nu * 0.79 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
+    nu = np.array([107E9, 8.5E9])
+    t = np.array([4.08, 11.98])
+    f = np.array([4.55, 3.15])
+    f_err = np.array([0.79, 0.218])
+    lum = nu * f * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = nu * f_err * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    mcols = ['black', 'white']
+    ratios = [1/1.5, 1.5]
+    for ii,nuval in enumerate(nu):
+        plt.scatter(
+                t[ii], lum[ii], marker='s', s=100,
+                facecolor=mcols[ii], edgecolor='black')
+        plot_limits(ax, t[ii], lum[ii], ratios[ii], 3, mcols[ii])
+    plt.plot(t, lum, ls='--', c='k')
+    plt.text(
+            t[0], lum[0]/2, "SN2011dh", fontsize=11, 
+            horizontalalignment='right', verticalalignment='top')
 
 
-def grb030329():
+def grb030329(ax):
     """ Sheth et al. 2003 """
-    freq = 100E9
+    freq = np.array([100E9, 8.5E9])
     z = 0.1686
-    t = 3 / (1+z)
+    t = np.array([3, 14.87]) / (1+z)
     d = Planck15.luminosity_distance(z=z).cgs.value
-    lum = freq * 70 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    lum_err = freq * 6 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
+    f = np.array([70, 19.15])
+    lum = freq * f * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    f_err = np.array([6, 0.08])
+    lum_err = freq * f_err * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    mcols = ['black', 'white']
+    for ii,nuval in enumerate(freq):
+        plt.scatter(
+                t[ii], lum[ii], marker='o', s=100, 
+                facecolor=mcols[ii], edgecolor='k')
+    plt.plot(t, lum, c='k', ls='--')
+    plt.text(t[0], lum[0]*2, "GRB030329", fontsize=11,
+            horizontalalignment='center')
 
 
-def grb130427A():
+def grb130427A(ax):
     """ Perley et al
     They have data from CARMA/PdBI at 90 GHz (3mm)
     But by the time they caught it, it was fading
@@ -121,15 +159,64 @@ def grb130427A():
     lum = freq * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
     flux_err = np.array([0.088, 0.365])
     lum_err = flux_err * freq * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
+    mcols = ['white', 'black']
+    for ii,nuval in enumerate(freq):
+        plt.scatter(
+                t[ii], lum[ii], marker='o', s=100,
+                facecolor=mcols[ii], edgecolor='k')
+    plot_limits(ax, t[1], lum[1], 1/1.5, 3, mcols[1])
+    plt.plot(t, lum, c='k', ls='--')
+    plt.text(t[1], lum[1]*3, "GRB130427A", fontsize=11,
+            horizontalalignment='center')
+
+
+def sn2007bg(ax):
+    """ Salas et al. 2013
+    Peak is resolved for 4.86, 8.46 GHz
+    Let's choose the one where it's more clearly resolved
+    It's a bit weird because there are two peaks, but let's
+    choose the first one because it neglects subsequent interaction
+    """
+    nu = 8.46E9
+    t = 55.9
+    d = Planck15.luminosity_distance(z=0.0346).cgs.value
+    lum = nu * 1.490 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = nu * 0.104 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    plt.scatter(t, lum, marker='s', s=100, 
+            facecolor='white', edgecolor='black')
+
+
+def sn2003bg(ax):
+    """ Soderberg et al.
+    Peak is resolved for 22.5, 15, 8.46, 4.86, 1.43
+    Again, there are two peaks...
+    Let's choose the first peak, 8.46
+    """
+    nu = 8.46E9
+    t = 58
+    d = 6.056450393620008e+25
+    lum = nu * 51.72 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = nu * 1.04 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    plt.scatter(
+            t, lum, marker='s', s=100,
+            facecolor='white', edgecolor='black')
+
+
+def sn2009bb(ax):
+    """ expl date Mar 19 """
+    t = 17
+    d = 1.237517263280789e+26
+    nu = 8.46E9
+    flux = 24.681
+    flux_err = 0.066
+    lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum_err = nu * flux_err * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    plt.scatter(t, lum, marker='o', s=100, edgecolor='k', facecolor='white')
+
 
 
 def grb():
     """ GRBs and Rel SNe """
-    names = []
-    t = []
-    lum = []
-
     # first GRB detected by ALMA
     #names.append("GRB 110715A")
     # freq = 345 GHz
@@ -157,13 +244,15 @@ def grb():
     lum.append(nu * 1.13 * 1e-23 * 1e-3 * 4 * np.pi * d**2)
     #velocity.append(300) # temporary placeholder
 
-    # SN 1998bw
-    t.append(12.4)
+
+def sn1998bw(ax):
+    """ SN 1998bw """
+    t = 12.4
     d = 1.17E26 # cm
     nu = 150E9
-    lum.append(nu * 39 * 1e-23 * 1e-3 * 4 * np.pi * d**2)
-    names.append("SN 1998bw")
-    #velocity.append(1.8)
+    lum = nu * 39 * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    plt.scatter(t, lum, marker='o',
+            facecolor='k', edgecolor='k', s=100)
 
     # SN 2013ak
 
@@ -171,118 +260,27 @@ def grb():
 
     # SN Ib/c: Berger 2003, Chevalier & Fransson 2006
     # 2008D
-    
-    return names, t, lum 
-
-
-def sn2007bg():
-    """ Salas et al. 2013
-    Peak is resolved for 4.86, 8.46 GHz
-    Let's choose the one where it's more clearly resolved
-    It's a bit weird because there are two peaks, but let's
-    choose the first one because it neglects subsequent interaction
-    """
-    nu = 8.46E9
-    t = 55.9
-    d = Planck15.luminosity_distance(z=0.0346).cgs.value
-    lum = nu * 1.490 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    lum_err = nu * 0.104 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
-
-
-def sn2003bg():
-    """ Soderberg et al.
-    Peak is resolved for 22.5, 15, 8.46, 4.86, 1.43
-    Again, there are two peaks...
-    Let's choose the first peak, 8.46
-    """
-    nu = 8.46E9
-    t = 58
-    d = 6.056450393620008e+25
-    lum = nu * 51.72 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    lum_err = nu * 1.04 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
-
-
-def sn2009bb():
-    """ expl date Mar 19 """
-    t = 17
-    d = 1.237517263280789e+26
-    nu = 8.46E9
-    flux = 24.681
-    flux_err = 0.066
-    lum = nu * flux * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    lum_err = nu * flux_err * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    return t, lum, lum_err
-
-
-def hifreq(ax):
-    """ 
-    Plot the high-frequency part 
-
-    Parameters
-    ----------
-    ax: the axis to make this plot on
-    """
-    ax.text(0.1, 0.9, r"$\nu > 90\,$GHz", fontsize=14, transform=ax.transAxes)
-
-
-    t, lum = sn1993J()
-    ax.scatter(
-        t[1], lum[1], marker='o', s = 100, c='k',
-        label="Interacting SN")
-    ax.text(
-            t[1]+4, lum[1], "SN1993J", fontsize=11, 
-            verticalalignment='center')
-
-    t, lum, lum_err = sn2011dh()
-    ax.errorbar(
-            t, lum, yerr=lum_err, fmt='o', ms=10, c='k')
-    ax.annotate('', xy=(t/1.5,lum), xytext=(t,lum),
-            arrowprops=dict(
-                facecolor='black', headwidth=10, width=1, headlength=7))
-    ax.annotate('', xy=(t,1E38), xytext=(t,lum),
-            arrowprops=dict(
-                facecolor='black', headwidth=10, width=1, headlength=7))
-    ax.text(
-            t+0.3, lum, "SN2011dh", fontsize=11,
-            horizontalalignment='left', verticalalignment='center')
-
-
-    # GRBs
-    t, lum, lum_err = grb030329()
-    ax.errorbar(t, lum, yerr=lum_err, fmt='s', ms=10,
-                 mec='k', mfc='white', label="GRB")
-    ax.text(
-            t*1.1, lum, "GRB030329", fontsize=11,
-            horizontalalignment='left', verticalalignment='center')
-
-
-    t, lum, lum_err = grb130427A()
-    ax.errorbar(t[1], lum[1], yerr=lum_err[1], fmt='s', ms=10,
-                 mec='k', mfc='white')
-    ax.text(
-            t[1]+0.06, lum[1], "GRB130427A", fontsize=11,
-            horizontalalignment='left', verticalalignment='center')
-    ax.annotate('', xy=(t[1]/1.5,lum[1]), xytext=(t[1],lum[1]),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-    ax.annotate('', xy=(t[1],3E42), xytext=(t[1],lum[1]),
-            arrowprops=dict(
-                facecolor='white', headwidth=10, width=1, headlength=7))
-
 
 
 if __name__=="__main__":
-    fig, ax = plt.subplots(1, 1, figsize=(8,5), sharex=True, sharey=True)
+    fig, ax = plt.subplots(1, 1, figsize=(8,6), sharex=True, sharey=True)
 
     at2018cow(ax)
     tde(ax)
     sn2003L(ax)
+    sn1979c(ax)
+    sn1993J(ax)
+    sn2011dh(ax)
+    grb030329(ax)
+    grb130427A(ax)
+    sn2007bg(ax)
+    sn2003bg(ax)
+    sn2009bb(ax)
+    sn1998bw(ax)
 
     ax.tick_params(axis='both', labelsize=14)
-    ax.set_xlim(0.3, 230) 
-    ax.set_ylim(1E38, 1E44)
+    #ax.set_xlim(0.3, 2000) 
+    #ax.set_ylim(1E36, 1E44)
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_ylabel(
