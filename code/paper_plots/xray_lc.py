@@ -9,6 +9,7 @@ from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
 
+direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
 
 def get_xrt():
     """ Get the X-ray data
@@ -17,7 +18,6 @@ def get_xrt():
     I call this Day 5. That means that the XRT point is Day 3.
     So I need to add 3 days to all XRT points.
     """
-    direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(direc + "/xray_lc.txt", format='ascii')
     t = dat['col1'] / (3600*24) # in days
     # count to flux conversion (absorbed): 4.26 × 10-11 erg cm-2 ct-1
@@ -34,12 +34,12 @@ def get_nustar():
     dat = Table.read(direc + "/nustar.txt", format='ascii')
     dt = dat['mjd'] - 58285
     flux380 = 10**(dat['flux380'])
-    flux380_low = 10**dat(['flux380_low'])
-    flux380_high = 10**dat(['flux380_high'])
+    flux380_low = 10**dat['flux380_low']
+    flux380_high = 10**dat['flux380_high']
     flux380_err = (flux380_high-flux380_low)/2
-    flux320 = 10**dat(['flux320'])
-    flux320_low = 10**dat(['flux320_low'])
-    flux320_high = 10**dat(['flux320_high'])
+    flux320 = 10**dat['flux320']
+    flux320_low = 10**dat['flux320_low']
+    flux320_high = 10**dat['flux320_high']
     flux320_err = (flux320_high-flux320_low)/2
     return dt, flux380, flux380_err, flux320, flux320_err
 

@@ -14,7 +14,7 @@ from astropy.cosmology import Planck15
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
 from get_optical import get_opt_sed
-from xray_lc import get_xray
+from xray_lc import get_xrt, get_nustar
 from get_radio import get_spectrum, get_data_all
 
 d = Planck15.luminosity_distance(z=0.014).cgs.value
@@ -43,9 +43,17 @@ def get_sed(day):
     band = []
 
     # X rays
-    t_x, f_x, ef_x = get_xray()
+    t_x, f_x, ef_x = get_xrt()
     lum_x = f_x * 4 * np.pi * d**2
     freq.append(1E17)
+    nufnu.append(np.interp(day, t_x, lum_x))
+    band.append('x')
+
+    t_x, flux380, flux380_err, flux320, flux320_err = get_nustar()
+    lum_x = flux380 * 4 * np.pi * d**2
+    # 3 keV = 7.2E17
+    # 20 keV = 4.8E18
+    freq.append(1E18)
     nufnu.append(np.interp(day, t_x, lum_x))
     band.append('x')
 
@@ -61,7 +69,6 @@ def get_sed(day):
     nu_opt, fnu_opt = get_opt_sed(day)
     for ii,val in enumerate(nu_opt):
         freq.append(val)
-        print(fnu_opt[ii])
         nufnu.append(val*mjy_to_lum(fnu_opt[ii]))
         band.append('o')
 
@@ -87,7 +94,6 @@ def plot_ind(b, x, y, day, col):
         xr = x[b == 'r']
         yr = y[b == 'r']
         xvals = np.linspace(xr[-1], 1E18)
-        print(plot_ind)
         yvals = yr[-1] * (xvals/xr[-1])**(plot_ind)
         plt.plot(xvals, yvals, c=col, ls='--')
 
@@ -100,7 +106,7 @@ def plot_xray(x, y, col):
     # 0.1 -- 10 keV
     # 2.4E16 Hz -- 2.4E18 Hz
     xvals = np.linspace(2.4E16, 2.4E18)
-    yvals = y[-1] * (xvals/x[-1])**(0.46)
+    yvals = y * (xvals/x)**(0.46)
     plt.plot(xvals, yvals, ls='-', c=col)
 
 
@@ -120,9 +126,8 @@ for ii,day in enumerate(days):
     plt.scatter(
             x, y, edgecolor='k', facecolor=cols[ii], 
             label=r"Day %s" %(day), marker=markers[ii], lw=0.5)
-    #choose = b == 'r'
-    #plt.plot(x[choose], y[choose], c=cols[ii])
-    plot_xray(x, y, cols[ii])
+    choose = b == 'x'
+    plot_xray(x[choose][0], y[choose][0], cols[ii])
     plot_ind(b, x, y, day, cols[ii])
 
 # Band 9 point
@@ -150,5 +155,5 @@ plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.png")
-#plt.show()
+#plt.savefig("sed.png")
+plt.show()
