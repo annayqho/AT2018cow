@@ -77,6 +77,18 @@ def at2018cow(ax):
     plot_point(ax, d, nu, t, 53.32, '*', name='AT2018cow')
 
 
+def maxi(ax):
+    """ data from Dillon """
+    d = 4.62E26
+    t = 4*365
+    nu = 6E9
+    f = 6.16
+    lum = plot_point(ax, d, nu, t, f, '*')
+    plt.text(t/1.2, lum, 'MAXI 140814A', fontsize=11,
+            horizontalalignment='right', verticalalignment='center')
+
+
+
 def tde(ax):
     """  Peak of the 200 GHz light curve: 14.1 mJy, 16.12 days """
     z = 0.354
@@ -267,6 +279,7 @@ if __name__=="__main__":
     fig, ax = plt.subplots(1, 1, figsize=(8,6), sharex=True, sharey=True)
 
     at2018cow(ax)
+    maxi(ax)
     tde(ax)
     sn2003L(ax)
     sn1979c(ax)
@@ -290,4 +303,5 @@ if __name__=="__main__":
     ax.set_xlabel(r"Time to Peak [days; rest frame]", fontsize=16)
     #ax.legend(fontsize=12, loc='center left')
 
-    plt.show()
+    #plt.show()
+    plt.savefig("mm_tau_lum.png")
