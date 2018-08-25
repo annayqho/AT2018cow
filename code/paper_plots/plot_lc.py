@@ -83,7 +83,7 @@ def atca(ax):
     f = (y / 10**(17)) * 1e23 * 1e3
     fact = 100
     ax.scatter(
-            x, fact*f, c='grey', s=10)
+            x, fact*f, c='grey', s=3)
     ax.plot(
             x, fact*f, lw=0.5, c='grey', 
             label="0.3-10 keV($\\times %s$)" %fact)
@@ -173,5 +173,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
