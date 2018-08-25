@@ -18,7 +18,7 @@ limits = []
 for ii,name in enumerate(names):
     c = SkyCoord(ra_raw[ii], dec_raw[ii], unit=(u.hourangle, u.deg))
     print(c.ra.deg, c.dec.deg)
-    limits = search_vlass(name, c, dates[ii])
+    limits.append(search_vlass(name, c, dates[ii]))
 
 ncol = len(headings) 
 colstr = ""
