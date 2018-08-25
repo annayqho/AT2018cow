@@ -13,11 +13,19 @@ headings = np.array(['ID', 'RA', 'Dec', 'Expl Date', 'Limit'])
 label = "vlass"
 caption = "VLASS Limits for Rapidly Evolving Transients"
 names, ra_raw, dec_raw, dates, z = get_transients()
+dt = []
 limits = []
 
 for ii,name in enumerate(names):
     c = SkyCoord(ra_raw[ii], dec_raw[ii], unit=(u.hourangle, u.deg))
-    limits.append(search_vlass(name, c, dates[ii]))
+    out = search_vlass(name, c, dates[ii])
+    if out is not None:
+        lim, obsdate =out
+        limits.append(lim)
+        dt.append(obsdate-dates[ii])
+    else:
+        limits.append(None)
+        dt.append(None)
 
 ncol = len(headings) 
 colstr = ""
@@ -52,7 +60,7 @@ for ii,ID in enumerate(names):
         tstr = '-'
     else:
         limitstr = limits[ii]
-        tstr = dates[ii]
+        tstr = dt[ii]
     row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
     outputf.write(row)
 outputf.write("\enddata \n")
