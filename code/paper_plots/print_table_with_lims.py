@@ -46,6 +46,7 @@ outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
 for ii,ID in enumerate(names):
+    print(limits[ii])
     if np.logical_or(limits[ii] == None, limits[ii] == 'nan'):
         limitstr = '-'
         tstr = '-'

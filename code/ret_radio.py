@@ -1,9 +1,4 @@
 """ Radio analysis of rapidly evolving transients
-
-Assuming they have the same 230 GHz luminosity as AT2018cow,
-what would their flux densities be given their redshift distribution?
-
-And what is the distribution across redshift?
 """
 
 import numpy as np
@@ -19,7 +14,7 @@ from astropy.time import Time
 import time
 
 def get_transients():
-    """ Get data on the rapidly volving transients """
+    """ Get data on the rapidly evolving transients """
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     drout = Table.read(
         "%s/drout_transients.txt" %data_dir, 
@@ -27,8 +22,11 @@ def get_transients():
     des = Table.read(
         "%s/des_transients.txt" %data_dir, 
         format="ascii.no_header", delimiter="&")
-    des_dates = Table.read(
+    des_dates_gs = Table.read(
         "%s/des_transients_dates.txt" %data_dir, 
+        format="ascii.no_header", delimiter="&")
+    des_dates_b = Table.read(
+        "%s/des_transients_bronze_dates.txt" %data_dir, 
         format="ascii.no_header", delimiter="&")
     ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
 
@@ -37,8 +35,8 @@ def get_transients():
     z_raw = np.hstack((drout['col5'], des['col4'], ksn[2]))
     names_raw = np.hstack((drout['col1'], des['col1'], 'KSN'))
 
-    names_mjd = des_dates['col1']
-    mjd = des_dates['col2']
+    names_mjd = np.hstack((des_dates_gs['col1'], des_dates_b['col1']))
+    mjd = np.hstack((des_dates_gs['col2'], des_dates_b['col2']))
 
     dates = []
     for date_raw in drout['col2']:
