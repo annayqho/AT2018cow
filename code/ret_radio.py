@@ -27,7 +27,7 @@ def get_transients():
         format="ascii.no_header", delimiter="&")
     des_dates_b = Table.read(
         "%s/des_transients_bronze_dates.txt" %data_dir, 
-        format="ascii.no_header", delimiter="&")
+        format="ascii.no_header", delimiter=" ")
     ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
 
     ra_raw = np.hstack((drout['col3'], des['col2'], ksn[0]))
@@ -53,11 +53,8 @@ def get_transients():
         date = Time("%s-%s-%s" %(yyyy,t,dd), format='iso')
         dates.append(date.mjd)
     for name in des['col1']:
-        if name in names_mjd:
-            ind = np.where(names_mjd==name)[0][0]
-            dates.append((Time(mjd[ind], format='mjd')).mjd)
-        else:
-            dates.append(-1)
+        ind = np.where(names_mjd==name)[0][0]
+        dates.append((Time(mjd[ind], format='mjd')).mjd)
     dates.append((Time(2457232.70, format='jd')).mjd)
     dates = np.array(dates)
 
