@@ -17,7 +17,6 @@ limits = []
 
 for ii,name in enumerate(names):
     c = SkyCoord(ra_raw[ii], dec_raw[ii], unit=(u.hourangle, u.deg))
-    print(c.ra.deg, c.dec.deg)
     limits.append(search_vlass(name, c, dates[ii]))
 
 ncol = len(headings) 
@@ -47,7 +46,13 @@ outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
 for ii,ID in enumerate(names):
-    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], dates[ii], limits[ii])
+    if np.logical_or(limits[ii] == None, limits[ii] == 'nan'):
+        limitstr = '-'
+        tstr = '-'
+    else:
+        limitstr = limits[ii]
+        tstr = dates[ii]
+    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
     outputf.write(row)
 outputf.write("\enddata \n")
 outputf.write("\end{deluxetable} \n")
