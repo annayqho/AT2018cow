@@ -279,7 +279,7 @@ if __name__=="__main__":
     fig, ax = plt.subplots(1, 1, figsize=(8,6), sharex=True, sharey=True)
 
     at2018cow(ax)
-    maxi(ax)
+    #maxi(ax)
     tde(ax)
     sn2003L(ax)
     sn1979c(ax)
