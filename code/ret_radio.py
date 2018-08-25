@@ -20,12 +20,16 @@ import time
 
 def get_transients():
     """ Get data on the rapidly volving transients """
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     drout = Table.read(
-        "../data/drout_transients.txt", format="ascii.no_header", delimiter="&")
+        "%s/drout_transients.txt" %data_dir, 
+        format="ascii.no_header", delimiter="&")
     des = Table.read(
-        "../data/des_transients.txt", format="ascii.no_header", delimiter="&")
+        "%s/des_transients.txt" %data_dir, 
+        format="ascii.no_header", delimiter="&")
     des_dates = Table.read(
-        "../data/des_transients_dates.txt", format="ascii.no_header", delimiter="&")
+        "%s/des_transients_dates.txt" %data_dir, 
+        format="ascii.no_header", delimiter="&")
     ksn = np.array(["13:31:51.64", "-10:44:09.48", 0.090])
 
     ra_raw = np.hstack((drout['col3'], des['col2'], ksn[0]))
