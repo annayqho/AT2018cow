@@ -1,7 +1,3 @@
-# before running, don't forget to
-# delete the lines with AMI
-# run :%s///g
-
 import matplotlib
 from matplotlib import rc
 rc("font", family="serif")
