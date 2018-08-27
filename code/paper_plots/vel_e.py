@@ -15,6 +15,28 @@ from astropy.table import Table
 from astropy.cosmology import Planck15
 
 
+def chev_lines(ax, x, v):
+    """ Equation 16 from Chevalier 1998 
+    
+    Parameters
+    ----------
+    ax: axis to plot the stuff on
+    x: the value of (dt / 1 d) * (nu_p / 5 GHz)
+    v: velocity in units of c
+    """
+    logy = (36/17)*\
+            ((17*26/36) + \
+            np.log10(v*3e10/(10*3.1E9)) + \
+            np.log10(x))
+    y = 10**logy
+    ax.plot(x, y, ls='--', c='k')
+    rotangle = 55
+    ax.text(
+            x[5500], y[5500], "$R/\Delta t = %sc$" %v, 
+            fontsize=14, rotation=rotangle,
+            horizontalalignment='center', verticalalignment='top')
+    return y
+
 def vele(ax):
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     inputf = direc + "/Soderberg2009Fig4.1"
@@ -88,32 +110,19 @@ def peaklum(ax):
             label="Rel. SNe")
 
     # Lines
-    rotangle = 55
-    # v = 0.1c
-    ax.plot([4.3,2300], [1E25,4.4E30], ls='--', c='k')
-    ax.text(
-            8, 2E25, "$R/\Delta t = 0.1c$", fontsize=14, rotation=rotangle,
-            horizontalalignment='left', verticalalignment='bottom')
-
-    # v = 0.01c
-    ax.plot([43,6000], [1E25, 3E29], ls='--', c='k')
-    ax.text(
-            80, 2E25, "$R/\Delta t = 0.01c$", fontsize=14, rotation=rotangle,
-            horizontalalignment='left', verticalalignment='bottom')
-
-    # v = c
-    ax.plot([1, 207], [7E25, 4e30], ls='--', c='k')
-    ax.text(
-            2, 1.8E26, "$R/\Delta t = c$", fontsize=14, rotation=rotangle,
-            horizontalalignment='left', verticalalignment='bottom')
+    x = np.logspace(0, 4, 10000)
+    y = chev_lines(ax, x, 0.1)
+    y = chev_lines(ax, x, 1)
+    y = chev_lines(ax, x, 0.01)
 
     # AT2018cow
     ax.scatter(
-            22*100/5, 2E29, 
-            marker='*', s=300, facecolors='white', edgecolors='black')
+            22*100/5, 2E29, marker='*', s=300, 
+            facecolors='white', edgecolors='black')
     ax.text(
-            22*100/5, 3E29, "AT2018cow", 
-            fontsize=14, verticalalignment='bottom', horizontalalignment='center')
+            22*100/5, 3E29, "AT2018cow", fontsize=14, 
+            verticalalignment='bottom', 
+            horizontalalignment='center')
 
     # MAXI 140814A
     # ax.scatter(
