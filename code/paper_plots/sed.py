@@ -74,7 +74,7 @@ def get_sed(day):
     return band, freq, nufnu
 
 
-def plot_ind(b, x, y, day, col):
+def ext_ind(b, x, y, day, col):
     """ Extrapolate spectral index for a certain day """
     days = np.array([10, 14, 22])
     ind = np.array([-1.8, -0.8, -1.2])
@@ -87,6 +87,21 @@ def plot_ind(b, x, y, day, col):
         xvals = np.linspace(xr[-1], 1E18)
         yvals = yr[-1] * (xvals/xr[-1])**(plot_ind)
         plt.plot(xvals, yvals, c=col, ls='--')
+
+
+def plot_ind(b, x, y, day, col):
+    """ Extrapolate spectral index for a certain day """
+    days = np.array([22])
+    ind = np.array([-0.7])
+    new_ind = 1 + ind
+    if sum(days==day) > 0:
+        plot_ind = new_ind[days==day]
+        # plot from the last radio point
+        xr = x[b == 'r']
+        yr = y[b == 'r']
+        xvals = np.linspace(xr[-1], 2E16)
+        yvals = yr[-1] * (xvals/xr[-1])**(plot_ind)
+        plt.plot(xvals, yvals, c='k', ls=':', lw=0.5)
 
 
 def plot_xray(x, y, col):
@@ -150,17 +165,10 @@ def plot_nustar(f, ef, minf, maxf):
                 center, lum[ii], 
                 xerr=ec, yerr=elum[ii], c=cols[ii])
 
-# 3-10 keV
-plot_nustar(f1, ef1, 7.25396779e17, 2.41798926e18)
-
-# 10-20 keV
-plot_nustar(f2, ef2, 2.41798926e18, 4.84E18)
-
-# 20-40 keV 
-plot_nustar(f3, ef3, 4.84E18, 9.67E18)
-
-# 40-80 keV
-plot_nustar(f4, ef4, 9.67E18, 1.93E19)
+plot_nustar(f1, ef1, 7.25e17, 2.42e18) # 3-10 keV
+plot_nustar(f2, ef2, 2.41798926e18, 4.84E18) # 10-20 keV
+plot_nustar(f3, ef3, 4.84E18, 9.67E18) # 20-40 keV
+plot_nustar(f4, ef4, 9.67E18, 1.93E19) # 40-80 keV
 
 # Model for Epoch 2 is a power-law:
 norm = 9E-4 # photons/keV/cm2/s at 1 keV
@@ -169,7 +177,7 @@ alpha = 1.39
 nu = np.linspace(7.25E17, 1.93E19, 1000)
 energy = nu * 6.626E-27
 y = f * energy**(-alpha) * 4 * np.pi * d**2
-plt.plot(nu, y, ls=':', c='k')
+#plt.plot(nu, y, ls=':', c='k')
 
 plt.xscale('log')
 plt.yscale('log')
