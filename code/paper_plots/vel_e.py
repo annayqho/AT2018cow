@@ -12,6 +12,7 @@ rc("text", usetex=True)
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.table import Table
+from astropy.cosmology import Planck15
 
 
 def vele(ax):
@@ -78,13 +79,13 @@ def peaklum(ax):
 
     choose = np.logical_or(y < 9E27, x > 50)
     ax.scatter(
-            x[choose], y[choose], marker='o', c='k', s=150,
+            x[choose], y[choose], marker='o', c='k', s=100,
             label="SNe Ibc")
 
     choose = np.logical_and(y > 8E27, x < 80)
     ax.scatter(
-            x[choose], y[choose], marker='s', c='k', s=150,
-            label="GRBs/Rel. SNe")
+            x[choose], y[choose], marker='s', c='k', s=100,
+            label="Rel. SNe")
 
     # Lines
     rotangle = 55
@@ -122,6 +123,13 @@ def peaklum(ax):
     #         4*365*6/5, 9e28, "MAXI 140814A", 
     #         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
+    # Swift J1644+57
+    # d = Planck15.luminosity_distance(z=0.354).cgs.value
+    # ax.scatter(
+    #         22*80/5, 25*1e-3*1e-23*4*np.pi*d**2,
+    #         marker='s', s=100, facecolors='white', edgecolors='black',
+    #         label="Rel. TDE")
+
     ax.legend(loc='upper left', fontsize=14)
 
     ax.set_xlim(1, 6000)
@@ -138,8 +146,8 @@ def peaklum(ax):
     
     
 fig,axarr = plt.subplots(1,2, figsize=(10,5))
-vele(axarr[0])
-peaklum(axarr[1])
+vele(axarr[1])
+peaklum(axarr[0])
 plt.tight_layout()
 
 #plt.show()

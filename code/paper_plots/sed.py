@@ -101,7 +101,7 @@ def plot_ind(b, x, y, day, col):
         yr = y[b == 'r']
         xvals = np.linspace(xr[-1], 2E16)
         yvals = yr[-1] * (xvals/xr[-1])**(plot_ind)
-        plt.plot(xvals, yvals, c='k', ls=':', lw=0.5)
+        plt.plot(xvals, yvals, c='k', ls=':', lw=1)
 
 
 def plot_xray(x, y, col):
@@ -189,5 +189,5 @@ plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
-#plt.savefig("sed.png")
-plt.show()
+plt.savefig("sed.png")
+#plt.show()
