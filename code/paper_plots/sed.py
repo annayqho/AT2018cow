@@ -49,15 +49,6 @@ def get_sed(day):
     nufnu.append(np.interp(day, t_x, lum_x))
     band.append('x')
 
-    t_x, flux380, flux380_err, flux320, flux320_err = get_nustar()
-    lum_x = flux380 * 4 * np.pi * d**2
-    # 3 keV = 7.2E17
-    # 20 keV = 4.8E18
-    freq.append(1E18)
-    nufnu.append(np.interp(day, t_x, lum_x))
-    band.append('x')
-
-    
     # radio
     nu_rad, fnu_rad = get_spectrum(day)
     for ii,val in enumerate(nu_rad):
@@ -145,6 +136,41 @@ plt.errorbar(
         nu_opt, lum_opt, 
         fmt='*', mec='k', mfc='white', label=r"Day 24", ms=13, mew=0.5)
 
+# Plot the NuSTAR data
+f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
+cols = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7']
+
+def plot_nustar(f, ef, minf, maxf):
+    center = (minf+maxf)/2
+    ec = maxf-center
+    lum = f * 10**(-12) * 4 * np.pi * d**2
+    elum = ef * 10**(-12) * 4 * np.pi * d**2
+    for ii in np.arange(len(lum)):
+        plt.errorbar(
+                center, lum[ii], 
+                xerr=ec, yerr=elum[ii], c=cols[ii])
+
+# 3-10 keV
+plot_nustar(f1, ef1, 7.25396779e17, 2.41798926e18)
+
+# 10-20 keV
+plot_nustar(f2, ef2, 2.41798926e18, 4.84E18)
+
+# 20-40 keV 
+plot_nustar(f3, ef3, 4.84E18, 9.67E18)
+
+# 40-80 keV
+plot_nustar(f4, ef4, 9.67E18, 1.93E19)
+
+# Model for Epoch 2 is a power-law:
+norm = 9E-4 # photons/keV/cm2/s at 1 keV
+f = norm * 10**(-12)  # maybe in units 1E-12 erg/cm2/s
+alpha = 1.39
+nu = np.linspace(7.25E17, 1.93E19, 1000)
+energy = nu * 6.626E-27
+y = f * energy**(-alpha) * 4 * np.pi * d**2
+plt.plot(nu, y, ls=':', c='k')
+
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel("Frequency [Hz]", fontsize=16)
@@ -155,5 +181,5 @@ plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.png")
-#plt.show()
+#plt.savefig("sed.png")
+plt.show()

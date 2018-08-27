@@ -27,21 +27,38 @@ def get_xrt():
     return t_xray, flux, eflux
 
 
+def cflux(val):
+    """ Convert the raw NuSTAR flux value """
+    out = val.split('$')
+    if len(out) == 1:
+        return -99, -99
+    else:
+        flux = val.split('$')[0]
+        eflux = val.split('$')[2].strip('\\')
+        return float(flux), float(eflux)
+
+
 def get_nustar():
     """ Get the NuSTAR data provided by Varun
     Explosion date MJD 58285
     """
-    dat = Table.read(direc + "/nustar.txt", format='ascii')
-    dt = dat['mjd'] - 58285
-    flux380 = 10**(dat['flux380'])
-    flux380_low = 10**dat['flux380_low']
-    flux380_high = 10**dat['flux380_high']
-    flux380_err = (flux380_high-flux380_low)/2
-    flux320 = 10**dat['flux320']
-    flux320_low = 10**dat['flux320_low']
-    flux320_high = 10**dat['flux320_high']
-    flux320_err = (flux320_high-flux320_low)/2
-    return dt, flux380, flux380_err, flux320, flux320_err
+    dat = Table.read(
+            direc + "/nustar.txt", format='ascii', delimiter='&')
+    dt = dat['MJD'] - 58285
+    out = np.array([cflux(val) for val in dat['Flux1']])
+    # each 'f' is the spectrum for a given epoch
+    f1 = out[:,0]
+    ef1 = out[:,1]
+    out = np.array([cflux(val) for val in dat['Flux2']])
+    f2 = out[:,0]
+    ef2 = out[:,1]
+    out = np.array([cflux(val) for val in dat['Flux3']])
+    f3 = out[:,0]
+    ef3 = out[:,1]
+    out = np.array([cflux(val) for val in dat['Flux4']])
+    f4 = out[:,0]
+    ef4 = out[:,1]
+    return f1, ef1, f2, ef2, f3, ef3, f4, ef4
 
 
 
