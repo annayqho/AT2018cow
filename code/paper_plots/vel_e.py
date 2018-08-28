@@ -76,10 +76,10 @@ def vele(ax):
             marker='s', s=100, facecolors='white', edgecolors='black',
             label="Rel. TDE")
 
-    ax.legend(loc='upper left', fontsize=14)
+    ax.legend(loc='lower right', fontsize=14)
 
-    ax.set_xlim(0.03, 8)
-    ax.set_ylim(1E45, 1E52)
+    ax.set_xlim(0.03, 2)
+    ax.set_ylim(1E45, 1E50)
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.tick_params(axis='both', labelsize=14)
