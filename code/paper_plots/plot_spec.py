@@ -44,12 +44,19 @@ def run_day(ax, day, formatting=True, fit_peak=True, quad=False):
 
         # fit and plot a nu^something line
         xfit = np.linspace(50, 1000)
-        m,b,em = fit_spindex(nu[nu>180], flux[nu>180], 0.10*flux[nu>180])
+        if day == 10:
+            m = -1.9
+            em = 0.4
+            b = 6.06
+        else:
+            m = -1.9
+            em = 0.4
+            b = 6.06
         yfit = 10**(m*np.log10(xfit)+b)
         ax.plot(xfit, yfit, ls=':', c='k')
         ax.text(
-                0.8, 0.85, "$F_\\nu \propto \\nu^{%s}$" %np.round(m,1), 
-                transform=ax.transAxes, horizontalalignment='left', fontsize=14)
+                0.95, 0.85, "$F_\\nu \propto \\nu^{%s \pm %s}$" %(m,em), 
+                transform=ax.transAxes, horizontalalignment='right', fontsize=14)
 
         # the lines join at (144, 92)
         #ax.text(
