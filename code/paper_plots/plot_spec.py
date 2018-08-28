@@ -15,6 +15,13 @@ from get_radio import get_data_all, get_spectrum
 from synchrotron_fit import self_abs, fit_self_abs
 
 
+def fit_spindex(t, f, ef):
+    """ Fit the spectral index using least squares in log space
+    Estimate the uncertainty using a Monte Carlo analysis
+    """
+
+
+
 def run_day(ax, day, formatting=True, fit_peak=True, quad=False):
     """ Run this for one day """
     nu,flux = get_spectrum(day)
@@ -44,10 +51,7 @@ def run_day(ax, day, formatting=True, fit_peak=True, quad=False):
 
         # fit and plot a nu^something line
         xfit = np.linspace(50, 1000)
-        m,b = np.polyfit(
-                np.log10(nu[nu>180]),
-                np.log10(flux[nu>180]),
-                deg = 1)
+        m,b,em = fit_spindex(nu[nu>180], flux[nu>180], 0.10*flux[nu>180])
         yfit = 10**(m*np.log10(xfit)+b)
         ax.plot(xfit, yfit, ls=':', c='k')
         ax.text(

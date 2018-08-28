@@ -25,46 +25,44 @@ def plot_limits(ax, x, y, ratiox, ratioy, col):
                 facecolor=col, headwidth=10, width=1, headlength=7))
 
 
-def plot_line(ax, d, nu, t, f, marker, name, labside):
+def plot_line(ax, d, nu, t, f, name, label):
     """ Plot a line
-    If nu > 90 GHz, make it black
-    If nu < 10 GHz, make it black as well but with dashes
+    If nu > 90 GHz, make it on the left axis
+    If nu < 10 GHz, make it on the right axis
     
     Parameters
     ----------
     f: flux in mJy
-    labside: side at which to start the name (left or right)
+    name: name of the source
+    label: label to use as the legend (which also determines the col)
     """
-    if labside=='right':
-        ind = 0
-    elif labside=='left':
-        ind = -1
     lum = nu * f * 1e-23 * 1e-3 * 4 * np.pi * d**2
     fs = 11
-    if name:
-        if name=='AT2018cow':
-            fs = 14
-    if marker=='*':
+    if name=='AT2018cow':
+        marker='*'
         s=150
+        col='k'
     else:
-        s=50
-    if nu < 10E9:
-        ax.scatter(
-                t, lum, facecolor='white', edgecolor='black', 
-                marker=marker, s=s, alpha=0.7)
-        ax.plot(t, lum, c='black', ls='--', alpha=0.7)
-        ax.text(t[ind]*0.95, lum[ind], name, fontsize=fs,
-                verticalalignment='center',
-                horizontalalignment=labside)
-    elif nu > 90E9:
-        ax.scatter(
-                t, lum, facecolor='k', edgecolor='k', marker=marker, s=s)
-        ax.plot(t, lum, c='black', ls='-')
-        ax.text(t[ind]*1.05, lum[ind], name, fontsize=fs,
-                verticalalignment='center',
-                horizontalalignment=labside)
-    else:
-        print("unknown freq range")
+        if label=='SN':
+            marker='o'
+            col='k'
+            s=50
+        elif label=='GRB':
+            marker='o'
+            col='white'
+            s=50
+        elif label=='Rel. SN':
+            marker='s'
+            col='k'
+            s=50
+        elif label=='Rel. TDE':
+            marker='s'
+            col='white'
+            s=50
+    ax.scatter(
+            t, lum, facecolor=col, edgecolor='black', 
+            marker=marker, s=s)
+    ax.plot(t, lum, c='black', ls='-')
     return lum
 
 
@@ -89,13 +87,16 @@ def at2018cow(ax):
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     choose = np.logical_and(tel=='SMA', freq==231.5)
     nu = 231.5E9
-    plot_line(
-            ax[0], d, nu, days[choose], flux[choose], '*', 
-            'AT2018cow', 'left')
+    lum = plot_line(
+            ax[0], d, nu, days[choose], flux[choose], 'AT2018cow', None)
+
+    ax[0].text(days[-1]*1.05, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
     choose = np.logical_and(tel=='ATCA', freq==9)
     nu = 9E9
     plot_line(
-            ax[1], d, nu, days[choose], flux[choose], '*', 'AT2018cow', 'left')
+            ax[1], d, nu, days[choose], flux[choose], 'AT2018cow', None)
 
 
 
@@ -121,11 +122,11 @@ def tde(ax):
     nu = 225E9
     t = np.array([7.20, 7.86, 14.10, 15.12, 17.11, 18.13]) / (1+z)
     flux = np.array([14.9, 11.7, 13.3, 9.9, 8.2, 8.3])
-    plot_line(ax[0], d, nu, t, flux, 'o', 'SwiftJ1644+57', 'left')
+    plot_line(ax[0], d, nu, t, flux, 'SwiftJ1644+57', 'Rel. TDE')
     nu = 4.9E9
     t = np.array([0.82, 1.71, 1.95, 2.74, 3.73, 4.72, 6.74, 11.93, 19.73]) / (1+z)
     flux = np.array([0.25, 0.34, 0.34, 0.61, 0.82, 1.48, 1.47, 1.80, 2.11])
-    plot_line(ax[1], d, nu, t, flux, 'o', 'SwiftJ1644+57', 'left')
+    plot_line(ax[1], d, nu, t, flux, 'SwiftJ1644+57', 'Rel. TDE')
 
 
 def sn2003L(ax):
@@ -311,14 +312,15 @@ def othersn(ax):
 
 if __name__=="__main__":
     fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True)
+    props = dict(boxstyle='round', facecolor='white')
 
     at2018cow(axarr)
     #maxi(ax)
     tde(axarr)
-    sn2003L(axarr)
-    sn1979c(axarr)
-    sn1993J(axarr)
-    sn2011dh(axarr)
+    #sn2003L(axarr)
+    #sn1979c(axarr)
+    #sn1993J(axarr)
+    #sn2011dh(axarr)
     # grb030329(ax)
     # grb130427A(ax)
     # sn2007bg(ax)
@@ -330,11 +332,13 @@ if __name__=="__main__":
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
     axarr[0].text(
-            0.01, 0.95, "$\\nu > 90\,$GHz", 
-            transform=axarr[0].transAxes, fontsize=14)
+            0.95, 0.9, "$\\nu > 90\,$GHz", 
+            transform=axarr[0].transAxes, fontsize=14, bbox=props,
+            horizontalalignment='right')
     axarr[1].text(
-            0.01, 0.95, "$\\nu < 10\,$GHz", 
-            transform=axarr[1].transAxes, fontsize=14)
+            0.95, 0.9, "$\\nu < 10\,$GHz", 
+            transform=axarr[1].transAxes, fontsize=14, bbox=props,
+            horizontalalignment='right')
     for ax in axarr:
         ax.tick_params(axis='both', labelsize=14)
         ax.set_xlim(0.3, 2000) 
@@ -344,5 +348,5 @@ if __name__=="__main__":
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
         #ax.legend(fontsize=12, loc='center left')
 
-    #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.show()
+    #plt.savefig("lum_evolution.png")
