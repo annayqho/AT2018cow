@@ -124,7 +124,7 @@ fig = plt.figure(figsize=(6,4))
 # 14, 22, 24
 
 days = [5, 14, 22]
-cols = ['k', 'grey', 'lightgrey']
+cols = ['k', 'white', 'lightgrey']
 markers = ['o', 's', 'D']
 
 for ii,day in enumerate(days):
@@ -152,7 +152,7 @@ plt.errorbar(
         fmt='*', mec='k', mfc='white', label=r"Day 24", ms=13, mew=0.5)
 
 # Plot the NuSTAR data
-f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
+dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
 cols = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7']
 
 def plot_nustar(f, ef, minf, maxf):

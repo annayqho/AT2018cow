@@ -80,28 +80,36 @@ def sma(ax):
 def xray(ax):
     # Get the X-ray data
     x,y,yerr = get_xrt() # in erg/cm^2/s
-    f = (y )
     ax.scatter(
-            x, f, c='grey', s=3, label=None)
+            x, y*1E12, c='grey', s=3, label=None)
     ax.plot(
-            x, f, lw=0.5, c='grey', 
-            label="0.3-10 keV")
+            x, y*1E12, lw=0.5, c='grey', 
+            label="XRT 0.3-10 keV")
 
     dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
-    ax.scatter(dt, f1, c='k', marker='.', label="NuSTAR 3-10 keV")
-    ax.scatter(dt, f2, c='k', marker='s', label="NuSTAR 10-20 keV")
-    ax.scatter(dt, f3, c='k', marker='o', label="NuSTAR 20-40 keV")
-    ax.scatter(dt, f3, c='k', marker='*', label="NuSTAR 40-80 keV")
+    ax.scatter(
+            dt, f1*1E12,  marker='o', label="3-10 keV",
+            facecolor='none', edgecolor='k')
+    ax.scatter(
+            dt, f2*1E12, 
+            marker='v', facecolor='none', edgecolor='black',
+            label="10-20 keV")
+    ax.scatter(
+            dt, f3*1E12, marker='^', label="20-40 keV",
+            facecolor='none', edgecolor='black')
+    ax.scatter(
+            dt, f4*1E12, marker='s',
+            facecolor='none', edgecolor='black',
+            label="40-80 keV")
 
     ax.set_xlabel("Time Since June 16 UT [d]", fontsize=16)
     ax.set_xlim(3,50)
-    ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
+    ax.set_ylabel("$L_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
     ax.xaxis.set_tick_params(labelsize=14)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.set_yscale('log')
-    ax.set_ylim(1E-13, 1E-10)
-    ax.legend(fontsize=12, loc='lower center', ncol=3)
+    ax.legend(fontsize=11, loc='lower left', ncol=2)
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
 
@@ -109,7 +117,7 @@ def xray(ax):
 if __name__=="__main__":
     """ Plot ATCA and SMA light curves """
     fig = plt.subplots(figsize=(6,6))
-    gs = gridspec.GridSpec(2, 1, height_ratios=[3,2], hspace=0.0)
+    gs = gridspec.GridSpec(2, 1, height_ratios=[5,4], hspace=0.0)
     gs.update(left=0.15, right=0.9)
 
     xray_ax = plt.subplot(gs[1])
@@ -119,5 +127,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
