@@ -8,50 +8,23 @@ import corner
 from get_radio import get_data_all, get_spectrum
 
 
-def lnlike(theta, x, y, yerr):
-    """ Log likelihood function """
-    a, b, lnf = theta
-    model = a*x**(b)
-    inv_sigma2 = 1.0/(yerr**2 + model**2*np.exp(2*lnf))
-    return -0.5*(np.sum((y-model)**2*inv_sigma2 - np.log(inv_sigma2)))
-
-
-def lnprior(theta):
-    """ log-prior
-    I think it's reasonable to have a constant prior
-    across the distribution
-    Allow the power to be anywhere between 0.1 and 5
-    Allow the coefficient to be anywhere between 1 and 10000
-    """
-    a, b, lnf = theta
-    if 5E2 < 5E7 and -3.0 < b < -0.1 and -10 < lnf < 1:
-        return 0.0
-    return -np.inf
-
-
-def lnprob(theta, x, y, yerr):
-    """ log-probability function """
-    lp = lnprior(theta)
-    if not np.isfinite(lp):
-        return -np.inf
-    return lp + lnlike(theta, x, y, yerr)
-
-
 tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
 
-choose_tel = np.logical_or(tel=='ALMA', tel=='SMA')
-#choose_tel = tel == 'SMA'
-choose = np.logical_and(choose_tel, day == 14)
+# Day 10
+print("Analysis of Day 10")
+choose_tel = tel == 'SMA'
+choose_freq = freq > 100
+choose_day = day == 10
+choose = choose_tel & choose_freq & choose_day
 
 nu = freq[choose]
+print("Frequency")
 print(nu)
 f = flux[choose]
+print("Flux")
 print(f)
-ef = eflux_form[choose]
-#ef[ef<0] = f[ef<0] * 0.0001
-ef = flux[choose] * 0.001
-#ef = eflux_sys[choose]
-#ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
+print("Unc. on Flux")
+ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
 print(ef)
 
 npts = len(nu)
