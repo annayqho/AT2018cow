@@ -1,6 +1,5 @@
 """ 
-A Tau Mv plot showing that we expect there to have been
-more luminous millimeter transients
+Plot of luminosity over time
 """
 
 
@@ -10,7 +9,10 @@ rc("font", family="serif")
 rc("text", usetex=True)
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
 from astropy.cosmology import Planck15
+from get_radio import *
 
 
 def plot_limits(ax, x, y, ratiox, ratioy, col):
@@ -23,34 +25,46 @@ def plot_limits(ax, x, y, ratiox, ratioy, col):
                 facecolor=col, headwidth=10, width=1, headlength=7))
 
 
-def plot_point(ax, d, nu, t, f, marker, name=None):
-    """ Plot a single point
+def plot_line(ax, d, nu, t, f, marker, name, labside):
+    """ Plot a line
     If nu > 90 GHz, make it black
-    If nu < 10 GHz, make it white
+    If nu < 10 GHz, make it black as well but with dashes
     
     Parameters
     ----------
     f: flux in mJy
+    labside: side at which to start the name (left or right)
     """
-    if nu < 10E9:
-        col = 'white'
-    elif nu > 90E9:
-        col = 'black'
-    else:
-        print("unknown freq range")
-    if marker=='*':
-        s=400
-    else:
-        s=100
+    if labside=='right':
+        ind = 0
+    elif labside=='left':
+        ind = -1
     lum = nu * f * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    ax.scatter(t, lum, facecolor=col, edgecolor='k', marker=marker, s=s)
+    fs = 11
     if name:
         if name=='AT2018cow':
             fs = 14
-        else:
-            fs = 11
-        ax.text(t*1.2, lum, name, 
-                verticalalignment='center', fontsize=fs)
+    if marker=='*':
+        s=150
+    else:
+        s=50
+    if nu < 10E9:
+        ax.scatter(
+                t, lum, facecolor='white', edgecolor='black', 
+                marker=marker, s=s, alpha=0.7)
+        ax.plot(t, lum, c='black', ls='--', alpha=0.7)
+        ax.text(t[ind]*0.95, lum[ind], name, fontsize=fs,
+                verticalalignment='center',
+                horizontalalignment=labside)
+    elif nu > 90E9:
+        ax.scatter(
+                t, lum, facecolor='k', edgecolor='k', marker=marker, s=s)
+        ax.plot(t, lum, c='black', ls='-')
+        ax.text(t[ind]*1.05, lum[ind], name, fontsize=fs,
+                verticalalignment='center',
+                horizontalalignment=labside)
+    else:
+        print("unknown freq range")
     return lum
 
 
@@ -70,11 +84,19 @@ def plot_points(ax, d, nu, t, f, marker, name=None):
 
 
 def at2018cow(ax):
-    """ Peak of 215.5 GHz light curve """
+    """ 231.5 GHz light curve and 9 GHz light curve """
+    tel, freq, days, flux, eflux_form, eflux_sys = get_data_all()
     d = Planck15.luminosity_distance(z=0.014).cgs.value
-    t = 20
-    nu = 215.5E9
-    plot_point(ax, d, nu, t, 53.32, '*', name='AT2018cow')
+    choose = np.logical_and(tel=='SMA', freq==231.5)
+    nu = 231.5E9
+    plot_line(
+            ax[0], d, nu, days[choose], flux[choose], '*', 
+            'AT2018cow', 'left')
+    choose = np.logical_and(tel=='ATCA', freq==9)
+    nu = 9E9
+    plot_line(
+            ax[1], d, nu, days[choose], flux[choose], '*', 'AT2018cow', 'left')
+
 
 
 def maxi(ax):
@@ -90,23 +112,33 @@ def maxi(ax):
 
 
 def tde(ax):
-    """  Peak of the 200 GHz light curve: 14.1 mJy, 16.12 days """
+    """  Plot the 225 GHz light curve from the SMA
+    
+    Plot the 4.9 GHz light curve from the VLA
+    """
     z = 0.354
     d = Planck15.luminosity_distance(z=z).cgs.value
-    nu = np.array([4.9E9, 200E9])
-    flux = np.array([2.11, 14.1])
-    t = np.array([19.73, 16.12]) / (1+z)
-    plot_points(ax, d, nu, t, flux, marker='o', name='SwiftJ1644+57')
+    nu = 225E9
+    t = np.array([7.20, 7.86, 14.10, 15.12, 17.11, 18.13]) / (1+z)
+    flux = np.array([14.9, 11.7, 13.3, 9.9, 8.2, 8.3])
+    plot_line(ax[0], d, nu, t, flux, 'o', 'SwiftJ1644+57', 'left')
+    nu = 4.9E9
+    t = np.array([0.82, 1.71, 1.95, 2.74, 3.73, 4.72, 6.74, 11.93, 19.73]) / (1+z)
+    flux = np.array([0.25, 0.34, 0.34, 0.61, 0.82, 1.48, 1.47, 1.80, 2.11])
+    plot_line(ax[1], d, nu, t, flux, 'o', 'SwiftJ1644+57', 'left')
 
 
 def sn2003L(ax):
-    """ Soderberg et al """
+    """ Soderberg et al
+    Values at 8.5 GHz """
     d = 2.8432575937224894e+26
     nu = 8.5E9
-    flux = 2.776
-    flux_err = 0.051
-    t = 85.4
-    plot_point(ax, d, nu, t, flux, 's')
+    t = np.array([25.2, 27.3, 28.3, 29.4, 30.3, 31.2, 32.3, 
+        36.3, 38.3, 41.6, 44.5, 46.4, 48.4, 
+        53.3, 55.3, 60.3])
+    flux = np.array([743, 810, 848, 966, 1051, 947, 883, 1147, 
+        1211, 1483, 1448, 1413, 1546, 1854, 1969, 2283])
+    plot_line(ax[1], d, nu, t, flux, 's', 'SN2003L', 'left')
     
 
 def sn1979c(ax):
@@ -114,9 +146,9 @@ def sn1979c(ax):
     This is a IIL """
     d = 5.341805643483106e+25
     nu = 1.4E9
-    flux = 10
-    t = 1300 # very approximate
-    plot_point(ax, d, nu, t, flux, 's')
+    t = np.array([437, 594, 631, 727, 822, 914, 1026, 1156, 1212])
+    flux = np.array([0.2, 2.1, 2.5, 4.4, 7.1, 9.8, 10.2, 12.2, 10.2])
+    plot_line(ax[1], d, nu, t, flux, 's', 'SN1979c', 'left')
     
 
 def sn1993J(ax):
@@ -128,13 +160,15 @@ def sn1993J(ax):
     values come from the best-fit model,
     but by eye they are clearly pretty close
     """
-    t = np.array([133, 66.33])
     d = 1.1e25
-    freq = np.array([4.9E9, 99.4E9])
-    flux = np.array([96.9, 22])
-    # lower freq has no uncertainty
-    #lum_err = freq * 4.5 * 1e-23 * 1e-3 * 4 * np.pi * d**2
-    plot_points(ax, d, freq, t, flux, 's', 'SN1993J')
+    freq = 4.9E9
+    t = np.array([16.53, 17.07, 19.02, 22.25, 22.97, 24.51, 25.48, 26.88, 27.87, 28.99, 29.85, 35.71, 40.11, 53.17, 75.06, 102.76])
+    flux = np.array([0.327, 0.280, 0.360, 0.880, 0.870, 1.290, 1.700, 1.930, 2.050, 2.640, 3.260, 6, 10.510, 25.819, 56.330, 102.670])
+    plot_line(ax[1], d, freq, t, flux, 's', 'SN1993J', 'left')
+    freq = 99.4E9
+    t = np.array([14.39, 17.39, 24.38, 33.28, 43.39, 63.32, 66.33, 82.23, 97.17, 168.80, 195.61, 231.67])
+    flux = np.array([18, 17, 20, 17, 23, 19, 22, 14, 16, 13, 8, 8])
+    plot_line(ax[0], d, freq, t, flux, 's', 'SN1993J', 'left')
 
 
 def sn2011dh(ax):
@@ -144,14 +178,14 @@ def sn2011dh(ax):
     The low-freq points are limits. The peak was later and more luminous.
     """
     d = 2.5E25
-    nu = np.array([107E9, 8.5E9])
-    t = np.array([4.08, 11.98])
-    f = np.array([4.55, 3.15])
-    f_err = np.array([0.79, 0.218])
-    lums = plot_points(ax, d, nu, t, f, 's', 'SN2011dh')
-    ratios = [1/1.5, 1.5]
-    for ii,nuval in enumerate(nu):
-        plot_limits(ax, t[ii], lums[ii], ratios[ii], 3, 'k')
+    nu = 107E9
+    t = np.array([4.08, 5.22])
+    flux = np.array([4.55, 3.66])
+    plot_line(ax[0], d, nu, t, flux, 's', 'SN2011dh', 'right')
+    nu = 8.5E9
+    t = np.array([5.01, 7.12, 9.02, 11.98])
+    flux = np.array([0.455, 1.06, 1.58, 3.15])
+    plot_line(ax[1], d, nu, t, flux, 's', 'SN2011dh', 'left')
 
 
 def grb030329(ax):
@@ -276,32 +310,39 @@ def othersn(ax):
 
 
 if __name__=="__main__":
-    fig, ax = plt.subplots(1, 1, figsize=(8,6), sharex=True, sharey=True)
+    fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True)
 
-    at2018cow(ax)
+    at2018cow(axarr)
     #maxi(ax)
-    tde(ax)
-    sn2003L(ax)
-    sn1979c(ax)
-    sn1993J(ax)
-    sn2011dh(ax)
-    grb030329(ax)
-    grb130427A(ax)
-    sn2007bg(ax)
-    sn2003bg(ax)
-    sn2009bb(ax)
-    sn1998bw(ax)
+    tde(axarr)
+    sn2003L(axarr)
+    sn1979c(axarr)
+    sn1993J(axarr)
+    sn2011dh(axarr)
+    # grb030329(ax)
+    # grb130427A(ax)
+    # sn2007bg(ax)
+    # sn2003bg(ax)
+    # sn2009bb(ax)
+    # sn1998bw(ax)
 
-    ax.tick_params(axis='both', labelsize=14)
-    #ax.set_xlim(0.3, 2000) 
-    #ax.set_ylim(1E36, 1E44)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_ylabel(
-            r"Peak Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
+    axarr[0].set_ylabel(
+            r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
-    ax.set_xlabel(r"Time to Peak [days; rest frame]", fontsize=16)
-    #ax.legend(fontsize=12, loc='center left')
+    axarr[0].text(
+            0.01, 0.95, "$\\nu > 90\,$GHz", 
+            transform=axarr[0].transAxes, fontsize=14)
+    axarr[1].text(
+            0.01, 0.95, "$\\nu < 10\,$GHz", 
+            transform=axarr[1].transAxes, fontsize=14)
+    for ax in axarr:
+        ax.tick_params(axis='both', labelsize=14)
+        ax.set_xlim(0.3, 2000) 
+        #ax.set_ylim(1E36, 1E44)
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
+        #ax.legend(fontsize=12, loc='center left')
 
     #plt.show()
-    plt.savefig("mm_tau_lum.png")
+    plt.savefig("lum_evolution.png")

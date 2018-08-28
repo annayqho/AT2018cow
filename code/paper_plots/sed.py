@@ -165,10 +165,10 @@ def plot_nustar(f, ef, minf, maxf):
                 center, lum[ii], 
                 xerr=ec, yerr=elum[ii], c=cols[ii])
 
-plot_nustar(f1, ef1, 7.25e17, 2.42e18) # 3-10 keV
-plot_nustar(f2, ef2, 2.41798926e18, 4.84E18) # 10-20 keV
-plot_nustar(f3, ef3, 4.84E18, 9.67E18) # 20-40 keV
-plot_nustar(f4, ef4, 9.67E18, 1.93E19) # 40-80 keV
+#plot_nustar(f1, ef1, 7.25e17, 2.42e18) # 3-10 keV
+#plot_nustar(f2, ef2, 2.41798926e18, 4.84E18) # 10-20 keV
+#plot_nustar(f3, ef3, 4.84E18, 9.67E18) # 20-40 keV
+#plot_nustar(f4, ef4, 9.67E18, 1.93E19) # 40-80 keV
 
 # Model for Epoch 2 is a power-law:
 norm = 9E-4 # photons/keV/cm2/s at 1 keV

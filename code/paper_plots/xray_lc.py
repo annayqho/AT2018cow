@@ -33,8 +33,9 @@ def cflux(val):
     if len(out) == 1:
         return -99, -99
     else:
-        flux = val.split('$')[0]
-        eflux = val.split('$')[2].strip('\\')
+        # in cgs units
+        flux = float(val.split('$')[0]) * 1E-12
+        eflux = float(val.split('$')[2].strip('\\')) * 1E-12
         return float(flux), float(eflux)
 
 
@@ -58,7 +59,7 @@ def get_nustar():
     out = np.array([cflux(val) for val in dat['Flux4']])
     f4 = out[:,0]
     ef4 = out[:,1]
-    return f1, ef1, f2, ef2, f3, ef3, f4, ef4
+    return dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4
 
 
 
