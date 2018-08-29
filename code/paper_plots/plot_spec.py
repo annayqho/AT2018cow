@@ -41,17 +41,17 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
         # fit and plot a nu^something line
         xfit = np.linspace(50, 1000)
         if day == 10:
-            m = -1.9
-            em = 0.4
-            b = 6.06
-        elif day == 22:
-            m = -1.08
-            em = 0.12
-            b = 4.242
+            m = -1.87
+            em = 0.46
+            b = 6.0087
         elif day == 14:
-            m = -0.96
-            em = 0.14
-            b = 3.895
+            m = -0.93
+            em = 0.27
+            b = 3.836
+        elif day == 22:
+            m = -1.1
+            em = 0.2
+            b = 4.293
         yfit = 10**(m*np.log10(xfit)+b)
         ax.plot(xfit, yfit, ls=':', c='k')
         ax.text(
@@ -134,5 +134,5 @@ if __name__=="__main__":
 
 
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")

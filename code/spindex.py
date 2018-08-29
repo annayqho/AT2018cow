@@ -62,7 +62,8 @@ def run_day_10():
     print("Flux")
     print(f)
     print("Unc. on Flux")
-    ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
+    #ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
+    ef = 0.15*f
     print(ef)
     run(nu, f, ef)
 
@@ -82,6 +83,8 @@ def run_day_14():
     print(f)
     print("Unc. on Flux")
     ef = 0.1*flux[choose]
+    choose_sma = tel[choose]=='SMA'
+    ef[choose_sma] = 0.2*f[choose_sma]
     print(ef)
     run(nu, f, ef)
 
@@ -98,11 +101,12 @@ def run_day_22():
     print(f)
     print("Unc. on Flux")
     ef = 0.1*flux[choose]
+    ef[nu>200] = 0.2*f[nu>200]
     print(ef)
     run(nu, f, ef)
 
 
 if __name__=="__main__":
-    #run_day_10()
+    run_day_10()
     #run_day_14()
-    run_day_22()
+    #run_day_22()
