@@ -66,5 +66,43 @@ def run_day_10():
     print(ef)
     run(nu, f, ef)
 
+
+def run_day_14():
+    tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
+    choose_day = np.logical_and(
+            day==14,
+            np.logical_or(tel=='SMA', tel=='ALMA'))
+    print("Analysis of Day 14")
+    choose = np.logical_and(choose_day, freq > 110)
+    nu = freq[choose]
+    print("Frequency")
+    print(nu)
+    f = flux[choose]
+    print("Flux")
+    print(f)
+    print("Unc. on Flux")
+    ef = 0.1*flux[choose]
+    print(ef)
+    run(nu, f, ef)
+
+
+def run_day_22():
+    freq,flux = get_spectrum(22)
+    print("Analysis of Day 22")
+    choose = freq > 110
+    nu = freq[choose]
+    print("Frequency")
+    print(nu)
+    f = flux[choose]
+    print("Flux")
+    print(f)
+    print("Unc. on Flux")
+    ef = 0.1*flux[choose]
+    print(ef)
+    run(nu, f, ef)
+
+
 if __name__=="__main__":
-    run_day_10()
+    #run_day_10()
+    #run_day_14()
+    run_day_22()
