@@ -6,13 +6,16 @@ import matplotlib
 import matplotlib.gridspec as gridspec
 import numpy as np
 from astropy.table import Table
+import sys
+sys.path.append('/Users/annaho/Dropbox/Projects/Research/AT2018cow/code')
 from xray_lc import get_xrt, get_nustar
 
 
 def sma(ax):
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
-        "%s/radio_lc.dat" %data_dir, delimiter="&", format='ascii.no_header')
+        "%s/radio_lc.dat" %data_dir, delimiter="&", 
+        format='ascii.no_header')
     tel = np.array(dat['col2'])
     choose = np.logical_or(tel == 'SMA', tel == 'ATCA')
 
@@ -69,7 +72,7 @@ def sma(ax):
     ax.set_ylim(4,70)
     ax.set_yscale('log')
     ax.set_xscale('log')
-    ax.set_ylabel("$F_{\\nu}$ [mJy]", fontsize=16)
+    ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.legend(fontsize=12, loc='lower left')
     ax.set_yticks([10,50])
@@ -104,7 +107,7 @@ def xray(ax):
 
     ax.set_xlabel("Time Since June 16 UT [d]", fontsize=16)
     ax.set_xlim(3,50)
-    ax.set_ylabel("$L_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
+    ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
     ax.xaxis.set_tick_params(labelsize=14)
     ax.yaxis.set_tick_params(labelsize=14)

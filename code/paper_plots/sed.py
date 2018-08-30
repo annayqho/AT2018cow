@@ -104,7 +104,7 @@ def plot_ind(b, x, y, day, col):
         plt.plot(xvals, yvals, c='k', ls=':', lw=1)
 
 
-def plot_xray(x, y, col):
+def plot_xray_spindex(x, y, col):
     """ Dashed line indicating X-ray spectral index """
     Gamma = 1.54
     # f_nu \propto nu^{-alpha}
@@ -114,6 +114,13 @@ def plot_xray(x, y, col):
     xvals = np.linspace(2.4E16, 2.4E18)
     yvals = y * (xvals/x)**(0.46)
     plt.plot(xvals, yvals, ls='-', c=col)
+
+
+def plot_xray_spectrum():
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/XRT_Spectrum"
+    xdat = Table.read(data_dir + "/x.spec", format='ascii.no_header')
+    ydat = Table.read(data_dir + "/y.spec", format='ascii.no_header')
+    eydat = Table.read(data_dir + "/yerr.spec", format='ascii.no_header')
 
 
 # set up the plot

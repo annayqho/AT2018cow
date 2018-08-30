@@ -112,6 +112,11 @@ if __name__=="__main__":
     islim = np.array([False]*(len(freq)))
     plot_day(ax, 22, freq, flux, islim)
     ax.set_xlabel("Frequency [GHz]", fontsize=16)
+    ax.scatter(
+            671, 31.5, marker='*', s=100, 
+            facecolor='white', edgecolor='black')
+    ax.text(
+            750, 25, 'Day 24', fontsize=10)
     ax.text(
             0.1, 0.93, "$\\nu_p \\approx 100, F_p \\approx 94$", 
             fontsize=14, transform=ax.transAxes, 
@@ -134,5 +139,5 @@ if __name__=="__main__":
 
 
 
-    plt.show()
-    #plt.savefig("spec.png")
+    #plt.show()
+    plt.savefig("spec.png")
