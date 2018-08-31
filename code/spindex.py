@@ -19,7 +19,8 @@ def run(nu, f, ef):
     # For each version, do a least squares fit in log space
     # and save the resulting spectral index and y-intercept
     for ii,fval in enumerate(f):
-        f_new[ii,:] = np.random.normal(loc=fval, scale=ef[ii], size=ndraw)
+        # log uncertainty is dx/x
+        f_new[ii,:] = np.random.normal(loc=fval, scale=ef[ii]/fval, size=ndraw)
 
     ms = np.zeros(ndraw)
     bs = np.zeros(ndraw)
@@ -46,6 +47,8 @@ def run(nu, f, ef):
     plt.text(0.1, 0.8, "b=%s" %(bfit), transform=ax.transAxes)
 
     plt.show()
+
+    return mfit, emfit, bfit
 
 
 def run_day_10():

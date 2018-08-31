@@ -62,6 +62,9 @@ def get_spectrum(day):
     For each frequency band, you will have to interpolate.
     You're also allowed to extrapolate if you're at lower frequencies,
     since the self-absorbed parts are well-behaved.
+
+    For the SMA data, scale the data according to variation
+    in the reference quasar.
     """
     # First, get *all* of the data
     tel, freq, days, flux, eflux_form, eflux_sys = get_data_all()

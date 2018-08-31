@@ -18,7 +18,7 @@ def get_xrt():
     I call this Day 5. That means that the XRT point is Day 3.
     So I need to add 3 days to all XRT points.
     """
-    dat = Table.read(direc + "/xray_lc.txt", format='ascii')
+    dat = Table.read(direc + "/Swift/basic_lc.txt", format='ascii')
     t = dat['col1'] / (3600*24) # in days
     # count to flux conversion (absorbed): 4.26 × 10-11 erg cm-2 ct-1
     flux = dat['col4'] * 4.26 * 10**(-11)
