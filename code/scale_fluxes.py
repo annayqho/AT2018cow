@@ -100,5 +100,8 @@ def sma_lc():
                     flux_final.append(f_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
                     eflux_final.append(
                             ef_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
+    dt_final = np.array(dt_final)
+    flux_final = np.array(flux_final)
+    eflux_final = np.array(eflux_final)
 
-    return np.array(dt_final), np.array(flux_final), np.array(eflux_final)
+    return (dt,nu,f_scaled,ef_scaled), (dt_final, flux_final, eflux_final)

@@ -58,12 +58,12 @@ def vele(ax):
     choose = y > 7e49
     ax.scatter(
             x[choose], y[choose], marker='o', edgecolors='k', s=100,
-            facecolors='none', label="GRBs")
+            facecolors='none', label=None)
 
 
     # AT2018cow
     ax.scatter(
-            0.173, 1.2E49, 
+            0.173, 2.49E48, 
             marker='*', s=300, facecolors='white', edgecolors='black')
     ax.text(
             0.173, 2.2E49, "AT2018cow", 
@@ -73,8 +73,7 @@ def vele(ax):
     # Swift J1644
     ax.scatter(
             0.5*1.2, 2.9E50 + 0.1*2.9E50, 
-            marker='s', s=100, facecolors='white', edgecolors='black',
-            label="Rel. TDE")
+            marker='s', s=100, facecolors='white', edgecolors='black')
 
     ax.legend(loc='lower right', fontsize=14)
 
