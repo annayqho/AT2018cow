@@ -139,5 +139,5 @@ if __name__=="__main__":
 
 
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")
