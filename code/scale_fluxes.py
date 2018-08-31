@@ -8,8 +8,9 @@ import numpy as np
 from astropy.time import Time
 
 def sma_lc():
-    lines = open("SMA_AT2018cow_quasar.txt", "r").readlines()
-    t0 = Time('2018-06-16')
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    lines = open("%s/SMA_AT2018cow_quasar.txt" %data_dir, "r").readlines()
+    t0 = Time('2018-06-16') # MJD 58285.0, what Dan has in his light curves
     dt = []
     nu = []
     f = []
@@ -34,7 +35,7 @@ def sma_lc():
             f.append(line.split()[7])
             ef.append(line.split()[9])
             ref.append(line.split()[10])
-    dt = np.array(dt, dtype=int)
+    dt = np.array(dt, dtype=float)
     nu = np.array(nu, dtype=float)
     f = np.array(f, dtype=float)
     ef = np.array(ef, dtype=float)

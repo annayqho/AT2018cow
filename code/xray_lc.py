@@ -14,10 +14,9 @@ direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
 def get_xrt():
     """ Get the X-ray data
     X ray: 2018 Jun 19 at 10:34:30.742 UT was T0
-    First SMA track was 2018 Jun 21, 03:58:25 - 14:18:09 UTC (10h 19m)
-    I call this Day 5. That means that the XRT point is Day 3.
-    So I need to add 3 days to all XRT points.
+    our T0 is MJD 58285.0
     """
+    t0_offset = Time('2018-06-19T10:34:30.742') - Time(58285, format='mjd').value
     dat = Table.read(direc + "/Swift/basic_lc.txt", format='ascii')
     t = dat['col1'] / (3600*24) # in days
     # count to flux conversion (absorbed): 4.26 × 10-11 erg cm-2 ct-1
