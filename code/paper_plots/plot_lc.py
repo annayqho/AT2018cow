@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.gridspec as gridspec
 import numpy as np
 from astropy.table import Table
+from astropy.time import Time
 import sys
 sys.path.append('/Users/annaho/Dropbox/Projects/Research/AT2018cow/code')
 from xray_lc import get_xrt, get_nustar
@@ -31,13 +32,13 @@ def sma(ax):
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
 
     dt, f, ef = sma_lc()
-
+    ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     ax.scatter(
             dt, f,
             marker='s', c='k',
             label="230.6--234.6 GHz")
     ax.errorbar(
-            dt, f, ef, 
+            dt, f, ef_comb, 
             fmt='s', c='k', lw=1.5)
     ax.plot(
             dt, f, linestyle='-', c='k', lw=1.5)
@@ -102,7 +103,7 @@ def xray(ax):
             facecolor='none', edgecolor='black',
             label="40-80 keV")
 
-    ax.set_xlabel("Time Since June 16 UT [d]", fontsize=16)
+    ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
     ax.set_xlim(2.5,80)
     ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
@@ -127,5 +128,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()

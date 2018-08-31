@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.table import Table
+from astropy.time import Time
 #from plot_spec import get_data
 #from plot_lc import sma
 from matplotlib import rc
@@ -16,7 +17,7 @@ def get_xrt():
     X ray: 2018 Jun 19 at 10:34:30.742 UT was T0
     our T0 is MJD 58285.0
     """
-    t0_offset = Time('2018-06-19T10:34:30.742') - Time(58285, format='mjd').value
+    t0_offset = (Time('2018-06-19T10:34:30.742') - Time(58285, format='mjd')).value
     dat = Table.read(direc + "/Swift/basic_lc.txt", format='ascii')
     t = dat['col1'] / (3600*24) # in days
     # count to flux conversion (absorbed): 4.26 × 10-11 erg cm-2 ct-1
