@@ -63,10 +63,10 @@ def vele(ax):
 
     # AT2018cow
     ax.scatter(
-            0.173, 2.49E48, 
+            0.173, 2.2E49, 
             marker='*', s=300, facecolors='white', edgecolors='black')
     ax.text(
-            0.173, 2.2E49, "AT2018cow", 
+            0.173, 2.2E49/3, "AT2018cow", 
             fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
 
@@ -75,7 +75,15 @@ def vele(ax):
             0.5*1.2, 2.9E50 + 0.1*2.9E50, 
             marker='s', s=100, facecolors='white', edgecolors='black')
 
-    ax.legend(loc='lower right', fontsize=14)
+    
+    # MAXI 140814A
+    ax.scatter(
+             0.2, 3E49,
+             marker='*', s=300, facecolors='white', edgecolors='black')
+    ax.text(
+             0.2, 3E49*1.2, "VLASS 1210+49", 
+             fontsize=14, verticalalignment='bottom', horizontalalignment='center')  
+
 
     ax.set_xlim(0.03, 2)
     ax.set_ylim(1E45, 1E50)
@@ -124,12 +132,12 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # MAXI 140814A
-    # ax.scatter(
-    #         4*365*6/5, 8e28,
-    #         marker='*', s=300, facecolors='white', edgecolors='black')
-    # ax.text(
-    #         4*365*6/5, 9e28, "MAXI 140814A", 
-    #         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
+    ax.scatter(
+            4*365*6/5, 8e28,
+            marker='*', s=300, facecolors='white', edgecolors='black')
+    ax.text(
+            4*365*6/5, 9e28, "VLASS 1210+49", 
+            fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
     # Swift J1644+57
     # d = Planck15.luminosity_distance(z=0.354).cgs.value

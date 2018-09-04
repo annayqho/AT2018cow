@@ -109,39 +109,66 @@ def plot_xray_spindex(x, y, col):
     Gamma = 1.54
     # f_nu \propto nu^{-alpha}
     # Gamma = photon index = alpha + 1
-    # 0.1 -- 10 keV
-    # 2.4E16 Hz -- 2.4E18 Hz
+    # 0.3 -- 10 keV
+    # 7.2E16 Hz -- 2.4E18 Hz
     xvals = np.linspace(2.4E16, 2.4E18)
     yvals = y * (xvals/x)**(0.46)
     plt.plot(xvals, yvals, ls='-', c=col)
 
 
-def plot_xray_spectrum():
-    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/XRT_Spectrum"
-    xdat = Table.read(data_dir + "/x.spec", format='ascii.no_header')
-    ydat = Table.read(data_dir + "/y.spec", format='ascii.no_header')
-    eydat = Table.read(data_dir + "/yerr.spec", format='ascii.no_header')
+def plot_xray(flux, c):
+    """ OK so the approach is to take the integrated flux across 0.3-10 keV,
+    and use that and the geometric mean of the frequency and the spectral index
+    to solve for the normalization coefficient for your spectrum
+
+    Parameters
+    ----------
+    x: frequency
+    y: flux
+    c: color of the point/line
+
+    2.4E18 Hz corresponds to 10 keV
+    7.2E16 Hz corresponds to 0.3 keV
+    """
+    nu0 = np.sqrt(0.3*10) * (2.4E18/10) 
+    alpha = 0.54
+    nu2 = 2.4E18
+    nu1 = 7.2E16
+    A = flux*(1-alpha) / (nu0**alpha * (nu2**(1-alpha) - nu1**(1-alpha)))
+    xplot = np.linspace(7.2E16, 2.4E18, 1000)
+    yplot = A*(xplot/nu0)**(-alpha)
+    plt.plot(xplot, xplot*yplot, c=c, ls='-')
+    if c=='white':
+        plt.plot(xplot, xplot*yplot, c='k', ls='--')
+
+
 
 
 # set up the plot
 fig = plt.figure(figsize=(6,4))
 
-
 # the days that have ALMA data:
 # 14, 22, 24
 
 days = [5, 14, 22]
-cols = ['k', 'white', 'lightgrey']
+cols = ['#1b9e77', '#d95f02', '#7570b3']
+#cols = ['k', 'white', 'lightgrey']
 markers = ['o', 's', 'D']
 
 for ii,day in enumerate(days):
     b, x, y = get_sed(day)
+    choose = b != 'x'
     plt.scatter(
-            x, y, edgecolor='k', facecolor=cols[ii], 
+            x[choose], y[choose], edgecolor='k', facecolor=cols[ii], 
             label=r"Day %s" %(day), marker=markers[ii], lw=0.5)
     choose = b == 'x'
-    plot_xray(x[choose][0], y[choose][0], cols[ii])
-    plot_ind(b, x, y, day, cols[ii])
+    plot_xray(y[choose][0], cols[ii])
+    if ii == 2:
+        plt.text(
+                x[choose][0], y[choose][0], 
+                '$\propto \\nu^{0.54}$', fontsize=12)
+
+
 
 # Band 9 point
 nu = 671E9
