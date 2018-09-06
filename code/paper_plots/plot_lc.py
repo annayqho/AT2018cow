@@ -31,7 +31,8 @@ def sma(ax):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
 
-    dt, f, ef = sma_lc()
+    a, b = sma_lc()
+    dt, f, ef = b
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     ax.scatter(
             dt, f,
@@ -66,6 +67,10 @@ def sma(ax):
             fmt='o', c='k', lw=1.5, ms=7,
             label="34 GHz")
     ax.plot(x, y, ls='--', c='k')
+
+    # for SMA proposal
+    ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
+    ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
 
     ax.set_ylim(4,70)
     ax.set_yscale('log')
