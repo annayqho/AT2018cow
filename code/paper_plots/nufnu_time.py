@@ -340,7 +340,7 @@ def othersn(ax):
 
 
 if __name__=="__main__":
-    fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True)
+    fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True, sharey=True)
     props = dict(boxstyle='round', facecolor='white')
 
     # nice colors from matplotlib colormap "Paired"
@@ -382,7 +382,7 @@ if __name__=="__main__":
     for ax in axarr:
         ax.tick_params(axis='both', labelsize=14)
         ax.set_xlim(0.3, 2000) 
-        #ax.set_ylim(1E36, 1E44)
+        ax.set_ylim(1E34, 1E44)
         ax.set_xscale('log')
         ax.set_yscale('log')
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
