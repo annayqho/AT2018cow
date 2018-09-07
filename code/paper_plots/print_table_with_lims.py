@@ -58,7 +58,7 @@ for ii,ID in enumerate(names):
         limitstr = '-'
         tstr = '-'
     else:
-        limitstr = str(limits[ii])
+        limitstr = int(limits[ii])
         tstr = int(dt[ii])
     row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
     outputf.write(row)
