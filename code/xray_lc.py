@@ -22,7 +22,7 @@ def get_xrt():
     t = dat['col1'] / (3600*24) # in days
     # count to flux conversion (absorbed): 4.26 × 10-11 erg cm-2 ct-1
     flux = dat['col4'] * 4.26 * 10**(-11)
-    eflux = dat['col5']
+    eflux = dat['col5'] * 4.26 * 10**(-11)
     t_xray = (t-t[0])+3
     return t_xray, flux, eflux
 

@@ -48,10 +48,10 @@ def sma(ax):
 
     ax.errorbar(
             days[choose], flux[choose], eflux[choose],
-            fmt='*', c='grey', lw=0.5, alpha=0.8, ms=13,
+            fmt='*', c='#66c2a5', lw=0.5, alpha=0.8, ms=13,
             label="341.5--349 GHz")
     ax.plot(
-            days[choose], flux[choose], linestyle='-', c='grey', lw=1.5)
+            days[choose], flux[choose], linestyle='-', c='#66c2a5', lw=1.5)
 
     # Do 34 GHz
     choose = freq == 34
@@ -64,13 +64,13 @@ def sma(ax):
     y = 10**(out[0]*np.log10(x)+out[1])
     ax.errorbar(
             xfit, yfit, yerr=eyfit,
-            fmt='o', c='k', lw=1.5, ms=7,
+            fmt='o', c='#8da0cb', lw=1.5, ms=7,
             label="34 GHz")
-    ax.plot(x, y, ls='--', c='k')
+    ax.plot(x, y, ls='--', c='#8da0cb')
 
     # for SMA proposal
-    ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
-    ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
+    #ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
+    #ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
 
     ax.set_ylim(4,70)
     ax.set_yscale('log')
@@ -86,27 +86,29 @@ def sma(ax):
 def xray(ax):
     # Get the X-ray data
     x,y,yerr = get_xrt() # in erg/cm^2/s
-    ax.scatter(
-            x, y*1E12, c='grey', s=3, label=None)
+    ax.errorbar(
+            x, y*1E12, yerr=yerr*1E12, c='k', ms=3, label=None, fmt='.')
     ax.plot(
-            x, y*1E12, lw=0.5, c='grey', 
+            x, y*1E12, lw=0.5, c='k', 
             label="XRT 0.3-10 keV")
 
+    msize=7
     dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
-    ax.scatter(
-            dt, f1*1E12,  marker='o', label="3-10 keV",
-            facecolor='none', edgecolor='k')
-    ax.scatter(
-            dt, f2*1E12, 
-            marker='v', facecolor='none', edgecolor='black',
-            label="10-20 keV")
-    ax.scatter(
-            dt, f3*1E12, marker='^', label="20-40 keV",
-            facecolor='none', edgecolor='black')
-    ax.scatter(
-            dt, f4*1E12, marker='s',
-            facecolor='none', edgecolor='black',
-            label="40-80 keV")
+    ax.errorbar(
+            dt, f1*1E12, yerr=ef1*1E12, fmt='o', label="3-10 keV",
+            mfc='white', mec='k', c='k', ms=msize)
+    ax.errorbar(
+            dt, f2*1E12, yerr=ef2*1E12,
+            fmt='v', mfc='#1b9e77', mec='black',
+            label="10-20 keV", c='k', ms=msize)
+    ax.errorbar(
+            dt, f3*1E12, yerr=ef3*1E12,
+            fmt='^', label="20-40 keV",
+             mfc='#d95f02', mec='black', c='k', ms=msize)
+    ax.errorbar(
+            dt, f4*1E12, yerr=ef4*1E12, fmt='s',
+            mfc='#7570b3', mec='black',
+            label="40-80 keV", c='k', ms=msize)
 
     ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
     ax.set_xlim(2.5,80)
@@ -133,5 +135,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    plt.savefig("lc.png")
-    #plt.show()
+    #plt.savefig("lc.png")
+    plt.show()
