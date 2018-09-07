@@ -9,7 +9,7 @@ from astropy import units as u
 from vlass_search import search_vlass
 from ret_radio import get_transients
 
-headings = np.array(['ID', 'RA', 'Dec', 'Expl Date', 'Limit'])
+headings = np.array(['ID', 'RA', 'Dec', '$\Delta t$', 'Limit ($\mu$Jy)'])
 label = "vlass"
 caption = "VLASS Limits for Rapidly Evolving Transients"
 names, ra_raw, dec_raw, dates, z = get_transients()
@@ -58,7 +58,7 @@ for ii,ID in enumerate(names):
         limitstr = '-'
         tstr = '-'
     else:
-        limitstr = np.round(limits[ii], 2)
+        limitstr = str(limits[ii])
         tstr = int(dt[ii])
     row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
     outputf.write(row)
