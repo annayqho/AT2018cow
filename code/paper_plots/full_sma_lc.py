@@ -22,6 +22,9 @@ fig,axarr = plt.subplots(4,1, figsize=(8,12), sharex=True, sharey=True)
 plt.subplots_adjust(hspace=0)
 
 ax = axarr[0]
+ax.text(
+        0.05, 0.95, "\\textbf{193.5-218 GHz}", fontsize=14, transform=ax.transAxes,
+        horizontalalignment='left', verticalalignment='top')
 choose = nu < 220
 for ii,n in enumerate(np.unique(nu[choose])):
     unc = np.sqrt(ef[nu==n]**2 + (0.15*f[nu==n])**2)
@@ -32,6 +35,9 @@ ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
 ax.yaxis.set_tick_params(labelsize=14)
 
 ax = axarr[1]
+ax.text(
+        0.05, 0.95, "\\textbf{225-234.6 GHz}", fontsize=14, transform=ax.transAxes,
+        horizontalalignment='left', verticalalignment='top')
 choose = np.logical_and(nu >= 220, nu < 240)
 for ii,n in enumerate(np.unique(nu[choose])):
     unc = np.sqrt(ef[nu==n]**2 + (0.15*f[nu==n])**2)
@@ -42,6 +48,9 @@ ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
 ax.yaxis.set_tick_params(labelsize=14)
 
 ax = axarr[2]
+ax.text(
+        0.05, 0.95, "\\textbf{241-283 GHz}", fontsize=14, transform=ax.transAxes,
+        horizontalalignment='left', verticalalignment='top')
 choose = np.logical_and(nu >= 240, nu < 300)
 for ii,n in enumerate(np.unique(nu[choose])):
     unc = np.sqrt(ef[nu==n]**2 + (0.15*f[nu==n])**2)
@@ -52,6 +61,10 @@ ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
 ax.yaxis.set_tick_params(labelsize=14)
 
 ax = axarr[3]
+ax.text(
+        0.05, 0.95, "\\textbf{330.8-360.8 GHz}", fontsize=14, 
+        transform=ax.transAxes,
+        horizontalalignment='left', verticalalignment='top')
 choose = nu > 300
 for ii,n in enumerate(np.unique(nu[choose])):
     unc = np.sqrt(ef[nu==n]**2 + (0.15*f[nu==n])**2)
