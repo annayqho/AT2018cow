@@ -43,6 +43,8 @@ def sma(ax):
             fmt='s', c='k', lw=1.5)
     ax.plot(
             dt, f, linestyle='-', c='k', lw=1.5)
+    # non-detection
+    ax.scatter(76, 0.62, marker='v', c='k', s=50)
 
     choose = np.logical_and(freq >= 341.5, freq <= 349)
 
@@ -55,30 +57,37 @@ def sma(ax):
 
     # Do 34 GHz
     choose = freq == 34
-    xfit = days[choose]
-    yfit = flux[choose]
-    eyfit = eflux[choose]
+    # dont include the last point
+    xfit = days[choose][0:-1]
+    yfit = flux[choose][0:-1]
+    eyfit = eflux[choose][0:-1]
     # fit a nu^2 power law
     out = np.polyfit(np.log10(xfit), np.log10(yfit), deg=1)
     x = np.linspace(min(xfit), max(xfit))
     y = 10**(out[0]*np.log10(x)+out[1])
     ax.errorbar(
-            xfit, yfit, yerr=eyfit,
+            days[choose], flux[choose], yerr=eflux[choose],
             fmt='o', c='#8da0cb', lw=1.5, ms=7,
             label="34 GHz")
     ax.plot(x, y, ls='--', c='#8da0cb')
+    ax.text(17, 10, r'$f_\nu \propto t^2$', fontsize=12)
 
     # for SMA proposal
     #ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
     #ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
 
-    ax.set_ylim(4,70)
+    # cross hatches for the Day 10, Day 13/14, and Day 22 measurements
+    ax.scatter(10, 65, marker='x', c='k', s=80)
+    ax.scatter(14, 65, marker='x', c='k', s=80)
+    ax.scatter(22, 65, marker='x', c='k', s=80)
+
+    ax.set_ylim(0.5,100)
     ax.set_yscale('log')
     ax.set_xscale('log')
     ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.legend(fontsize=12, loc='lower left')
-    ax.set_yticks([10,50])
+    ax.set_yticks([0.5, 10, 50])
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
 
@@ -111,7 +120,7 @@ def xray(ax):
             label="40-80 keV", c='k', ms=msize)
 
     ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
-    ax.set_xlim(2.5,80)
+    ax.set_xlim(2.5,100)
     ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
     ax.xaxis.set_tick_params(labelsize=14)
@@ -135,5 +144,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
