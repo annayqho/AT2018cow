@@ -153,13 +153,13 @@ def tde(ax, col, legend):
     t = dt/(1+z)
 
     nu_plt = 225E9
-    choose = np.logical_and(~islim, nu == nu_plt)
+    choose = np.logical_and(~islim, nu == nu_plt/1E9)
     plot_line(
             ax[0], d, nu_plt, t[choose], f[choose], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
 
     nu_plt = 4.9E9
-    choose = np.logical_and(~islim, nu == nu_plt)
+    choose = np.logical_and(~islim, nu == nu_plt/1E9)
     plot_line(
             ax[1], d, nu_plt, t[choose], f[choose], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
@@ -169,22 +169,34 @@ def sn2003L(ax, col, legend):
     """ Soderberg et al
     Values at 8.5 GHz """
     d = 2.8432575937224894e+26
-    nu = 8.5E9
-    t = np.array([25.2, 27.3, 28.3, 29.4, 30.3, 31.2, 32.3, 
-        36.3, 38.3, 41.6, 44.5, 46.4, 48.4, 
-        53.3, 55.3, 60.3])
-    flux = np.array([743, 810, 848, 966, 1051, 947, 883, 1147, 
-        1211, 1483, 1448, 1413, 1546, 1854, 1969, 2283]) * 1E-3
-    plot_line(ax[1], d, nu, t, flux, 'SN2003L', 'SN', col, legend)
+    nu_plt = 8.5E9
+    nu, dt, f, ef = read_2003L()
+    choose = nu == nu_plt
+    plot_line(
+            ax[1], d, nu_plt, dt[choose], 1E-3*f[choose], 
+            'SN2003L', 'SN', col, legend)
     
 
 def sn1979c(ax, col, legend):
-    """ Weiler 1986 
-    This is a IIL """
+    """ Weiler 1986 and Weiler 1991
+    This is a IIL 
+    
+    Too old to have the raw table on arXiv
+    """
     d = 5.341805643483106e+25
-    nu = 1.4E9
-    t = np.array([437, 594, 631, 727, 822, 914, 1026, 1156, 1212])
-    flux = np.array([0.2, 2.1, 2.5, 4.4, 7.1, 9.8, 10.2, 12.2, 10.2])
+    nu = 1.4E9 # 20cm
+    t = np.array(
+            [437,594,631,663,679,684,727,747,786,822,839,876,882,
+             914,937,973,995,
+             1026,1071,1091,1127,1156,1168,1212,1243,1277,1314,1358,1390,
+             1415,1435,1466,1513,1565,1600,1634,1659,1698,1714,1750,1771,
+             1931,2027])
+    flux = np.array(
+            [0.2,2.1,2.5,2.7,2.8,2.8,4.4,4.8,6.0,7.1,7.1,7.6,8.6,
+             9.8,6.5,8.6,9.5,
+             10.2,10.8,10.3,10.4,12.2,10.1,10.2,11.5,11.2,13.0,11.3,10.2,
+             9.6,11.2,13.2,11.1,9.1,8.5,9.1,8.8,10.1,9.7,9.1,8.9,
+             7.0,7.7])
     plot_line(ax[1], d, nu, t, flux, 'SN1979c', 'SN', col, legend)
     
 
@@ -390,14 +402,14 @@ if __name__=="__main__":
     tde(axarr, '#33a02c', legend=True)
     sn2003L(axarr, '#1f78b4', legend=True)
     sn1979c(axarr, '#1f78b4', None)
-    sn1993J(axarr, '#1f78b4', None)
-    sn2011dh(axarr, '#1f78b4', None)
-    grb030329(axarr, '#6a3d9a', legend=True)
-    grb130427A(axarr, '#6a3d9a', None)
-    sn2007bg(axarr, '#1f78b4', None)
-    sn2003bg(axarr, '#1f78b4', None)
-    sn2009bb(axarr, '#e31a1c', legend=True)
-    sn1998bw(axarr, '#e31a1c', None)
+    #sn1993J(axarr, '#1f78b4', None)
+    #sn2011dh(axarr, '#1f78b4', None)
+    #grb030329(axarr, '#6a3d9a', legend=True)
+    #grb130427A(axarr, '#6a3d9a', None)
+    #sn2007bg(axarr, '#1f78b4', None)
+    #sn2003bg(axarr, '#1f78b4', None)
+    #sn2009bb(axarr, '#e31a1c', legend=True)
+    #sn1998bw(axarr, '#e31a1c', None)
     at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
@@ -414,5 +426,5 @@ if __name__=="__main__":
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
     axarr[1].legend(fontsize=12, loc='upper right')
 
-    #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.show()
+    #plt.savefig("lum_evolution.png")
