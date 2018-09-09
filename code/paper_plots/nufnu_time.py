@@ -13,6 +13,7 @@ import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
 from astropy.cosmology import Planck15
 from get_radio import *
+from scale_fluxes import sma_lc
 
 
 def plot_limits(ax, x, y, ratiox, ratioy, col):
@@ -87,21 +88,39 @@ def plot_points(ax, d, nu, t, f, marker, name=None):
 
 def at2018cow(ax, col, legend):
     """ 231.5 GHz light curve and 9 GHz light curve """
-    tel, freq, days, flux, eflux_form, eflux_sys = get_data_all()
-    d = Planck15.luminosity_distance(z=0.014).cgs.value
-    choose = np.logical_and(tel=='SMA', freq==231.5)
+    # high frequency
+    a, b = sma_lc()
+    dt, f, ef = b
+    ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     nu = 231.5E9
     lum = plot_line(
-            ax[0], d, nu, days[choose], flux[choose], 
+            ax[0], d, nu, dt, f, 
             'AT2018cow', None, col, legend)
-    ax[0].text(days[-1]*1.05, lum[-1], 'AT2018cow', fontsize=11,
-            verticalalignment='center',
-            horizontalalignment='left')
-    choose = np.logical_and(tel=='ATCA', freq==9)
-    nu = 9E9
+
+    # low frequency
+    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    dat = Table.read(
+        "%s/radio_lc.dat" %data_dir, delimiter="&",
+        format='ascii.no_header')
+    tel = np.array(dat['col2'])
+    choose = np.logical_or(tel == 'SMA', tel == 'ATCA')
+
+    days = np.array(dat['col1'][choose])
+    freq = np.array(dat['col3'][choose]).astype(float)
+    flux_raw = np.array(dat['col4'][choose])
+    flux = np.array(
+            [float(val.split("pm")[0][1:]) for val in flux_raw])
+    eflux_sys = np.array([0.1*f for f in flux])
+    eflux_form = np.array(
+            [float(val.split("pm")[1][0:-1]) for val in flux_raw])
+    eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
+    choose = freq == 34
     plot_line(
             ax[1], d, nu, days[choose], flux[choose], 
             'AT2018cow', None, col, legend)
+    ax[0].text(days[choose][-1]*1.05, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
 
 
 def maxi(ax):
@@ -388,5 +407,5 @@ if __name__=="__main__":
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
     axarr[1].legend(fontsize=12, loc='upper right')
 
-    #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.show()
+    #plt.savefig("lum_evolution.png")
