@@ -43,7 +43,7 @@ def plot_line(ax, d, nu, t, f, name, label, col, legend=False):
     if name=='AT2018cow':
         marker='*'
         fcol = col
-        s=150
+        s=70
     else:
         if label=='SN':
             marker='o'
@@ -88,6 +88,8 @@ def plot_points(ax, d, nu, t, f, marker, name=None):
 
 def at2018cow(ax, col, legend):
     """ 231.5 GHz light curve and 9 GHz light curve """
+    d = Planck15.luminosity_distance(z=0.014).cgs.value
+
     # high frequency
     a, b = sma_lc()
     dt, f, ef = b
@@ -96,8 +98,12 @@ def at2018cow(ax, col, legend):
     lum = plot_line(
             ax[0], d, nu, dt, f, 
             'AT2018cow', None, col, legend)
+    ax[0].text(dt[0]/1.05, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
 
     # low frequency
+    nu = 34E9
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
         "%s/radio_lc.dat" %data_dir, delimiter="&",
@@ -115,12 +121,12 @@ def at2018cow(ax, col, legend):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
     choose = freq == 34
-    plot_line(
+    lum = plot_line(
             ax[1], d, nu, days[choose], flux[choose], 
             'AT2018cow', None, col, legend)
-    ax[0].text(days[choose][-1]*1.05, lum[-1], 'AT2018cow', fontsize=11,
-            verticalalignment='center',
-            horizontalalignment='left')
+    ax[1].text(days[choose][0]/1.05, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='bottom',
+            horizontalalignment='right')
 
 
 def maxi(ax):
@@ -407,5 +413,5 @@ if __name__=="__main__":
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
     axarr[1].legend(fontsize=12, loc='upper right')
 
-    plt.show()
-    #plt.savefig("lum_evolution.png")
+    #plt.show()
+    plt.savefig("lum_evolution.png")
