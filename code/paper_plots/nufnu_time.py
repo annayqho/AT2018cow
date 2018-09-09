@@ -11,9 +11,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
+sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/radio_compilations/Zauderer2011")
 from astropy.cosmology import Planck15
 from get_radio import *
 from scale_fluxes import sma_lc
+from read_table import *
 
 
 def plot_limits(ax, x, y, ratiox, ratioy, col):
@@ -147,20 +149,19 @@ def tde(ax, col, legend):
     """
     z = 0.354
     d = Planck15.luminosity_distance(z=z).cgs.value
-    nu = 225E9
-    t = np.array([7.20, 7.86, 14.10, 15.12, 17.11, 18.13]) / (1+z)
-    flux = np.array([14.9, 11.7, 13.3, 9.9, 8.2, 8.3])
+    nu, dt, f, ef, islim = zauderer()
+    t = dt/(1+z)
+
+    nu_plt = 225E9
+    choose = np.logical_and(~islim, nu == nu_plt)
     plot_line(
-            ax[0], d, nu, t, flux, 
+            ax[0], d, nu_plt, t[choose], f[choose], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
-    nu = 4.9E9
-    t = np.array(
-            [0.82, 1.71, 1.95, 2.74, 3.73, 4.72, 
-                6.74, 11.93, 19.73]) / (1+z)
-    flux = np.array(
-            [0.25, 0.34, 0.34, 0.61, 0.82, 1.48, 1.47, 1.80, 2.11])
+
+    nu_plt = 4.9E9
+    choose = np.logical_and(~islim, nu == nu_plt)
     plot_line(
-            ax[1], d, nu, t, flux, 
+            ax[1], d, nu_plt, t[choose], f[choose], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
 
 
