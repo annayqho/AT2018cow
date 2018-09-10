@@ -210,16 +210,25 @@ def sn1993J(ax, col, legend):
     but by eye they are clearly pretty close
     """
     d = 1.1e25
-    freq = 4.9E9
-    t = np.array(
-            [16.53, 17.07, 19.02, 22.25, 22.97, 24.51, 25.48, 26.88, 27.87, 28.99, 29.85, 35.71, 40.11, 53.17, 75.06, 102.76])
-    flux = np.array(
-            [0.327, 0.280, 0.360, 0.880, 0.870, 1.290, 1.700, 1.930, 2.050, 2.640, 3.260, 6, 10.510, 25.819, 56.330, 102.670])
-    plot_line(ax[1], d, freq, t, flux, 'SN1993J', 'SN', col, legend)
+    freq = 5E9
+    nu, dt, f, ef, islim = read_1993J_low_freq()
+    choose = np.logical_and(~islim, nu==freq)
+    lum = plot_line(
+            ax[1], d, freq, dt[choose], f[choose], 
+            'SN1993J', 'SN', col, legend)
+    ax[1].text(dt[choose][0]/1.05, lum[0], 'SN1993J', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
+
     freq = 99.4E9
-    t = np.array([14.39, 17.39, 24.38, 33.28, 43.39, 63.32, 66.33, 82.23, 97.17, 168.80, 195.61, 231.67])
-    flux = np.array([18, 17, 20, 17, 23, 19, 22, 14, 16, 13, 8, 8])
-    plot_line(ax[0], d, freq, t, flux, 'SN1993J', 'SN', col, legend)
+    nu, dt, f, ef, islim = read_1993J_high_freq()
+    choose = np.logical_and(~islim, nu==freq)
+    lum = plot_line(
+            ax[0], d, freq, dt[choose], f[choose], 
+            'SN1993J', 'SN', col, legend)
+    ax[0].text(dt[0]/1.05, lum[0], 'SN1993J', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
 
 
 def sn2011dh(ax, col, legend):
@@ -402,7 +411,7 @@ if __name__=="__main__":
     tde(axarr, '#33a02c', legend=True)
     sn2003L(axarr, '#1f78b4', legend=True)
     sn1979c(axarr, '#1f78b4', None)
-    #sn1993J(axarr, '#1f78b4', None)
+    sn1993J(axarr, '#1f78b4', None)
     #sn2011dh(axarr, '#1f78b4', None)
     #grb030329(axarr, '#6a3d9a', legend=True)
     #grb130427A(axarr, '#6a3d9a', None)
