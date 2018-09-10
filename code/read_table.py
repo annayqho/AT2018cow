@@ -157,3 +157,35 @@ def read_1993J_high_freq():
     islim = np.array(islim)
 
     return nu, dt, f, ef, islim
+
+
+def read_2011dh():
+    lines = open(
+            "%s/SN2011dh/data.txt" %DATA_DIREC, "r").readlines()
+    dt = []
+    nu = []
+    f = []
+    ef = []
+    islim = []
+
+    for line in lines:
+        dt.append(float(line.split('&')[0]))
+        nu.append(float(line.split('&')[1]))
+        if 'leq' in line:
+            islim.append(True)
+            f.append(float(line.split('&')[2].split('$')[1].split('leq')[1]))
+            ef.append(-99)
+        else:
+            islim.append(False)
+            f.append(float(line.split('&')[2].split('$pm$')[0]))
+            ef1 = float(line.split('&')[2].split('$pm$')[1])
+            ef2 = float(line.split('&')[2].split('$pm$')[2])
+            ef.append(np.sqrt(ef1**2+ef2**2))
+
+    dt = np.array(dt)
+    nu = np.array(nu)*1E9
+    f = np.array(f)
+    ef = np.array(ef)
+    islim = np.array(islim)
+
+    return dt, nu, f, ef, islim

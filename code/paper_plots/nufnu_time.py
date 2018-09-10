@@ -126,8 +126,8 @@ def at2018cow(ax, col, legend):
     lum = plot_line(
             ax[1], d, nu, days[choose], flux[choose], 
             'AT2018cow', None, col, legend)
-    ax[1].text(days[choose][0]/1.05, lum[-1], 'AT2018cow', fontsize=11,
-            verticalalignment='bottom',
+    ax[1].text(days[choose][0]/1.1, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='center',
             horizontalalignment='right')
 
 
@@ -226,26 +226,37 @@ def sn1993J(ax, col, legend):
     lum = plot_line(
             ax[0], d, freq, dt[choose], f[choose], 
             'SN1993J', 'SN', col, legend)
-    ax[0].text(dt[0]/1.05, lum[0], 'SN1993J', fontsize=11,
+    ax[0].text(dt[choose][-1]*1.1, lum[-1], 'SN1993J', fontsize=11,
             verticalalignment='center',
-            horizontalalignment='right')
+            horizontalalignment='left')
 
 
 def sn2011dh(ax, col, legend):
     """ SN 2011dh
+    Horesh et al. 
     M51: d = 8.03 Mpc; expl date May 31.58
     The high-freq points are limits. The peak was earlier and more luminous.
     The low-freq points are limits. The peak was later and more luminous.
     """
     d = 2.5E25
-    nu = 107E9
-    t = np.array([4.08, 5.22])
-    flux = np.array([4.55, 3.66])
-    plot_line(ax[0], d, nu, t, flux, 'SN2011dh', 'SN', col, legend)
-    nu = 8.5E9
-    t = np.array([5.01, 7.12, 9.02, 11.98])
-    flux = np.array([0.455, 1.06, 1.58, 3.15])
-    plot_line(ax[1], d, nu, t, flux, 'SN2011dh', 'SN', col, legend)
+    freq = 107E9
+    dt, nu, f, ef, islim = read_2011dh()
+    choose = np.logical_and(~islim, nu==freq)
+    lum = plot_line(
+            ax[0], d, nu[choose], dt[choose], f[choose], 
+            'SN2011dh', 'SN', col, legend)
+    ax[0].text(dt[choose][0]/1.05, lum[0], 'SN2011dh', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
+
+    freq = 8.5E9
+    choose = np.logical_and(~islim, nu==freq)
+    lum = plot_line(
+            ax[1], d, nu[choose], dt[choose], f[choose], 
+            'SN2011dh', 'SN', col, legend)
+    ax[1].text(dt[choose][0]/1.05, lum[0], 'SN2011dh', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
 
 
 def grb030329(ax, col, legend):
@@ -412,7 +423,7 @@ if __name__=="__main__":
     sn2003L(axarr, '#1f78b4', legend=True)
     sn1979c(axarr, '#1f78b4', None)
     sn1993J(axarr, '#1f78b4', None)
-    #sn2011dh(axarr, '#1f78b4', None)
+    sn2011dh(axarr, '#1f78b4', None)
     #grb030329(axarr, '#6a3d9a', legend=True)
     #grb130427A(axarr, '#6a3d9a', None)
     #sn2007bg(axarr, '#1f78b4', None)
