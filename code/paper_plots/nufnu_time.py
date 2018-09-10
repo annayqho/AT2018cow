@@ -446,5 +446,6 @@ if __name__=="__main__":
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
     axarr[1].legend(fontsize=12, loc='upper right')
 
-    plt.show()
-    #plt.savefig("lum_evolution.png")
+    plt.subplots_adjust(wspace=0.05)
+    #plt.show()
+    plt.savefig("lum_evolution.png")
