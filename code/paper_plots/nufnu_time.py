@@ -150,9 +150,6 @@ def tde(ax, col, legend):
     z = 0.354
     d = Planck15.luminosity_distance(z=z).cgs.value
 
-    dt_all = []
-    f_all = []
-
     # In the Eftekhari paper, it says that although the event was first
     # triggered by Swift/BAT on 2011 March 28.55 UT, subsequent
     # analysis of the BAT data revealed discernible emission as early as
@@ -164,32 +161,26 @@ def tde(ax, col, legend):
 
     nu_plt = 225E9
     choose = np.logical_and(~islim, nu == nu_plt/1E9)
-    dt_all.extend(t[choose])
-    f_all.extend(f[choose])
+    dt_all = t[choose]
+    nufnu_all = f[choose]*nu_plt
 
     # Berger2012
     nu_plt = 230E9
     t_plt = (np.array([10.30, 11.13, 17.23, 18.25, 20.24, 21.25, 125.05]))/(1+z)
     f_plt = np.array([14.90, 11.70, 13.30, 9.90, 8.20, 8.30, 6.10])
-    dt_all.extend(t_plt)
-    f_all.extend(f_plt)
-
-    dt_all = np.array(dt_all)
-    f_all = np.array(f_all)
+    dt_all = np.append(dt_all, t_plt)
+    nufnu_all = np.append(nufnu_all, f_plt*nu_plt)
 
     order = np.argsort(dt_all)
     plot_line(
-            ax[0], d, nu_plt, dt_all[order], f_all[order], 
+            ax[0], d, dt_all[order], nufnu_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
 
     # Low frequency
-    dt_all = []
-    f_all = []
-
     nu_plt = 4.9E9
     choose = np.logical_and(~islim, nu == nu_plt/1E9)
-    dt_all.extend(t[choose])
-    f_all.extend(f[choose])
+    dt_all = t[choose]
+    nufnu_all = nu_plt*f[choose]
 
     # adding the set from Berger2012
     # and making the same correction as above
@@ -198,30 +189,26 @@ def tde(ax, col, legend):
         197.41, 213.32])) / (1+z)
     f = np.array([0.25, 0.34, 0.34, 0.61, 0.82, 1.48, 1.47, 1.80, 2.10, 4.62,
         4.84, 5.86, 9.06, 9.10, 9.10, 11.71, 12.93, 12.83, 13.29, 12.43])
-    dt_all.extend(t)
-    f_all.extend(f)
+    dt_all = np.append(dt_all, t)
+    nufnu_all = np.append(nufnu_all, f*nu_plt)
 
     # adding the set from Zauderer2013
     # they also say it's relative to March 25.5...
     # so I think I need to subtract 3.04 days from here too
     t = (np.array([245.23, 302.95, 383.92, 453.66, 582.31]))/(1+z)
     f = np.array([12.17, 12.05, 12.24, 11.12, 8.90])
-    dt_all.extend(t)
-    f_all.extend(f)
+    dt_all = np.append(dt_all, t)
+    nufnu_all = np.append(nufnu_all, f*nu_plt)
 
     # adding the set from Eftekhari 2018
     t = np.array([645, 651.1, 787.6, 1032, 1105, 1373, 1894])
     f = np.array([8.24, 8.63, 6.23, 4.21, 3.52, 2.34, 1.47])
-    dt_all.extend(t)
-    f_all.extend(f)
-
-    dt_all = np.array(dt_all)
-    f_all = np.array(f_all)
+    dt_all = np.append(dt_all, t)
+    nufnu_all = np.append(nufnu_all, f*nu_plt)
 
     order = np.argsort(dt_all)
-
     plot_line(
-            ax[1], d, nu_plt, dt_all[order], f_all[order], 
+            ax[1], d, dt_all[order], nufnu_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
 
 
@@ -519,20 +506,20 @@ if __name__=="__main__":
     #maxi(ax)
     tde(axarr, '#440154', legend=True)
 
-    sn2003L(axarr, '#5ec962', legend=True)
-    sn1979c(axarr, '#5ec962', None)
-    sn1993J(axarr, '#5ec962', None)
-    sn2011dh(axarr, '#5ec962', None)
-    sn2007bg(axarr, '#5ec962', None)
-    sn2003bg(axarr, '#5ec962', None)
+    #sn2003L(axarr, '#5ec962', legend=True)
+    #sn1979c(axarr, '#5ec962', None)
+    #sn1993J(axarr, '#5ec962', None)
+    #sn2011dh(axarr, '#5ec962', None)
+    #sn2007bg(axarr, '#5ec962', None)
+    #sn2003bg(axarr, '#5ec962', None)
 
-    grb030329(axarr, '#fde725', legend=True)
+    #grb030329(axarr, '#fde725', legend=True)
     #grb130427A(axarr, '#fde725', None)
 
     #sn2009bb(axarr, '#', legend=True)
     #sn1998bw(axarr, '#', None)
 
-    at2018cow(axarr, 'k', None)
+    #at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
