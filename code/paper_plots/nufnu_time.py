@@ -28,18 +28,18 @@ def plot_limits(ax, x, y, ratiox, ratioy, col):
                 facecolor=col, headwidth=10, width=1, headlength=7))
 
 
-def plot_line(ax, d, nu, t, f, name, label, col, legend=False):
+def plot_line(ax, d, t, nufnu, name, label, col, legend=False):
     """ Plot a line
     If nu > 90 GHz, make it on the left axis
     If nu < 10 GHz, make it on the right axis
     
     Parameters
     ----------
-    f: flux in mJy
+    nufnu: Hz * mJy 
     name: name of the source
     label: label to use as the legend (which also determines the col)
     """
-    lum = nu * f * 1e-23 * 1e-3 * 4 * np.pi * d**2
+    lum = nufnu * 1e-23 * 1e-3 * 4 * np.pi * d**2
     fs = 11
     nsize = 10 # normal size for points
     if name=='AT2018cow':
@@ -293,10 +293,13 @@ def sn1993J(ax, col, legend):
 
 def sn2011dh(ax, col, legend):
     """ SN 2011dh
-    Horesh et al. 
+    Horesh et al. 2013
+    Krauss et al. 2012
     M51: d = 8.03 Mpc; expl date May 31.58
     """
     d = 2.5E25
+
+    # HIGH FREQUENCY
     # use two freq: 107E9 and 93E9
     dt, nu, f, ef, islim = read_2011dh()
     freq = 107E9
@@ -308,10 +311,29 @@ def sn2011dh(ax, col, legend):
             verticalalignment='center',
             horizontalalignment='right')
 
+    # LOW FREQUENCY
+    # from Horesh 2013 and Krauss 2012
+    dt_all = []
+    f_all = []
+    nu_all = []
+
     freq = 8.5E9
     choose = np.logical_and(~islim, nu==freq)
+    dt_all.extend(dt[choose])
+    f_all.extend(f[choose])
+    nu_all.extend([freq]*sum(choose))
+
+    freq = 6.7E9
+    dt_all.extend([16.4, 20.4, 25.4, 35.3, 45.3, 58.2, 92.9])
+    f_all.extend([4.09, 4.8, 5.98, 7.222, 6.987, 6.11, 3.941])
+    nu_all.extend([freq]*7)
+
+    dt_all = np.array(dt_all)
+    f_all = np.array(f_all)
+    nu_all = np.array(nu_all)
+
     lum = plot_line(
-            ax[1], d, nu[choose], dt[choose], f[choose], 
+            ax[1], d, nu_all, dt_all, f_all, 
             'SN2011dh', 'SN', col, legend)
     ax[1].text(dt[choose][0]/1.05, lum[0], 'SN2011dh', fontsize=11,
             verticalalignment='center',
@@ -320,6 +342,8 @@ def sn2011dh(ax, col, legend):
 
 def grb030329(ax, col, legend):
     """ Sheth et al. 2003 
+    Berger 2003
+    Van der Horst et al. 2008
     
     Explosion day was obviously 03/29
     """
@@ -327,10 +351,16 @@ def grb030329(ax, col, legend):
     z = 0.1686
     d = Planck15.luminosity_distance(z=z).cgs.value
 
+    # HIGH FREQUENCY
+
+    # Sheth
     t = np.array([1, 4, 6, 7, 8, 16, 22]) / (1+z)
     f = np.array([49.2, 45.7, 41.6, 32, 25.5, 9.3, 5.2])
     plot_line(ax[0], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
 
+    # LOW FREQUENCY
+
+    # Berger: this is the best frequency to pick from this paper
     freq = 8.5E9
     t = np.array(
             [0.58, 1.05, 2.65, 3.57, 4.76, 6.89, 7.68, 9.49, 11.90, 
@@ -341,6 +371,15 @@ def grb030329(ax, col, legend):
                 17.28, 19.15, 17.77, 15.92, 16.08, 15.34, 12.67, 13.55, 
                 13.10, 10.64, 8.04, 8.68, 4.48, 4.92])
     plot_line(ax[1], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
+
+    # Van der Horst: best frequency is 2.3 GHz
+    freq = 2.3E9
+    t = np.array([268.577, 306.753, 365.524, 420.168, 462.078, 
+        583.683, 743.892, 984.163]) / (1+z)
+    f = np.array([1613, 1389, 871, 933, 707, 543, 504, 318]) * 1E-3
+    f = np.append(f, new_f)
+    plot_line(ax[1], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
+    
 
 
 def grb130427A(ax, col, legend):
@@ -460,35 +499,39 @@ if __name__=="__main__":
     fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True, sharey=True)
     props = dict(boxstyle='round', facecolor='white')
 
-    # nice colors from matplotlib colormap "Paired"
-    #a6cee3 light pastel blue
-    #1f78b4 a more vibrant normal blue
-    #b2df8a a light green
-    #33a02c a more vivid darker green
-    #fb9a99 pastel pink color
-    #e31a1c more vivid pink / red
-    #fdbf6f light orange
-    #ff7f00 dark orange
-    #cab2d6 light purple
-    #6a3d9a dark purple
-    #ffff99 light yellow
-    #b15928 brown
+    # viridis color palette
+    # 440154 dark purple
+    # 21918c dark green/turquoise
+    # 3b528b dark blue
+    # 5ec962 light green
+    # fde725 yellow
+
+    # inferno color palette
+    # 000004 black
+    # 57106e purple
+    # bc3754 pink/red
+    # f98e09 orange
+    # fcffa4 really light yellow
 
     # OK so I want to use four colors. I think it's nice to have two light ones
     # and two dark ones.
 
     #maxi(ax)
-    tde(axarr, '#33a02c', legend=True)
-    sn2003L(axarr, '#1f78b4', legend=True)
-    sn1979c(axarr, '#1f78b4', None)
-    sn1993J(axarr, '#1f78b4', None)
-    sn2011dh(axarr, '#1f78b4', None)
-    #grb030329(axarr, '#6a3d9a', legend=True)
-    #grb130427A(axarr, '#6a3d9a', None)
-    #sn2007bg(axarr, '#1f78b4', None)
-    #sn2003bg(axarr, '#1f78b4', None)
-    #sn2009bb(axarr, '#e31a1c', legend=True)
-    #sn1998bw(axarr, '#e31a1c', None)
+    tde(axarr, '#440154', legend=True)
+
+    sn2003L(axarr, '#5ec962', legend=True)
+    sn1979c(axarr, '#5ec962', None)
+    sn1993J(axarr, '#5ec962', None)
+    sn2011dh(axarr, '#5ec962', None)
+    sn2007bg(axarr, '#5ec962', None)
+    sn2003bg(axarr, '#5ec962', None)
+
+    grb030329(axarr, '#fde725', legend=True)
+    #grb130427A(axarr, '#fde725', None)
+
+    #sn2009bb(axarr, '#', legend=True)
+    #sn1998bw(axarr, '#', None)
+
     at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
