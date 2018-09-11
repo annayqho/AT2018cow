@@ -98,7 +98,7 @@ def at2018cow(ax, col, legend):
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     nu = 231.5E9
     lum = plot_line(
-            ax[0], d, nu, dt, f, 
+            ax[0], d, dt, nu*f, 
             'AT2018cow', None, col, legend)
     ax[0].text(dt[0]/1.05, lum[-1], 'AT2018cow', fontsize=11,
             verticalalignment='center',
@@ -124,11 +124,11 @@ def at2018cow(ax, col, legend):
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
     choose = freq == 34
     lum = plot_line(
-            ax[1], d, nu, days[choose], flux[choose], 
+            ax[1], d, days[choose], nu*flux[choose], 
             'AT2018cow', None, col, legend)
-    ax[1].text(days[choose][0]/1.1, lum[-1], 'AT2018cow', fontsize=11,
-            verticalalignment='center',
-            horizontalalignment='right')
+    ax[1].text(days[choose][-1]*1.2, lum[-1], 'AT2018cow', fontsize=11,
+            verticalalignment='top',
+            horizontalalignment='left')
 
 
 def maxi(ax):
@@ -172,9 +172,12 @@ def tde(ax, col, legend):
     nufnu_all = np.append(nufnu_all, f_plt*nu_plt)
 
     order = np.argsort(dt_all)
-    plot_line(
+    lum = plot_line(
             ax[0], d, dt_all[order], nufnu_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
+    ax[0].text(dt_all[order][-1]*1.1, lum[-1], 'Swift J1644+57', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     # Low frequency
     nu_plt = 4.9E9
@@ -207,9 +210,12 @@ def tde(ax, col, legend):
     nufnu_all = np.append(nufnu_all, f*nu_plt)
 
     order = np.argsort(dt_all)
-    plot_line(
+    lum = plot_line(
             ax[1], d, dt_all[order], nufnu_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
+    ax[1].text(dt_all[order][0], lum[0]/2, 'Swift J1644+57', fontsize=11,
+            verticalalignment='top',
+            horizontalalignment='center')
 
 
 def sn2003L(ax, col, legend):
@@ -220,7 +226,7 @@ def sn2003L(ax, col, legend):
     nu, dt, f, ef = read_2003L()
     choose = nu == nu_plt
     plot_line(
-            ax[1], d, nu_plt, dt[choose], 1E-3*f[choose], 
+            ax[1], d, dt[choose], 1E-3*f[choose]*nu_plt, 
             'SN2003L', 'SN', col, legend)
     
 
@@ -244,7 +250,7 @@ def sn1979c(ax, col, legend):
              10.2,10.8,10.3,10.4,12.2,10.1,10.2,11.5,11.2,13.0,11.3,10.2,
              9.6,11.2,13.2,11.1,9.1,8.5,9.1,8.8,10.1,9.7,9.1,8.9,
              7.0,7.7])
-    plot_line(ax[1], d, nu, t, flux, 'SN1979c', 'SN', col, legend)
+    plot_line(ax[1], d, t, nu*flux, 'SN1979c', 'SN', col, legend)
     
 
 def sn1993J(ax, col, legend):
@@ -261,7 +267,7 @@ def sn1993J(ax, col, legend):
     nu, dt, f, ef, islim = read_1993J_low_freq()
     choose = np.logical_and(~islim, nu==freq)
     lum = plot_line(
-            ax[1], d, freq, dt[choose], f[choose], 
+            ax[1], d, dt[choose], freq*f[choose], 
             'SN1993J', 'SN', col, legend)
     ax[1].text(dt[choose][0]/1.05, lum[0], 'SN1993J', fontsize=11,
             verticalalignment='center',
@@ -271,7 +277,7 @@ def sn1993J(ax, col, legend):
     nu, dt, f, ef, islim = read_1993J_high_freq()
     choose = np.logical_and(~islim, nu==freq)
     lum = plot_line(
-            ax[0], d, freq, dt[choose], f[choose], 
+            ax[0], d, dt[choose], freq*f[choose], 
             'SN1993J', 'SN', col, legend)
     ax[0].text(dt[choose][-1]*1.1, lum[-1], 'SN1993J', fontsize=11,
             verticalalignment='center',
@@ -289,10 +295,9 @@ def sn2011dh(ax, col, legend):
     # HIGH FREQUENCY
     # use two freq: 107E9 and 93E9
     dt, nu, f, ef, islim = read_2011dh()
-    freq = 107E9
-    choose = np.logical_and(~islim, np.logical_or(nu==freq, nu==93E9))
+    choose = np.logical_and(~islim, np.logical_or(nu==107E9, nu==93E9))
     lum = plot_line(
-            ax[0], d, nu[choose], dt[choose], f[choose], 
+            ax[0], d, dt[choose], nu[choose]*f[choose], 
             'SN2011dh', 'SN', col, legend)
     ax[0].text(dt[choose][0]/1.05, lum[0], 'SN2011dh', fontsize=11,
             verticalalignment='center',
@@ -320,7 +325,7 @@ def sn2011dh(ax, col, legend):
     nu_all = np.array(nu_all)
 
     lum = plot_line(
-            ax[1], d, nu_all, dt_all, f_all, 
+            ax[1], d, dt_all, nu_all*f_all, 
             'SN2011dh', 'SN', col, legend)
     ax[1].text(dt[choose][0]/1.05, lum[0], 'SN2011dh', fontsize=11,
             verticalalignment='center',
@@ -334,21 +339,23 @@ def grb030329(ax, col, legend):
     
     Explosion day was obviously 03/29
     """
-    freq = 250E9
     z = 0.1686
     d = Planck15.luminosity_distance(z=z).cgs.value
 
     # HIGH FREQUENCY
 
     # Sheth
+    freq = 250E9
     t = np.array([1, 4, 6, 7, 8, 16, 22]) / (1+z)
     f = np.array([49.2, 45.7, 41.6, 32, 25.5, 9.3, 5.2])
-    plot_line(ax[0], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
+    lum = plot_line(ax[0], d, t, freq*f, 'GRB030329', 'GRB', col, legend)
+    ax[0].text(t[-1]*1.05, lum[-1], ' GRB 030329', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     # LOW FREQUENCY
 
     # Berger: this is the best frequency to pick from this paper
-    freq = 8.5E9
     t = np.array(
             [0.58, 1.05, 2.65, 3.57, 4.76, 6.89, 7.68, 9.49, 11.90, 
                 12.69, 14.87, 16.66, 18.72, 20.58, 25.70, 28.44, 31.51, 
@@ -357,15 +364,18 @@ def grb030329(ax, col, legend):
             [3.50, 1.98, 8.50, 6.11, 9.68, 15.56, 12.55, 13.58, 17.70, 
                 17.28, 19.15, 17.77, 15.92, 16.08, 15.34, 12.67, 13.55, 
                 13.10, 10.64, 8.04, 8.68, 4.48, 4.92])
-    plot_line(ax[1], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
+    nu = np.array([8.5E9]*len(f))
 
     # Van der Horst: best frequency is 2.3 GHz
-    freq = 2.3E9
-    t = np.array([268.577, 306.753, 365.524, 420.168, 462.078, 
-        583.683, 743.892, 984.163]) / (1+z)
-    f = np.array([1613, 1389, 871, 933, 707, 543, 504, 318]) * 1E-3
-    f = np.append(f, new_f)
-    plot_line(ax[1], d, freq, t, f, 'GRB030329', 'GRB', col, legend)
+    t = np.append(t, np.array([268.577, 306.753, 365.524, 420.168, 462.078, 
+        583.683, 743.892, 984.163]) / (1+z))
+    f = np.append(
+            f, np.array([1613, 1389, 871, 933, 707, 543, 504, 318]) * 1E-3)
+    nu = np.append(nu, np.array([2.3E9]*8))
+    lum = plot_line(ax[1], d, t, freq*f, 'GRB030329', 'GRB', col, legend)
+    ax[1].text(t[0]/1.05, lum[0]*1.1, 'GRB030329', fontsize=11,
+            verticalalignment='bottom',
+            horizontalalignment='left')
     
 
 
@@ -380,20 +390,23 @@ def grb130427A(ax, col, legend):
     freq = 93E9
     t = np.array([0.77, 1, 1.91, 2.8]) / (1+z)
     flux = np.array([3416, 2470, 1189, 807]) * 1E-3
-    plot_line(ax[0], d, freq, t, flux, 'GRB130427A', 'GRB', col, legend)
+    lum = plot_line(ax[0], d, t, freq*flux, 'GRB130427A', 'GRB', col, legend)
+    ax[0].text(t[-1]*1.05, lum[-1], 'GRB130427A', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     freq = 5.10E9
     t = np.array([0.677, 2.04, 4.75, 9.71, 17.95, 63.78, 128.34]) / (1+z)
     f = np.array([1290, 1760, 648, 454, 263, 151, 86]) * 1E-3
-    plot_line(ax[1], d, freq, t, f, 'GRB130427A', 'GRB', col, legend)
+    lum = plot_line(ax[1], d, t, freq*f, 'GRB130427A', 'GRB', col, legend)
+    ax[1].text(t[0]*1.05, lum[0], 'GRB130427A', fontsize=11,
+            verticalalignment='bottom',
+            horizontalalignment='left')
 
 
 def sn2007bg(ax, col, legend):
     """ Salas et al. 2013
     Peak is resolved for 4.86, 8.46 GHz
-    Let's choose the one where it's more clearly resolved
-    It's a bit weird because there are two peaks, but let's
-    choose the first one because it neglects subsequent interaction
     """
     nu = 8.46E9
     d = Planck15.luminosity_distance(z=0.0346).cgs.value
@@ -405,7 +418,7 @@ def sn2007bg(ax, col, legend):
             [480, 753, 804, 728, 1257, 1490, 1390, 1325, 1131, 957, 
                 621, 316, 379, 404, 783, 1669, 2097, 2200, 
                 2852, 3344, 3897, 3891, 3842, 3641, 3408]) * 1E-3
-    plot_line(ax[1], d, nu, t, f, 'SN2007bg', 'SN', col, legend)
+    plot_line(ax[1], d, t, nu*f, 'SN2007bg', 'SN', col, legend)
 
 
 def sn2003bg(ax, col, legend):
@@ -429,7 +442,7 @@ def sn2003bg(ax, col, legend):
                 21.67, 21.31, 20.88, 20.33, 19.85, 18.84, 17.14,
                 14.61, 14.49, 14.16, 13.25, 13.08, 10.04, 8.92,
                 6.23, 6.18, 4.62, 3.93, 4.69, 4.48])
-    plot_line(ax[1], d, nu, t, f, 'SN2003bg', 'SN', col, legend)
+    plot_line(ax[1], d, t, nu*f, 'SN2003bg', 'SN', col, legend)
 
 
 def sn2009bb(ax, col, legend):
@@ -438,15 +451,17 @@ def sn2009bb(ax, col, legend):
     d = 1.237517263280789e+26
     t_apr = 11 + np.array([5.2, 8.2, 13.2, 15.1, 23.2, 29.1])
     t_may = 11 + 30 + np.array([3.1, 10.1, 13, 20.1, 27])
-    t_jun = 11 + 30 + 31 + np.array([6, 17, 26, 18.9])
-    t = np.hstack((t_apr, t_may, t_jun))
+    t_jun = 11 + 30 + 31 + np.array([6, 17, 26])
+    t_jul = 11 + 30 + 31 + 30 + np.array([18.9])
+    t_aug = 11 + 30 + 31 + 30 + 31 + np.array([11.8])
+    t = np.hstack((t_apr, t_may, t_jun, t_jul, t_aug))
     flux = np.array([24.681, 17.568, 16.349, 13.812, 8.881,
         7.714, 8.482, 6.824, 6.327, 3.294, 4.204, 3.203, 2.392,
-        1.903, 1.032])
-    lum = plot_line(ax[1], d, nu, t, flux, 'SN2009bb', 'Rel. SN', col, legend)
-    ax[1].text(t[0]/1.05, lum[0], '2009bb', fontsize=11,
-            verticalalignment='center',
-            horizontalalignment='right')
+        1.903, 1.032, 1.084])
+    lum = plot_line(ax[1], d, t, nu*flux, 'SN2009bb', 'Rel. SN', col, legend)
+    #ax[1].text(t[0]/1.05, lum[0], '2009bb', fontsize=11,
+    #        verticalalignment='center',
+    #        horizontalalignment='right')
 
 
 def sn1998bw(ax, col, legend):
@@ -506,20 +521,20 @@ if __name__=="__main__":
     #maxi(ax)
     tde(axarr, '#440154', legend=True)
 
-    #sn2003L(axarr, '#5ec962', legend=True)
-    #sn1979c(axarr, '#5ec962', None)
-    #sn1993J(axarr, '#5ec962', None)
-    #sn2011dh(axarr, '#5ec962', None)
-    #sn2007bg(axarr, '#5ec962', None)
-    #sn2003bg(axarr, '#5ec962', None)
+    sn2003L(axarr, '#5ec962', legend=True)
+    sn1979c(axarr, '#5ec962', None)
+    sn1993J(axarr, '#5ec962', None)
+    sn2011dh(axarr, '#5ec962', None)
+    sn2007bg(axarr, '#5ec962', None)
+    sn2003bg(axarr, '#5ec962', None)
 
-    #grb030329(axarr, '#fde725', legend=True)
-    #grb130427A(axarr, '#fde725', None)
+    grb030329(axarr, '#fde725', legend=True)
+    grb130427A(axarr, '#fde725', None)
 
-    #sn2009bb(axarr, '#', legend=True)
+    sn2009bb(axarr, '#3b528b', legend=True)
     #sn1998bw(axarr, '#', None)
 
-    #at2018cow(axarr, 'k', None)
+    at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
