@@ -143,25 +143,85 @@ def maxi(ax):
 
 
 def tde(ax, col, legend):
-    """  Plot the 225 GHz light curve from the SMA
+    """  Plot the 225/230 GHz light curve from the SMA
     
     Plot the 4.9 GHz light curve from the VLA
     """
     z = 0.354
     d = Planck15.luminosity_distance(z=z).cgs.value
+
+    dt_all = []
+    f_all = []
+
+    # In the Eftekhari paper, it says that although the event was first
+    # triggered by Swift/BAT on 2011 March 28.55 UT, subsequent
+    # analysis of the BAT data revealed discernible emission as early as
+    # 2011 March 25. All times should therefore be shifted relative to Mar 25.5
+
+    # Need to add 3.04 to the Zauderer points
     nu, dt, f, ef, islim = zauderer()
-    t = dt/(1+z)
+    t = (dt+3.04)/(1+z)
 
     nu_plt = 225E9
     choose = np.logical_and(~islim, nu == nu_plt/1E9)
+    dt_all.extend(t[choose])
+    f_all.extend(f[choose])
+
+    # Berger2012
+    nu_plt = 230E9
+    t_plt = (np.array([10.30, 11.13, 17.23, 18.25, 20.24, 21.25, 125.05]))/(1+z)
+    f_plt = np.array([14.90, 11.70, 13.30, 9.90, 8.20, 8.30, 6.10])
+    dt_all.extend(t_plt)
+    f_all.extend(f_plt)
+
+    dt_all = np.array(dt_all)
+    f_all = np.array(f_all)
+
+    order = np.argsort(dt_all)
     plot_line(
-            ax[0], d, nu_plt, t[choose], f[choose], 
+            ax[0], d, nu_plt, dt_all[order], f_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
+
+    # Low frequency
+    dt_all = []
+    f_all = []
 
     nu_plt = 4.9E9
     choose = np.logical_and(~islim, nu == nu_plt/1E9)
+    dt_all.extend(t[choose])
+    f_all.extend(f[choose])
+
+    # adding the set from Berger2012
+    # and making the same correction as above
+    t = (np.array([3.87, 4.76, 5.00, 5.79, 6.78, 7.77, 9.79, 14.98, 22.78,
+        35.86, 50.65, 67.61, 94.64, 111.62, 126.51, 143.62, 164.38, 174.47,
+        197.41, 213.32])) / (1+z)
+    f = np.array([0.25, 0.34, 0.34, 0.61, 0.82, 1.48, 1.47, 1.80, 2.10, 4.62,
+        4.84, 5.86, 9.06, 9.10, 9.10, 11.71, 12.93, 12.83, 13.29, 12.43])
+    dt_all.extend(t)
+    f_all.extend(f)
+
+    # adding the set from Zauderer2013
+    # they also say it's relative to March 25.5...
+    # so I think I need to subtract 3.04 days from here too
+    t = (np.array([245.23, 302.95, 383.92, 453.66, 582.31]))/(1+z)
+    f = np.array([12.17, 12.05, 12.24, 11.12, 8.90])
+    dt_all.extend(t)
+    f_all.extend(f)
+
+    # adding the set from Eftekhari 2018
+    t = np.array([645, 651.1, 787.6, 1032, 1105, 1373, 1894])
+    f = np.array([8.24, 8.63, 6.23, 4.21, 3.52, 2.34, 1.47])
+    dt_all.extend(t)
+    f_all.extend(f)
+
+    dt_all = np.array(dt_all)
+    f_all = np.array(f_all)
+
+    order = np.argsort(dt_all)
+
     plot_line(
-            ax[1], d, nu_plt, t[choose], f[choose], 
+            ax[1], d, nu_plt, dt_all[order], f_all[order], 
             'SwiftJ1644+57', 'Rel. TDE', col, legend)
 
 
@@ -235,13 +295,12 @@ def sn2011dh(ax, col, legend):
     """ SN 2011dh
     Horesh et al. 
     M51: d = 8.03 Mpc; expl date May 31.58
-    The high-freq points are limits. The peak was earlier and more luminous.
-    The low-freq points are limits. The peak was later and more luminous.
     """
     d = 2.5E25
-    freq = 107E9
+    # use two freq: 107E9 and 93E9
     dt, nu, f, ef, islim = read_2011dh()
-    choose = np.logical_and(~islim, nu==freq)
+    freq = 107E9
+    choose = np.logical_and(~islim, np.logical_or(nu==freq, nu==93E9))
     lum = plot_line(
             ax[0], d, nu[choose], dt[choose], f[choose], 
             'SN2011dh', 'SN', col, legend)
@@ -447,5 +506,5 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.show()
+    #plt.savefig("lum_evolution.png")
