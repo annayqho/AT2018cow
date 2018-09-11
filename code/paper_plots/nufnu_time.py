@@ -475,14 +475,14 @@ def sn1998bw(ax, col, legend):
     nu = 150E9
     t = np.array([12.4])
     f = np.array([39])
-    lum = plot_line(ax[0], d, nu, t, f, 'SN1998bw', 'Rel. SN', col, legend)
+    lum = plot_line(ax[0], d, t, nu*f, 'SN1998bw', 'Rel. SN', col, legend)
     nu = 2.3E9
     t = np.array([11.7, 14.6, 15.7, 16.5, 17.8, 19.7, 21.6, 23.6, 25.9, 26.8, 28.8, 30.0, 32.9, 34.7, 36.8, 38.8, 40.0, 45.7, 51.7, 57.7, 64.7, 67.7, 80.5])
     f = np.array([19.7, 22.3, 23.5, 23.9, 25.1, 25.3, 20.9, 22.9, 28.0, 28.7, 31.1, 31.3, 27.3, 33.5, 31.8, 31, 31.3, 26.8, 23.1, 18.5, 15.6, 15.6, 9.6])
-    ax[0].text(t[0], lum[0]/1.3, '1998bw', fontsize=11,
+    ax[0].text(t[0], lum[0]/2, '1998bw', fontsize=11,
             verticalalignment='top',
             horizontalalignment='center')
-    lum = plot_line(ax[1], d, nu, t, f, 'SN1998bw', 'Rel. SN', col, legend)
+    lum = plot_line(ax[1], d, t, nu*f, 'SN1998bw', 'Rel. SN', col, legend)
     ax[1].text(t[0]/1.05, lum[0], '1998bw', fontsize=11,
             verticalalignment='center',
             horizontalalignment='right')
@@ -498,7 +498,7 @@ def othersn(ax):
 
 
 if __name__=="__main__":
-    fig, axarr = plt.subplots(1, 2, figsize=(10,5), sharex=True, sharey=True)
+    fig, axarr = plt.subplots(1, 2, figsize=(10,7), sharex=True, sharey=True)
     props = dict(boxstyle='round', facecolor='white')
 
     # viridis color palette
@@ -532,7 +532,7 @@ if __name__=="__main__":
     grb130427A(axarr, '#fde725', None)
 
     sn2009bb(axarr, '#3b528b', legend=True)
-    #sn1998bw(axarr, '#', None)
+    sn1998bw(axarr, '#3b528b', None)
 
     at2018cow(axarr, 'k', None)
 
@@ -551,5 +551,5 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    plt.show()
-    #plt.savefig("lum_evolution.png")
+    #plt.show()
+    plt.savefig("lum_evolution.png")
