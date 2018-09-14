@@ -43,9 +43,20 @@ def sma(ax):
             fmt='s', c='k', lw=1.5)
     ax.plot(
             dt, f, linestyle='-', c='k', lw=1.5)
-    # non-detection
-    ax.scatter(76, 0.62, marker='v', c='k', s=50)
 
+    # non-detection
+    # what is the 3-sigma of the non-detection?
+    # x + 3-sigma
+    # for 231.5 GHz, it's X=0.62, 3-sig = 3*0.64
+    val = 0.62
+    sig = 0.64
+    ax.scatter(76, val+3*sig, marker="_", c='k', s=200)
+    ax.scatter(76, val, marker="_", c='k', s=100)
+    ax.scatter(76, val, marker=".", c='k', s=30)
+    ax.arrow(
+            76, val+3*sig, 0, -3*sig, length_includes_head=True, 
+            head_width=5, head_length=0.1, fc='k')
+    
     choose = np.logical_and(freq >= 341.5, freq <= 349)
 
     ax.errorbar(
@@ -54,6 +65,16 @@ def sma(ax):
             label="341.5--349 GHz")
     ax.plot(
             days[choose], flux[choose], linestyle='-', c='#66c2a5', lw=1.5)
+
+    # for 351.0, the non-detection is -0.32 +/- 1.76
+    val = -0.32
+    sig = 1.76
+    ax.scatter(76, val+3*sig, marker="_", c='#66c2a5', s=200)
+    ax.scatter(76, val, marker="_", c='#66c2a5', s=100)
+    ax.scatter(76, val, marker=".", c='#66c2a5', s=30)
+    ax.arrow(
+            76, val+3*sig, 0, -3*sig, length_includes_head=True, 
+            head_width=5, head_length=0.1, fc='#66c2a5', ec='#66c2a5')
 
     # Do 34 GHz
     choose = freq == 34
