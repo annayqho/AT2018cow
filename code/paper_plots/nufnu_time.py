@@ -551,5 +551,5 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.show()
+    #plt.savefig("lum_evolution.png")
