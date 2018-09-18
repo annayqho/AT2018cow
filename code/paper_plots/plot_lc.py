@@ -98,9 +98,9 @@ def sma(ax):
     #ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
 
     # cross hatches for the Day 10, Day 13/14, and Day 22 measurements
-    ax.scatter(10, 65, marker='x', c='k', s=80)
-    ax.scatter(14, 65, marker='x', c='k', s=80)
-    ax.scatter(22, 65, marker='x', c='k', s=80)
+    ax.text(10, 70, 'S', fontsize=12)
+    ax.text(14, 70, 'S', fontsize=12)
+    ax.text(22, 70, 'S', fontsize=12)
 
     ax.set_ylim(0.5,100)
     ax.set_yscale('log')
@@ -150,10 +150,6 @@ def xray(ax):
     ax.legend(fontsize=11, loc='lower left', ncol=2)
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
-
-
-if __name__=="__main__":
-    """ Plot radio and X-ray light curves """
     fig = plt.subplots(figsize=(8,6))
     gs = gridspec.GridSpec(2, 1, height_ratios=[5,4], hspace=0.0)
     gs.update(left=0.15, right=0.9)
