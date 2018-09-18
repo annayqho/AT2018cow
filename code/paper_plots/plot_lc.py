@@ -40,7 +40,7 @@ def sma(ax):
             label="230.6--234.6 GHz")
     ax.errorbar(
             dt, f, ef_comb, 
-            fmt='s', c='k', lw=1.5)
+            fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
             dt, f, linestyle='-', c='k', lw=1.5)
 
@@ -58,23 +58,23 @@ def sma(ax):
             head_width=5, head_length=0.1, fc='k')
     
     choose = np.logical_and(freq >= 341.5, freq <= 349)
-
     ax.errorbar(
             days[choose], flux[choose], eflux[choose],
-            fmt='*', c='#66c2a5', lw=0.5, alpha=0.8, ms=13,
+            fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=13,
             label="341.5--349 GHz")
     ax.plot(
-            days[choose], flux[choose], linestyle='-', c='#66c2a5', lw=1.5)
+            days[choose], flux[choose], linestyle='-', 
+            c='#f98e09', lw=1.5)
 
     # for 351.0, the non-detection is -0.32 +/- 1.76
     val = -0.32
     sig = 1.76
-    ax.scatter(76, val+3*sig, marker="_", c='#66c2a5', s=200)
-    ax.scatter(76, val, marker="_", c='#66c2a5', s=100)
-    ax.scatter(76, val, marker=".", c='#66c2a5', s=30)
+    ax.scatter(76, val+3*sig, marker="_", c='#f98e09', s=200)
+    ax.scatter(76, val, marker="_", c='#f98e09', s=100)
+    ax.scatter(76, val, marker=".", c='#f98e09', s=30)
     ax.arrow(
             76, val+3*sig, 0, -3*sig, length_includes_head=True, 
-            head_width=5, head_length=0.1, fc='#66c2a5', ec='#66c2a5')
+            head_width=5, head_length=0.1, fc='#f98e09', ec='#f98e09')
 
     # Do 34 GHz
     choose = freq == 34
@@ -88,9 +88,9 @@ def sma(ax):
     y = 10**(out[0]*np.log10(x)+out[1])
     ax.errorbar(
             days[choose], flux[choose], yerr=eflux[choose],
-            fmt='o', c='#8da0cb', lw=1.5, ms=7,
+            fmt='o', c='#57106e', lw=1.5, ms=7,
             label="34 GHz")
-    ax.plot(x, y, ls='--', c='#8da0cb')
+    ax.plot(x, y, ls='--', c='#57106e')
     ax.text(17, 10, r'$f_\nu \propto t^2$', fontsize=12)
 
     # for SMA proposal
@@ -126,18 +126,18 @@ def xray(ax):
     dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
     ax.errorbar(
             dt, f1*1E12, yerr=ef1*1E12, fmt='o', label="3-10 keV",
-            mfc='white', mec='k', c='k', ms=msize)
+            mfc='#bc3754', mec='k', c='k', ms=msize)
     ax.errorbar(
             dt, f2*1E12, yerr=ef2*1E12,
-            fmt='v', mfc='#1b9e77', mec='black',
+            fmt='v', mfc='white', mec='black',
             label="10-20 keV", c='k', ms=msize)
     ax.errorbar(
             dt, f3*1E12, yerr=ef3*1E12,
             fmt='^', label="20-40 keV",
-             mfc='#d95f02', mec='black', c='k', ms=msize)
+             mfc='#f98e09', mec='black', c='k', ms=msize)
     ax.errorbar(
             dt, f4*1E12, yerr=ef4*1E12, fmt='s',
-            mfc='#7570b3', mec='black',
+            mfc='#57106e', mec='black',
             label="40-80 keV", c='k', ms=msize)
 
     ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
@@ -150,6 +150,10 @@ def xray(ax):
     ax.legend(fontsize=11, loc='lower left', ncol=2)
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
+
+
+if __name__=="__main__":
+    """ Plot radio and X-ray light curves """
     fig = plt.subplots(figsize=(8,6))
     gs = gridspec.GridSpec(2, 1, height_ratios=[5,4], hspace=0.0)
     gs.update(left=0.15, right=0.9)
