@@ -19,7 +19,7 @@ def update(dt, nu, f, ef, dt_val, nu_val, f_val, ef_val):
 
 def run_day(ax, dt, nu, f, ef, xticks, yticks, day, legpos='lower right'):
     choose = np.logical_or(nu == 215.5, nu == 243.3)
-    col = '#440154' # dark purple
+    col = '#57106e' # dark purple
 
     if sum(choose) > 0:
         ax.errorbar(
@@ -30,7 +30,7 @@ def run_day(ax, dt, nu, f, ef, xticks, yticks, day, legpos='lower right'):
                 dt[choose], f[choose], linestyle='-', c=col, lw=1.5) 
 
     choose = np.logical_or(nu == 231.5, nu == 259.3)
-    col = '#5ec962' # light green
+    col = '#f98e09' # orange
     if sum(choose) > 0:
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
@@ -40,18 +40,18 @@ def run_day(ax, dt, nu, f, ef, xticks, yticks, day, legpos='lower right'):
                 dt[choose], f[choose], linestyle='-', c=col, lw=1.5)
 
     choose = np.logical_or.reduce((nu == 330.8, nu == 344.8, nu == 341.5))
-    col = '#3b528b' # dark blue
+    col = 'black' 
     if sum(choose) > 0:
         print(len(ef), len(choose))
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
-                fmt='o', c=col, lw=0.5, alpha=0.8, ms=7,
-                label="%s GHz" %nu[choose][0])
+                fmt='o', c='k', mec=col, lw=0.5, alpha=0.8, ms=7,
+                label="%s GHz" %nu[choose][0], mfc='white')
         ax.plot(
                 dt[choose], f[choose], linestyle='-', c=col, lw=1.5)
 
     choose = np.logical_or.reduce((nu == 357.5, nu==346.8, nu == 360.8))
-    col = '#fde725' # yellow
+    col = '#bc3754' # yellow
     if sum(choose) > 0:
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
