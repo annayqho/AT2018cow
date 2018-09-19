@@ -10,6 +10,7 @@ from synchrotron_fit import self_abs, fit_self_abs
 
 
 d = Planck15.luminosity_distance(z=0.014).cgs.value
+d_mpc = Planck15.luminosity_distance(z=0.014).value
 c = 3E10
 mp = 1.67E-24
 c6 = 8.16E-41
@@ -21,18 +22,40 @@ alpha = 1
 f = 0.5
 
 
-def get_R(Fp, nup):
+def get_R_full(Fp, nup):
+    """ This is Equation 11 in Chevalier 98 """
     top = 6 * c6**(gamma+5) * Fp**(gamma+6) * d**(2*gamma+12)
     bottom = alpha*f*(gamma-2)*np.pi**(gamma+5)*c5**(gamma+6)*El**(gamma-2)
     Rp = (top/bottom)**(1/(2*gamma+13)) * (nup/(2*c1))**(-1)
     return Rp
 
 
+def get_R(Fp, nup):
+    """ This is Equation 13 in C98
+    Fp in Jy
+    nup in GHz
+
+    Returns Rp in cm
+    """
+    Rp = 8.8E15 * alpha**(-1/19) * (f/0.5)**(-1/19) * (Fp)**(9/19) * \
+         d_mpc**(18/19) * (nup/5)**(-1)
+    return Rp
+
+
 def get_B(Fp, nup):
+    """ This is Equation 14 in C98
+    Fp in Jy
+    nup in GHz
+    
+    Returns Bp in Gauss
+    """
+    Bp = 0.58 * alpha**(-4/19) * (f/0.5)**(-4/19) * (Fp)**(-2/19) * \
+         d_mpc**(-4/19) * (nup/5)
+    return Bp
     
 
 
-def plot():
+def multiple_days():
     for dt in np.arange(8,31):
         nu,f = get_spectrum(dt)
         plt.scatter(nu, f, c='k')
@@ -89,3 +112,16 @@ def plot():
                 r"$F_a=%s$mJy" %(int(F_a)))
         plt.savefig("day_%s.png" %dt)
         plt.close()
+
+
+if __name__=="__main__":
+    R = get_R(94E-3, 100)
+    print(R/10**15)
+    B = get_B(94E-3, 100)
+    dt = 22
+    V = (4/3) * np.pi * R**3
+    v = R/(86400*dt)
+    beta = v/c
+    print(beta)
+    UB = (B**2)/(8*np.pi) * V
+
