@@ -123,5 +123,11 @@ if __name__=="__main__":
     v = R/(86400*dt)
     beta = v/c
     print(beta)
+    P = B**2/(8*np.pi)
+    rho = (4*P/3)/v**2
+    print(rho)
+    n_p = rho/mp
+    n_e = n_p
+    print(n_e)
     UB = (B**2)/(8*np.pi) * V
 
