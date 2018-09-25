@@ -86,15 +86,14 @@ def vele(ax):
     #          fontsize=14, verticalalignment='bottom', horizontalalignment='center')  
 
 
-    ax.set_xlim(0.03, 2)
-    ax.set_ylim(1E45, 8E49)
     ax.set_xscale('log')
     ax.set_yscale('log')
 
     # make a twin axis
     ax2 = ax.twinx()
     ax2.set_ylabel(
-            "Energy (erg): $\epsilon_B=0.01, \epsilon_e=0.1$", fontsize=14)
+            "Energy (erg): $\epsilon_B=0.01, \epsilon_e=0.1$", fontsize=14,
+            rotation=270, labelpad=15.0)
     y_f = lambda y_i: y_i*33
     ymin, ymax = ax.get_ylim()
     ax2.set_ylim((y_f(ymin), y_f(ymax)))
@@ -108,6 +107,8 @@ def vele(ax):
         fontsize=14)
     ax.set_ylabel(
             "Energy (erg): $\epsilon_B=\epsilon_e=0.33$", fontsize=14)
+    ax.set_xlim(0.03, 2)
+    ax.set_ylim(1E45, 8E49)
 
 
 def peaklum(ax):
@@ -175,7 +176,7 @@ def peaklum(ax):
 fig,axarr = plt.subplots(1,2, figsize=(10,5))
 vele(axarr[1])
 peaklum(axarr[0])
-plt.tight_layout()
+plt.tight_layout(w_pad=4.0)
 
 #plt.show()
 plt.savefig("chevalier_diagram.png")

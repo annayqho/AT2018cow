@@ -225,9 +225,12 @@ def sn2003L(ax, col, legend):
     nu_plt = 8.5E9
     nu, dt, f, ef = read_2003L()
     choose = nu == nu_plt
-    plot_line(
+    lum = plot_line(
             ax[1], d, dt[choose], 1E-3*f[choose]*nu_plt, 
             'SN2003L', 'SN', col, legend)
+    ax[1].text(dt[choose][-1]/1.05, lum[-1], 'SN2003L', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
     
 
 def sn1979c(ax, col, legend):
@@ -250,7 +253,10 @@ def sn1979c(ax, col, legend):
              10.2,10.8,10.3,10.4,12.2,10.1,10.2,11.5,11.2,13.0,11.3,10.2,
              9.6,11.2,13.2,11.1,9.1,8.5,9.1,8.8,10.1,9.7,9.1,8.9,
              7.0,7.7])
-    plot_line(ax[1], d, t, nu*flux, 'SN1979c', 'SN', col, legend)
+    lum = plot_line(ax[1], d, t, nu*flux, 'SN1979c', 'SN', col, legend)
+    ax[1].text(t[0]/1.05, lum[0], 'SN1979C', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
     
 
 def sn1993J(ax, col, legend):
@@ -418,7 +424,10 @@ def sn2007bg(ax, col, legend):
             [480, 753, 804, 728, 1257, 1490, 1390, 1325, 1131, 957, 
                 621, 316, 379, 404, 783, 1669, 2097, 2200, 
                 2852, 3344, 3897, 3891, 3842, 3641, 3408]) * 1E-3
-    plot_line(ax[1], d, t, nu*f, 'SN2007bg', 'SN', col, legend)
+    lum = plot_line(ax[1], d, t, nu*f, 'SN2007bg', 'SN', col, legend)
+    ax[1].text(t[0]/1.05, lum[0], 'SN2007bg', fontsize=11,
+            verticalalignment='bottom',
+            horizontalalignment='right')
 
 
 def sn2003bg(ax, col, legend):
@@ -442,7 +451,10 @@ def sn2003bg(ax, col, legend):
                 21.67, 21.31, 20.88, 20.33, 19.85, 18.84, 17.14,
                 14.61, 14.49, 14.16, 13.25, 13.08, 10.04, 8.92,
                 6.23, 6.18, 4.62, 3.93, 4.69, 4.48])
-    plot_line(ax[1], d, t, nu*f, 'SN2003bg', 'SN', col, legend)
+    lum = plot_line(ax[1], d, t, nu*f, 'SN2003bg', 'SN', col, legend)
+    ax[1].text(t[0]/1.05, lum[0], 'SN2003bg', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
 
 
 def sn2009bb(ax, col, legend):
@@ -459,9 +471,9 @@ def sn2009bb(ax, col, legend):
         7.714, 8.482, 6.824, 6.327, 3.294, 4.204, 3.203, 2.392,
         1.903, 1.032, 1.084])
     lum = plot_line(ax[1], d, t, nu*flux, 'SN2009bb', 'Rel. SN', col, legend)
-    #ax[1].text(t[0]/1.05, lum[0], '2009bb', fontsize=11,
-    #        verticalalignment='center',
-    #        horizontalalignment='right')
+    ax[1].text(t[0]/1.05, lum[0], '2009bb', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
 
 
 def sn1998bw(ax, col, legend):
@@ -551,5 +563,5 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    plt.show()
-    #plt.savefig("lum_evolution.png")
+    #plt.show()
+    plt.savefig("lum_evolution.png")

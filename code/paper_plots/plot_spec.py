@@ -162,5 +162,6 @@ if __name__=="__main__":
     axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
 
 
+    plt.ion()
     plt.show()
     #plt.savefig("spec.png")

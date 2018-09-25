@@ -17,7 +17,7 @@ c6 = 8.16E-41
 c5 = 6.29E-24
 c1 = 6.27E18
 El = 8.17E-7
-gamma = 3.4
+gamma = 3.2
 alpha = 1
 f = 0.5
 
@@ -115,21 +115,23 @@ def multiple_days():
 
 
 if __name__=="__main__":
-    R = get_R(94E-3, 100)
-    print(R/10**15)
-    B = get_B(94E-3, 100)
-    dt = 22
+    nupeak = 233
+    fpeak = 40E-3
+    R = get_R(fpeak, nupeak)
+    print("R", R/10**15)
+    B = get_B(fpeak, nupeak)
+    dt = 8
     V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
     beta = v/c
-    print(beta)
+    print("Beta", beta)
     P = B**2/(8*np.pi)
     rho = (4*P/3)/v**2
     print(rho)
     n_p = rho/mp
     n_e = n_p
-    print(n_e)
+    print("ne", n_e)
     UB = (B**2)/(8*np.pi) * V
     print(UB)
-    print(2*UB)
+    print("E", 3*UB)
 
