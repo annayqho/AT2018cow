@@ -119,7 +119,7 @@ if __name__=="__main__":
     print(R/10**15)
     B = get_B(94E-3, 100)
     dt = 22
-    V = (4/3) * np.pi * R**3
+    V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
     beta = v/c
     print(beta)
@@ -130,4 +130,6 @@ if __name__=="__main__":
     n_e = n_p
     print(n_e)
     UB = (B**2)/(8*np.pi) * V
+    print(UB)
+    print(2*UB)
 

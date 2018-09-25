@@ -30,12 +30,13 @@ def chev_lines(ax, x, v):
             np.log10(x))
     y = 10**logy
     ax.plot(x, y, ls='--', c='k')
-    rotangle = 55
+    rotangle = 60
     ax.text(
-            x[5500], y[5500], "$R/\Delta t = %sc$" %v, 
+            x[5300], y[5500], "$R/\Delta t = %sc$" %v, 
             fontsize=14, rotation=rotangle,
             horizontalalignment='center', verticalalignment='top')
     return y
+
 
 def vele(ax):
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
@@ -77,26 +78,37 @@ def vele(ax):
 
     
     # MAXI 140814A
-    ax.scatter(
-             0.2, 3E49,
-             marker='*', s=300, facecolors='white', edgecolors='black')
-    ax.text(
-             0.2, 3E49*1.2, "VLASS 1210+49", 
-             fontsize=14, verticalalignment='bottom', horizontalalignment='center')  
+    # ax.scatter(
+    #          0.2, 3E49,
+    #          marker='*', s=300, facecolors='white', edgecolors='black')
+    # ax.text(
+    #          0.2, 3E49*1.2, "VLASS 1210+49", 
+    #          fontsize=14, verticalalignment='bottom', horizontalalignment='center')  
 
 
     ax.set_xlim(0.03, 2)
-    ax.set_ylim(1E45, 1E50)
+    ax.set_ylim(1E45, 8E49)
     ax.set_xscale('log')
     ax.set_yscale('log')
+
+    # make a twin axis
+    ax2 = ax.twinx()
+    ax2.set_ylabel(
+            "Energy (erg): $\epsilon_B=0.01, \epsilon_e=0.1$", fontsize=14)
+    y_f = lambda y_i: y_i*33
+    ymin, ymax = ax.get_ylim()
+    ax2.set_ylim((y_f(ymin), y_f(ymax)))
+    ax2.plot([],[])
+    ax2.set_yscale('log')
+
     ax.tick_params(axis='both', labelsize=14)
+    ax2.tick_params(axis='both', labelsize=14)
     ax.set_xlabel(
         "Blastwave Velocity $(\\Gamma \\beta)$",
         fontsize=14)
     ax.set_ylabel(
-        "Energy (erg)", fontsize=14)
+            "Energy (erg): $\epsilon_B=\epsilon_e=0.33$", fontsize=14)
 
-    
 
 def peaklum(ax):
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
@@ -132,12 +144,12 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # MAXI 140814A
-    ax.scatter(
-            4*365*6/5, 8e28,
-            marker='*', s=300, facecolors='white', edgecolors='black')
-    ax.text(
-            4*365*6/5, 9e28, "VLASS 1210+49", 
-            fontsize=14, verticalalignment='bottom', horizontalalignment='center')
+    # ax.scatter(
+    #         4*365*6/5, 8e28,
+    #         marker='*', s=300, facecolors='white', edgecolors='black')
+    # ax.text(
+    #         4*365*6/5, 9e28, "VLASS 1210+49", 
+    #         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
 
     # Swift J1644+57
     # d = Planck15.luminosity_distance(z=0.354).cgs.value
@@ -159,7 +171,6 @@ def peaklum(ax):
     ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
         fontsize=14)
 
-    
     
 fig,axarr = plt.subplots(1,2, figsize=(10,5))
 vele(axarr[1])
