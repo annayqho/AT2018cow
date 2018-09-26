@@ -522,29 +522,33 @@ if __name__=="__main__":
 
     # inferno color palette
     # 000004 black
+    # 420a68 dark purple
+    # 932667 kind of a purple/red color
+    # dd513a dark orange
+    # fca50a light orange
+    # fcffa4 really light yellow
     # 57106e purple
     # bc3754 pink/red
     # f98e09 orange
-    # fcffa4 really light yellow
 
     # OK so I want to use four colors. I think it's nice to have two light ones
     # and two dark ones.
 
     #maxi(ax)
-    tde(axarr, '#440154', legend=True)
+    tde(axarr, '#57106e', legend=True)
 
-    sn2003L(axarr, '#5ec962', legend=True)
-    sn1979c(axarr, '#5ec962', None)
-    sn1993J(axarr, '#5ec962', None)
-    sn2011dh(axarr, '#5ec962', None)
-    sn2007bg(axarr, '#5ec962', None)
-    sn2003bg(axarr, '#5ec962', None)
+    sn2003L(axarr, 'lightblue', legend=True)
+    sn1979c(axarr, 'lightblue', None)
+    sn1993J(axarr, 'lightblue', None)
+    sn2011dh(axarr, 'lightblue', None)
+    sn2007bg(axarr, 'lightblue', None)
+    sn2003bg(axarr, 'lightblue', None)
 
-    grb030329(axarr, '#fde725', legend=True)
-    grb130427A(axarr, '#fde725', None)
+    grb030329(axarr, '#f98e09', legend=True)
+    grb130427A(axarr, '#f98e09', None)
 
-    sn2009bb(axarr, '#3b528b', legend=True)
-    sn1998bw(axarr, '#3b528b', None)
+    sn2009bb(axarr, '#bc3754', legend=True)
+    sn1998bw(axarr, '#bc3754', None)
 
     at2018cow(axarr, 'k', None)
 
