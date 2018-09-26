@@ -152,7 +152,8 @@ fig = plt.figure(figsize=(6,4))
 
 days = [5, 14, 22]
 #cols = ['#1b9e77', '#d95f02', '#7570b3']
-cols = ['#440154', '#5ec962', '#fde725']
+#cols = ['#440154', '#5ec962', '#fde725']
+cols = ['#f98e09', '#bc3754', '#57106e']
 #cols = ['k', 'white', 'lightgrey']
 markers = ['o', 's', 'D']
 
