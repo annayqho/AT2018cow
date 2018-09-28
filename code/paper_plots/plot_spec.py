@@ -26,7 +26,7 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
     if formatting:
         ax.set_xscale('log')
         ax.set_yscale('log')
-        ax.set_ylabel("Flux [mJy]", fontsize=16)
+        ax.set_ylabel("Spectral Flux Density [mJy]", fontsize=16)
         ax.text(
                 0.3, 0.45, "$F_\\nu \propto \\nu^2$", 
                 transform=ax.transAxes, horizontalalignment='right', 
@@ -85,31 +85,7 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
 
 if __name__=="__main__":
     fig, axarr = plt.subplots(
-            4, 1, figsize=(8,10), sharex=True, sharey=True)
-
-    # panel 1: spectrum on Day 5
-    # ATel: 4.5d, 6 mJy at 90 GHz (deUgarte2018)
-    # Day 5.8: 30.2 +/- 1.8 mJy at 350 GHz (Smith et al. 2018a)
-    # 0.5 mJy at 15.5 GHz on 6.3d (Bright et al. 2018)
-    ax = axarr[0]
-    tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
-    choose = day == 5
-    islim = np.array([False]*sum(choose))
-    plot_day(
-            ax,5,freq[choose],flux[choose],islim, 
-            formatting=True, fit_peak=False)
-    ax.scatter(
-            [90, 350, 15.5], [6, 30.2, 0.5], 
-            marker='o', facecolor='white', edgecolor='k')
-    xfit = np.hstack((freq[choose], [90, 350, 15.5]))
-    print(xfit)
-    yfit = np.hstack((flux[choose], [6, 30.2, 0.5]))
-    print(yfit)
-    order = np.argsort(xfit)
-    b = fit_self_abs(xfit[order],yfit[order])#,0.1*yfit[order])
-    xfit = np.linspace(5, 500)
-    yfit = 10**(2*np.log10(xfit)+b)
-    ax.plot(xfit, yfit, ls=':', c='k')
+            3, 1, figsize=(8,10), sharex=True, sharey=True)
 
     # spectrum on Day 10
     ax = axarr[1]
