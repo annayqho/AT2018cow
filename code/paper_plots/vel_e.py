@@ -48,8 +48,8 @@ def vele(ax):
 
     choose = np.logical_and(y < 1e50, x < 0.8)
     ax.scatter(
-            x[choose], y[choose], marker='o', c='k', s=100,
-            label="SNe Ibc")
+            x[choose], y[choose], marker='o', edgecolor='k', s=100,
+            facecolor='none', label="SNe Ibc")
 
     choose = np.logical_and(x > 0.5, x < 1.2)
     ax.scatter(
@@ -61,6 +61,17 @@ def vele(ax):
             x[choose], y[choose], marker='o', edgecolors='k', s=100,
             facecolors='none', label=None)
 
+    # Mark 2003L
+    ax.text(
+            0.15, 1.5E47, "SN2003L", fontsize=12)
+
+    # Mark 2003bg
+    ax.text(
+        0.24, 1E48, "SN2003bg", fontsize=12)
+
+    # Mark 2007bg
+    ax.text(
+        0.2, 9.6E27, "SN2007bg", fontsize=12)
 
     # AT2018cow
     ax.scatter(
@@ -75,6 +86,7 @@ def vele(ax):
     ax.scatter(
             0.5*1.2, 2.9E50 + 0.1*2.9E50, 
             marker='s', s=100, facecolors='white', edgecolors='black')
+
 
     
     # MAXI 140814A
@@ -121,7 +133,8 @@ def peaklum(ax):
 
     choose = np.logical_or(y < 9E27, x > 50)
     ax.scatter(
-            x[choose], y[choose], marker='o', c='k', s=100,
+            x[choose], y[choose], marker='o', edgecolor='k', s=100,
+            facecolor='none',
             label="SNe Ibc")
 
     choose = np.logical_and(y > 8E27, x < 80)
@@ -143,6 +156,27 @@ def peaklum(ax):
             22*100/5, 3E29, "AT2018cow", fontsize=14, 
             verticalalignment='bottom', 
             horizontalalignment='center')
+
+    # Mark 2003L
+    ax.text(
+            30*22.5/5, 3E28, "2003L", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='right')
+
+    # Mark 2003bg
+    ax.text(
+            23*25/5, 5.5E28, "2003bg", fontsize=12,
+            verticalalignment='top',
+            horizontalalignment='left')
+
+    # Mark 2007bg
+    ax.scatter(
+            55.9*8.46/5, 4.1E28, marker='o', edgecolor='k', s=100,
+            facecolor='none')
+    ax.text(
+            55.9*8.46/5, 4.1E28, "2007bg", fontsize=12,
+            verticalalignment='top',
+            horizontalalignment='left')
 
     # MAXI 140814A
     # ax.scatter(
@@ -178,5 +212,5 @@ vele(axarr[1])
 peaklum(axarr[0])
 plt.tight_layout(w_pad=4.0)
 
-#plt.show()
-plt.savefig("chevalier_diagram.png")
+plt.show()
+#plt.savefig("chevalier_diagram.png")
