@@ -26,7 +26,7 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
     if formatting:
         ax.set_xscale('log')
         ax.set_yscale('log')
-        ax.set_ylabel("Spectral Flux Density [mJy]", fontsize=16)
+        ax.set_ylabel("Sp. Flux Dens. [mJy]", fontsize=14)
         ax.text(
                 0.3, 0.45, "$F_\\nu \propto \\nu^2$", 
                 transform=ax.transAxes, horizontalalignment='right', 
@@ -85,10 +85,10 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
 
 if __name__=="__main__":
     fig, axarr = plt.subplots(
-            3, 1, figsize=(8,10), sharex=True, sharey=True)
+            3, 1, figsize=(8,8), sharex=True, sharey=True)
 
     # spectrum on Day 10
-    ax = axarr[1]
+    ax = axarr[0]
     tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
     choose = day == 10
     islim = np.array([False]*sum(choose))
@@ -96,7 +96,7 @@ if __name__=="__main__":
     plot_day(ax,10,freq[choose],flux[choose],islim)
 
     # spectrum on Day 14
-    ax = axarr[2]
+    ax = axarr[1]
     tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
     choose_cm = np.logical_and(day==13, tel=='ATCA')
     choose_mm = np.logical_and(
@@ -107,11 +107,11 @@ if __name__=="__main__":
     plot_day(ax,14,freq[choose],flux[choose],islim)
 
     # bottom panel: spectrum on Day 22
-    ax = axarr[3]
+    ax = axarr[2]
     freq,flux = get_spectrum(22)
     islim = np.array([False]*(len(freq)))
     plot_day(ax, 22, freq, flux, islim)
-    ax.set_xlabel("Frequency [GHz]", fontsize=16)
+    ax.set_xlabel("Frequency [GHz]", fontsize=14)
     ax.scatter(
             671, 31.5, marker='*', s=100, 
             facecolor='white', edgecolor='black')
@@ -138,6 +138,5 @@ if __name__=="__main__":
     axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
 
 
-    plt.ion()
-    plt.show()
-    #plt.savefig("spec.png")
+    #plt.show()
+    plt.savefig("spec.png")

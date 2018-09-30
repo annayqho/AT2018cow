@@ -115,17 +115,17 @@ def multiple_days():
 
 
 if __name__=="__main__":
-    nupeak = 233
-    fpeak = 40E-3
+    nupeak = 100
+    fpeak = 94E-3
     R = get_R(fpeak, nupeak)
     print("R", R/10**15)
     B = get_B(fpeak, nupeak)
-    dt = 8
+    dt = 22
     V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
     beta = v/c
     print("Beta", beta)
-    P = B**2/(8*np.pi)
+    P = 3*B**2/(8*np.pi)
     rho = (4*P/3)/v**2
     print(rho)
     n_p = rho/mp
@@ -134,4 +134,11 @@ if __name__=="__main__":
     UB = (B**2)/(8*np.pi) * V
     print(UB)
     print("E", 3*UB)
+    tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
+    print(tauff)
+    Te = 1.2E6
+    nuff = (1/(68*(Te/8000)**(-1.35)))**(-1/2.1)
+    print(nuff)
+    Lff = 1.43E-27 * n_e**2 * Te**(1/2) * (4/3) * np.pi * (6E16)**3
+    print(Lff)
 
