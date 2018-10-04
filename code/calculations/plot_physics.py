@@ -114,6 +114,7 @@ def multiple_days():
 
 def run(nupeak, fpeak, d, gamma, d_mpc):
     """ nupeak in GHz, fpeak in Jy, dist in cm """
+    print("lpeak", fpeak*1E-23*4*np.pi*d**2)
     R = get_R(fpeak, nupeak, d_mpc)
     print("R", R/10**15)
     B = get_B(fpeak, nupeak, d_mpc)
@@ -164,6 +165,21 @@ def sn2003L():
     run(nupeak, fpeak, d, gamma, d_mpc)
 
 
+def sn2007bg():
+    """ Salas et al. 2013 
+    In Phase 1 of the explosion, the peak luminosity reached
+    is 4.1E28 erg/s/Hz observed on Day 55.9 at 8.46 GHz
+    d = 152 Mpc
+    """
+    nupeak = 8.46
+    fpeak = 1490E-6
+    redshift = 0.0335
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3.2 # they don't give it in the paper though
+    run(nupeak, fpeak, d, gamma, d_mpc)
+
+
 
 if __name__=="__main__":
-    sn2003L()
+    sn2007bg()

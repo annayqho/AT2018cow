@@ -40,45 +40,38 @@ def chev_lines(ax, x, v):
 
 def vele(ax):
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    inputf = direc + "/Soderberg2009Fig4.1"
 
-    dat = Table.read(inputf, format='ascii')
-    x = dat['col1']
-    y = dat['col2']
-
-    choose = np.logical_and(y < 1e50, x < 0.8)
+    # SN 2003L
+    v = 0.16
+    E = 6.9E47
     ax.scatter(
-            x[choose], y[choose], marker='o', edgecolor='k', s=100,
+            v, E, marker='o', edgecolor='k', s=100,
             facecolor='none', label="SNe Ibc")
+    ax.text(
+            v*1.05, E, "2003L", fontsize=12)
 
-    choose = np.logical_and(x > 0.5, x < 1.2)
+    # SN 2007bg
+    v = 0.49
+    E = 8.2E47
     ax.scatter(
-            x[choose], y[choose], marker='s', c='k', s=100,
-            label="Rel. SNe")
+            v, E, marker='o', edgecolor='k', s=100,
+            facecolor='none', label="SNe Ibc")
+    ax.text(
+            v*1.05, E, "2007bg", fontsize=12)
 
-    choose = y > 7e49
-    ax.scatter(
-            x[choose], y[choose], marker='o', edgecolors='k', s=100,
-            facecolors='none', label=None)
+    #ax.scatter(
+    #        x[choose], y[choose], marker='s', c='k', s=100,
+    #        label="Rel. SNe")
 
-    # Mark 2003L
-    #ax.text(
-    #        0.15, 1.5E47, "SN2003L", fontsize=12)
+    #choose = y > 7e49
+    #ax.scatter(
+    #        x[choose], y[choose], marker='o', edgecolors='k', s=100,
+    #        facecolors='none', label=None)
+
 
     # Mark 2003bg
     #ax.text(
     #    0.24, 1E48, "SN2003bg", fontsize=12)
-
-    # Mark 2007bg
-    # Salas estimate 1E48 erg of total energy at t=10d
-    # to estimate this energy, they assume that eps_B = eps_E = 0.1
-    # so I think that their energy will be 10/3 higher than my energy
-    ax.scatter(
-        0.2, 1E48*(0.1/0.33), marker='o', 
-        edgecolor='k', facecolor='none', s=100)
-    ax.text(
-        1.1*0.2, 1E48*(0.1/0.33), "SN2007bg", fontsize=12,
-        horizontalalignment='left', verticalalignment='center')
 
     # AT2018cow
     ax.scatter(
@@ -87,22 +80,6 @@ def vele(ax):
     ax.text(
             0.173, 2.2E49/3, "AT2018cow", 
             fontsize=14, verticalalignment='bottom', horizontalalignment='center')
-
-
-    # Swift J1644
-    ax.scatter(
-            0.5*1.2, 2.9E50 + 0.1*2.9E50, 
-            marker='s', s=100, facecolors='white', edgecolors='black')
-
-
-    
-    # MAXI 140814A
-    # ax.scatter(
-    #          0.2, 3E49,
-    #          marker='*', s=300, facecolors='white', edgecolors='black')
-    # ax.text(
-    #          0.2, 3E49*1.2, "VLASS 1210+49", 
-    #          fontsize=14, verticalalignment='bottom', horizontalalignment='center')  
 
 
     ax.set_xscale('log')
@@ -131,23 +108,33 @@ def vele(ax):
 
 
 def peaklum(ax):
-    direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    inputf = direc + "/Soderberg2009Fig3.1"
-
-    dat = Table.read(inputf, format='ascii')
-    x = dat['col1']
-    y = dat['col2']
-
-    choose = np.logical_or(y < 9E27, x > 50)
+    # 2003L
+    tnu = (30)*(22.5/5)
+    lpeak = 3.3E28
     ax.scatter(
-            x[choose], y[choose], marker='o', edgecolor='k', s=100,
+            tnu, lpeak, marker='o', edgecolor='k', s=100,
             facecolor='none',
             label="SNe Ibc")
+    ax.text(
+            tnu*1.05, lpeak, "2003L", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='left')
 
-    choose = np.logical_and(y > 8E27, x < 80)
+    # 2007bg
+    tnu = (55.9)*(8.46/5)
+    lpeak = 4.1E28
     ax.scatter(
-            x[choose], y[choose], marker='s', c='k', s=100,
-            label="Rel. SNe")
+            tnu, lpeak, marker='o', edgecolor='k', s=100,
+            facecolor='none',
+            label="SNe Ibc")
+    ax.text(
+            tnu*1.05, lpeak, "2007bg", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='right')
+
+    #ax.scatter(
+    #        x[choose], y[choose], marker='s', c='k', s=100,
+    #        label="Rel. SNe")
 
     # Lines
     x = np.logspace(0, 4, 10000)
@@ -164,11 +151,6 @@ def peaklum(ax):
             verticalalignment='bottom', 
             horizontalalignment='center')
 
-    # Mark 2003L
-    # ax.text(
-    #         30*22.5/5, 3E28, "2003L", fontsize=12,
-    #         verticalalignment='bottom',
-    #         horizontalalignment='right')
 
     # Mark 2003bg
     # ax.text(
@@ -178,28 +160,13 @@ def peaklum(ax):
 
     # Mark SN2007bg
     # luminosity reaches 1E29 567 days after the explosion, at 8.46 GHz
-    ax.scatter(
-            55.9*8.46/5, 4.1E28, marker='o', edgecolor='k', s=100,
-            facecolor='none')
-    ax.text(
-            55.9*8.46/5, 1.2*4.1E28, "SN2007bg", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # MAXI 140814A
     # ax.scatter(
-    #         4*365*6/5, 8e28,
-    #         marker='*', s=300, facecolors='white', edgecolors='black')
+    #         55.9*8.46/5, 4.1E28, marker='o', edgecolor='k', s=100,
+    #         facecolor='none')
     # ax.text(
-    #         4*365*6/5, 9e28, "VLASS 1210+49", 
-    #         fontsize=14, verticalalignment='bottom', horizontalalignment='center')
-
-    # Swift J1644+57
-    # d = Planck15.luminosity_distance(z=0.354).cgs.value
-    # ax.scatter(
-    #         22*80/5, 25*1e-3*1e-23*4*np.pi*d**2,
-    #         marker='s', s=100, facecolors='white', edgecolors='black',
-    #         label="Rel. TDE")
+    #         55.9*8.46/5, 1.2*4.1E28, "SN2007bg", fontsize=12,
+    #         verticalalignment='bottom',
+    #         horizontalalignment='center')
 
     ax.legend(loc='upper left', fontsize=14)
 
