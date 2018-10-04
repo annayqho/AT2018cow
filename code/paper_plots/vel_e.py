@@ -62,16 +62,23 @@ def vele(ax):
             facecolors='none', label=None)
 
     # Mark 2003L
-    ax.text(
-            0.15, 1.5E47, "SN2003L", fontsize=12)
+    #ax.text(
+    #        0.15, 1.5E47, "SN2003L", fontsize=12)
 
     # Mark 2003bg
-    ax.text(
-        0.24, 1E48, "SN2003bg", fontsize=12)
+    #ax.text(
+    #    0.24, 1E48, "SN2003bg", fontsize=12)
 
     # Mark 2007bg
+    # Salas estimate 1E48 erg of total energy at t=10d
+    # to estimate this energy, they assume that eps_B = eps_E = 0.1
+    # so I think that their energy will be 10/3 higher than my energy
+    ax.scatter(
+        0.2, 1E48*(0.1/0.33), marker='o', 
+        edgecolor='k', facecolor='none', s=100)
     ax.text(
-        0.2, 9.6E27, "SN2007bg", fontsize=12)
+        1.1*0.2, 1E48*(0.1/0.33), "SN2007bg", fontsize=12,
+        horizontalalignment='left', verticalalignment='center')
 
     # AT2018cow
     ax.scatter(
@@ -158,25 +165,26 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # Mark 2003L
-    ax.text(
-            30*22.5/5, 3E28, "2003L", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='right')
+    # ax.text(
+    #         30*22.5/5, 3E28, "2003L", fontsize=12,
+    #         verticalalignment='bottom',
+    #         horizontalalignment='right')
 
     # Mark 2003bg
-    ax.text(
-            23*25/5, 5.5E28, "2003bg", fontsize=12,
-            verticalalignment='top',
-            horizontalalignment='left')
+    # ax.text(
+    #         23*25/5, 5.5E28, "2003bg", fontsize=12,
+    #         verticalalignment='top',
+    #         horizontalalignment='left')
 
-    # Mark 2007bg
+    # Mark SN2007bg
+    # luminosity reaches 1E29 567 days after the explosion, at 8.46 GHz
     ax.scatter(
             55.9*8.46/5, 4.1E28, marker='o', edgecolor='k', s=100,
             facecolor='none')
     ax.text(
-            55.9*8.46/5, 4.1E28, "2007bg", fontsize=12,
-            verticalalignment='top',
-            horizontalalignment='left')
+            55.9*8.46/5, 1.2*4.1E28, "SN2007bg", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='center')
 
     # MAXI 140814A
     # ax.scatter(
@@ -212,5 +220,5 @@ vele(axarr[1])
 peaklum(axarr[0])
 plt.tight_layout(w_pad=4.0)
 
-plt.show()
-#plt.savefig("chevalier_diagram.png")
+#plt.show()
+plt.savefig("chevalier_diagram.png")

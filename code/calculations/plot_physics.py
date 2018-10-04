@@ -9,15 +9,13 @@ from get_radio import get_spectrum
 from synchrotron_fit import self_abs, fit_self_abs
 
 
-d = Planck15.luminosity_distance(z=0.014).cgs.value
-d_mpc = Planck15.luminosity_distance(z=0.014).value
+# CONSTANTS
 c = 3E10
 mp = 1.67E-24
 c6 = 8.16E-41
 c5 = 6.29E-24
 c1 = 6.27E18
 El = 8.17E-7
-gamma = 3.2
 alpha = 1
 f = 0.5
 
@@ -30,7 +28,7 @@ def get_R_full(Fp, nup):
     return Rp
 
 
-def get_R(Fp, nup):
+def get_R(Fp, nup, d_mpc):
     """ This is Equation 13 in C98
     Fp in Jy
     nup in GHz
@@ -42,7 +40,7 @@ def get_R(Fp, nup):
     return Rp
 
 
-def get_B(Fp, nup):
+def get_B(Fp, nup, d_mpc):
     """ This is Equation 14 in C98
     Fp in Jy
     nup in GHz
@@ -114,12 +112,11 @@ def multiple_days():
         plt.close()
 
 
-if __name__=="__main__":
-    nupeak = 100
-    fpeak = 94E-3
-    R = get_R(fpeak, nupeak)
+def run(nupeak, fpeak, d, gamma, d_mpc):
+    """ nupeak in GHz, fpeak in Jy, dist in cm """
+    R = get_R(fpeak, nupeak, d_mpc)
     print("R", R/10**15)
-    B = get_B(fpeak, nupeak)
+    B = get_B(fpeak, nupeak, d_mpc)
     dt = 22
     V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
@@ -142,3 +139,31 @@ if __name__=="__main__":
     Lff = 1.43E-27 * n_e**2 * Te**(1/2) * (4/3) * np.pi * (6E16)**3
     print(Lff)
 
+
+def at2018cow():
+    nupeak = 100
+    fpeak = 94E-3
+    d = Planck15.luminosity_distance(z=0.014).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.014).value
+    run(nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2003L():
+    """ Soderberg 2005
+    "At 30 days, the peak flux density is 3.2 mJy at 22.5 GHz
+    The observed optically thin spectral index is -1.1,
+    same as for AT2018cow
+    distance is 92 Mpc
+    """
+    d = Planck15.luminosity_distance(z=0.0205).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.0205).value
+    beta = -1.1
+    gamma = -2*beta+1
+    nupeak = 22.5
+    fpeak = 3.2E-3
+    run(nupeak, fpeak, d, gamma, d_mpc)
+
+
+
+if __name__=="__main__":
+    sn2003L()

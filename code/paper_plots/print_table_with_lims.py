@@ -60,8 +60,9 @@ for ii,ID in enumerate(names):
     else:
         limitstr = int(limits[ii])
         tstr = int(dt[ii])
-    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
-    outputf.write(row)
+        row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
+        # only print if not none
+        outputf.write(row)
 outputf.write("\enddata \n")
 outputf.write("\end{deluxetable} \n")
 outputf.close()

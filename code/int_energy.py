@@ -15,23 +15,29 @@ d = Planck15.luminosity_distance(z=0.014).cgs.value
 # Energy radiated in X rays
 x,y,yerr = get_xrt() # in erg/cm^2/s
 
-# convert x to seconds
-xsec = x*86400
-xint = np.trapz(y, xsec) # erg/cm2
-xenrad = xint * 4 * np.pi * d**2
+# Choose date range
+choose = x < 22
 
-# 9.9E48 erg of energy as radiated in X rays
+# convert x to seconds
+xsec = x[choose]*86400
+xint = np.trapz(y[choose], xsec) # erg/cm2
+xenrad = xint * 4 * np.pi * d**2
+print(xenrad)
+
+# 6.4E48 erg of energy before 20 days
+# 3.4E48 erg radiated after 20 days
 
 # Energy radiated at 230 GHz
 a, b = sma_lc()
 dt, f, ef = b
-dtsec = dt*86400
-fcgs = f * 1E-3 * 1E-23
+choose = dt < 22
+dtsec = dt[choose]*86400
+fcgs = f[choose] * 1E-3 * 1E-23
 lcgs = 231.5E9 * fcgs
 smaint = np.trapz(lcgs, dtsec) # erg/cm2 
 smaenrad = smaint * 4 * np.pi * d**2
+print(smaenrad)
 
-# 1.2E47 erg of energy radiated at 231.5 GHz
+# 5.1E46 erg radiated before 20 days
+# 5.4E46 erg radiated after 20 days
 
-# total SMA 231.5 and XRT: 1E49 erg
-# and the minimum energy we get is 1.5E49 erg
