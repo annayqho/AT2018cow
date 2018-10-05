@@ -1,3 +1,5 @@
+*.eps
+*.tex
 *.DS_store
 *.pyc
 *.png
