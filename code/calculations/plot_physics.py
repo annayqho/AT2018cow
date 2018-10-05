@@ -112,13 +112,12 @@ def multiple_days():
         plt.close()
 
 
-def run(nupeak, fpeak, d, gamma, d_mpc):
+def run(dt, nupeak, fpeak, d, gamma, d_mpc):
     """ nupeak in GHz, fpeak in Jy, dist in cm """
     print("lpeak", fpeak*1E-23*4*np.pi*d**2)
     R = get_R(fpeak, nupeak, d_mpc)
     print("R", R/10**15)
     B = get_B(fpeak, nupeak, d_mpc)
-    dt = 22
     V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
     beta = v/c
@@ -162,7 +161,7 @@ def sn2003L():
     gamma = -2*beta+1
     nupeak = 22.5
     fpeak = 3.2E-3
-    run(nupeak, fpeak, d, gamma, d_mpc)
+    run(30, nupeak, fpeak, d, gamma, d_mpc)
 
 
 def sn2007bg():
@@ -177,9 +176,113 @@ def sn2007bg():
     d = Planck15.luminosity_distance(z=redshift).cgs.value
     d_mpc = Planck15.luminosity_distance(z=redshift).value
     gamma = 3.2 # they don't give it in the paper though
-    run(nupeak, fpeak, d, gamma, d_mpc)
+    dt = 55.9
+    run(dt, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2003bg():
+    """ Soderberg 2006 
+    Peak flux density of 85 mJy at 22.5 GHz, spectral index -1.1
+    epoch is 35 days
+    distance is 19.6 Mpc
+    """
+    redshift = 0.00442
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    beta = -1.1
+    gamma = -2*beta+1
+    nupeak = 22.5
+    fpeak = 85E-3
+    run(35, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn1998bw():
+    """ Kulkarni et al. 1998
+    on Day 10 infer a peak frequency of 10 GHz and associated
+    peak flux 50 mJy
+    distance = 38 Mpc
+    redshift is 0.0083
+    optically thin spectral index is -0.75 on Day 40
+    they use alpha = 1
+    which I think means beta = -1, so that's 3.
+    so I can still use the same constants
+    """
+    redshift = 0.0083
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    beta = -1
+    gamma = -2*beta+1
+    nupeak = 10
+    fpeak = 50E-3
+    run(10, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2009bb():
+    """ Soderberg et al. 2010
+    from their first spectrum at dt = 20,
+    they infer nupeak = 6 GHz and a spectral peak luminosity
+    of 3.6E28 erg/s/Hz
+    distance is 40 Mpc
+    spectral index is around p=3 as well
+    """
+    redshift = 0.009
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3
+    nupeak = 6
+    fpeak = 1E23 * 3.6E28 / (4 * np.pi * d**2) 
+    run(20, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2006aj():
+    """ Soderberg et al. 2006
+    distance is 145 Mpc
+    Day 5: radio emission peaks between 1.4 GHz and 4.9 GHz
+    In the caption they say that at 5d the radio spectrum peaks near 4 GHz
+    They don't give a peak flux but the flux of 4.86 GHz at 5d is 328 uJy
+    so let's use that
+    They assume a power-law index of 2.1...
+    but let's assume 3 to make it consistent with the rest of the sources
+    """
+    redshift = 0.032
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3
+    nupeak = 4
+    fpeak = 328E-6
+    run(5, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2010bh():
+    """ Margutti 2013
+    distance is z=0.0593
+    no idea what the spectral index is
+    so let's use gamma = 3
+    they find that at 30 days, self-absorption frequency is around 5 GHz
+    and the flux is 130 uJy
+    """
+    redshift = 0.0593
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3
+    nupeak = 5
+    fpeak = 130E-6
+    run(30, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def ptf11qcj():
+    """ Corsi 2014
+    distance is z=0.0287
+    """
+    redshift = 0.0287
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3
+    nupeak = 5
+    fpeak = 130E-6
+    run(30, nupeak, fpeak, d, gamma, d_mpc)
 
 
 
 if __name__=="__main__":
-    sn2007bg()
+    sn2010bh()
