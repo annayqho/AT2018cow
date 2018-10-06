@@ -273,16 +273,70 @@ def sn2010bh():
 def ptf11qcj():
     """ Corsi 2014
     distance is z=0.0287
+    gamma = 3
+    the peak luminosity at 5 GHz is around 7E28 erg/s/Hz
+    and that was at 10 days
     """
     redshift = 0.0287
     d = Planck15.luminosity_distance(z=redshift).cgs.value
     d_mpc = Planck15.luminosity_distance(z=redshift).value
     gamma = 3
     nupeak = 5
-    fpeak = 130E-6
-    run(30, nupeak, fpeak, d, gamma, d_mpc)
+    fpeak = 1E23 * 7E28 / (4 * np.pi * d**2) # in Jy
+    run(10, nupeak, fpeak, d, gamma, d_mpc)
 
 
+def sn88Z():
+    """ van Dyk et al. 1993
+    the redshift was z=0.022
+    the 6 cm maximum flux density was 1.90 mJy
+    the spectral index is alpha = -0.7 
+    they get 9E32 erg/s as the luminosity
+    that was at 1253 days after the explosion
+    but I think that means that p = 2.4, not 3.2
+    TO DO: look up what the c constants are for that case
+    """
+    redshift = 0.022
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 2.4
+    nupeak = 5
+    fpeak = 1.90E-3
+    run(1253, nupeak, fpeak, d, gamma, d_mpc)
+    
+
+def sn79C():
+    """ Weiler 
+    I'm going to use the peak of the 1.4 GHz light curve,
+    which is what I have in the mm light curve plot.
+    nu = 1.4E9 
+    it's around 12 mJy at 1400 days
+    """
+    d = 5.341805643483106e+25
+    d_mpc = d/3E24
+    nupeak = 1.4
+    fpeak = 12E-3
+    gamma = 3 # no idea
+    run(1400, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def grb031203():
+    """
+    Soderberg
+    the peak luminosity is 1E29 erg/s/Hz at 8.5 GHz
+    and the peak time of that is 35 days or so
+    the derived synchrotron parameters at 1 day:
+    3.2E8 Hz is nu_a
+    F_nu,a = 0.04 mJy
+    """
+    z = 0.105
+    d = Planck15.luminosity_distance(z=0.105).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.105).value
+    nupeak = 0.328
+    fpeak = 0.04E-3
+    gamma = 3 # no idea
+    run(1, nupeak, fpeak, d, gamma, d_mpc)
+    
 
 if __name__=="__main__":
-    sn2010bh()
+    grb031203()

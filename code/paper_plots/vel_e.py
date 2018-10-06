@@ -14,6 +14,8 @@ import numpy as np
 from astropy.table import Table
 from astropy.cosmology import Planck15
 
+squaresize = 50
+
 
 def chev_lines(ax, x, v):
     """ Equation 16 from Chevalier 1998 
@@ -24,18 +26,19 @@ def chev_lines(ax, x, v):
     x: the value of (dt / 1 d) * (nu_p / 5 GHz)
     v: velocity in units of c
     """
+    xvals = np.linspace(1,3000)
     logy = (36/17)*\
             ((17*26/36) + \
             np.log10(v*3e10/(10*3.1E9)) + \
-            np.log10(x))
-    y = 10**logy
-    ax.plot(x, y, ls='--', c='k')
-    rotangle = 60
+            np.log10(xvals))
+    yvals = 10**logy
+    ax.plot(xvals, yvals, ls='--', c='k')
+    rotangle = 70
     ax.text(
-            x[5300], y[5500], "$R/\Delta t = %sc$" %v, 
+            x, 7E27, "$R/\Delta t = %sc$" %v, 
             fontsize=14, rotation=rotangle,
             horizontalalignment='center', verticalalignment='top')
-    return y
+    return yvals
 
 
 def vele(ax):
@@ -45,8 +48,7 @@ def vele(ax):
     v = 0.12
     E = 6.9E47
     ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='none', label="SNe Ibc")
+            v, E, marker='+', c='k', s=100, label="SNe Ibc")
     ax.text(
             v*1.1, E, "2003L", fontsize=12,
             horizontalalignment='left',
@@ -56,8 +58,7 @@ def vele(ax):
     v = 0.19
     E = 2.5E48
     ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='none', label="SNe Ibc")
+            v, E, marker='+', c='k', s=100, label=None)
     ax.text(
             v, E*1.3, "2007bg", fontsize=12,
             verticalalignment='bottom',
@@ -67,8 +68,7 @@ def vele(ax):
     v = 0.11
     E = 8.7E47
     ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='none', label="SNe Ibc")
+            v, E, marker='+', c='k', s=100, label=None)
     ax.text(
             v, E*1.3, "2003bg", fontsize=12,
             verticalalignment='bottom',
@@ -78,8 +78,8 @@ def vele(ax):
     v = 1.26
     E = 4.8E48
     ax.scatter(
-            v, E, marker='s', edgecolor='k', s=100,
-            facecolor='k', label="Rel. SNe")
+            v, E, marker='s', edgecolor='k', s=squaresize,
+            facecolor='k', label="LLGRB-SNe")
     ax.text(
             v, E*1.3, "1998bw", fontsize=12,
             verticalalignment='bottom',
@@ -89,8 +89,7 @@ def vele(ax):
     v = 0.71
     E = 2.9E48
     ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='none')
+            v, E, marker='+', c='k', s=100)
     ax.text(
             v, E*1.3, "2009bb", fontsize=12,
             verticalalignment='bottom',
@@ -100,7 +99,7 @@ def vele(ax):
     v = 2.1
     E = 7.4E47
     ax.scatter(
-            v, E, marker='s', edgecolor='k', s=100,
+            v, E, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
             v, E*1.3, "2006aj", fontsize=12,
@@ -111,10 +110,33 @@ def vele(ax):
     v = 0.33
     E = 9.0E47
     ax.scatter(
-            v, E, marker='s', edgecolor='k', s=100,
+            v, E, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
             v, E*1.3, "2010bh", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='center')
+
+
+    # SN 1988Z
+    v = 0.01
+    E = 2.0E48
+    ax.scatter(
+            v, E, marker='o', edgecolor='k', s=100,
+            facecolor='white', label="SNe II")
+    ax.text(
+            v, E*1.3, "88Z", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='center')
+
+    # SN 1979C
+    v = 0.016
+    E = 1E48
+    ax.scatter(
+            v, E, marker='o', edgecolor='k', s=100,
+            facecolor='white', label=None)
+    ax.text(
+            v, E*1.3, "79C", fontsize=12,
             verticalalignment='bottom',
             horizontalalignment='center')
 
@@ -152,30 +174,64 @@ def vele(ax):
         fontsize=14)
     ax.set_ylabel(
             "Energy (erg): $\epsilon_B=\epsilon_e=0.33$", fontsize=14)
-    ax.set_xlim(0.03, 3)
-    ax.set_ylim(1E45, 8E49)
+    ax.set_xlim(0.007, 3.1)
+    ax.set_ylim(1E47, 8E49)
+
+    ax.legend(loc='lower left', fontsize=14)
+
 
 
 def peaklum(ax):
+    # 88Z
+    tnu = (1253)*(5/5)
+    lpeak = 2.2E28
+    ax.scatter(
+            tnu, lpeak, marker='o', edgecolor='k', facecolor='white', s=100,
+            label='SN II')
+    ax.text(
+            tnu, lpeak/1.2, "88Z", fontsize=12,
+            verticalalignment='top',
+            horizontalalignment='right')
+
+    # 79C 
+    tnu = (1400)*(1.4/5)
+    lpeak = 4.3E27
+    ax.scatter(
+            tnu, lpeak, marker='o', edgecolor='k', facecolor='white', s=100,
+            label='SN II')
+    ax.text(
+            tnu, lpeak/1.2, "79C", fontsize=12,
+            verticalalignment='top',
+            horizontalalignment='right')
+
     # 2003L
     tnu = (30)*(22.5/5)
     lpeak = 3.3E28
     ax.scatter(
-            tnu, lpeak, marker='o', edgecolor='k', s=100,
-            facecolor='none',
+            tnu, lpeak, marker='+', c='k', s=100,
             label="SNe Ibc")
     ax.text(
             tnu, lpeak/1.2, "2003L", fontsize=12,
             verticalalignment='top',
             horizontalalignment='right')
 
+    # 11qcj
+    tnu = (10)*(5/5)
+    lpeak = 7E28
+    ax.scatter(
+            tnu, lpeak, marker='+', c='k', s=100,
+            label=None)
+    ax.text(
+            tnu/1.2, lpeak, "11qcj", fontsize=12,
+            verticalalignment='center',
+            horizontalalignment='right')
+
+
     # 2007bg
     tnu = (55.9)*(8.46/5)
     lpeak = 4.1E28
     ax.scatter(
-            tnu, lpeak, marker='o', edgecolor='k', s=100,
-            facecolor='none',
-            label=None)
+            tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
             tnu, lpeak*1.2, "2007bg", fontsize=12,
             verticalalignment='bottom',
@@ -185,9 +241,7 @@ def peaklum(ax):
     tnu = (35)*(22.5/5)
     lpeak = 3.9E28
     ax.scatter(
-            tnu, lpeak, marker='o', edgecolor='k', s=100,
-            facecolor='none',
-            label=None)
+            tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
             tnu*1.2, lpeak, "2003bg", fontsize=12,
             verticalalignment='center',
@@ -197,19 +251,18 @@ def peaklum(ax):
     tnu = (10)*(10/5)
     lpeak = 8.2E28
     ax.scatter(
-            tnu, lpeak, marker='s', edgecolor='k', s=100,
+            tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label="LLGRB-SNe")
     ax.text(
-            tnu/1.2, lpeak, "1998bw", fontsize=12,
-            verticalalignment='center',
-            horizontalalignment='right')
+            tnu, lpeak*1.2, "1998bw", fontsize=12,
+            verticalalignment='bottom',
+            horizontalalignment='center')
 
     # SN 2009bb
     tnu = (20)*(6/5)
     lpeak = 3.6E28
     ax.scatter(
-            tnu, lpeak, marker='o', edgecolor='k', s=100,
-            facecolor='none', label=None)
+            tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
             tnu/1.2, lpeak, "2009bb", fontsize=12,
             verticalalignment='center',
@@ -219,7 +272,7 @@ def peaklum(ax):
     tnu = (5)*(4/5)
     lpeak = 8.3E27
     ax.scatter(
-            tnu, lpeak, marker='s', edgecolor='k', s=100,
+            tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
             tnu, lpeak/1.5, "2006aj", fontsize=12,
@@ -230,7 +283,7 @@ def peaklum(ax):
     tnu = (30)*(5/5)
     lpeak = 1.2E28
     ax.scatter(
-            tnu, lpeak, marker='s', edgecolor='k', s=100,
+            tnu, lpeak, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
             tnu, lpeak/1.5, "2010bh", fontsize=12,
@@ -238,10 +291,9 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # Lines
-    x = np.logspace(0, 4, 10000)
-    y = chev_lines(ax, x, 0.1)
-    y = chev_lines(ax, x, 1)
-    y = chev_lines(ax, x, 0.01)
+    y = chev_lines(ax, 7, 0.1)
+    y = chev_lines(ax, 70, 1)
+    y = chev_lines(ax, 700, 0.01)
 
     # AT2018cow
     ax.scatter(
@@ -253,10 +305,8 @@ def peaklum(ax):
             horizontalalignment='center')
 
 
-    ax.legend(loc='upper left', fontsize=14)
-
-    ax.set_xlim(1, 6000)
-    ax.set_ylim(1E25, 5E30)
+    ax.set_xlim(2, 3000)
+    ax.set_ylim(1E27, 1E30)
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.tick_params(axis='both', labelsize=14)
