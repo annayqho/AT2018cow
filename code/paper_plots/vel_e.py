@@ -42,7 +42,29 @@ def chev_lines(ax, x, v):
 
 
 def vele(ax):
+    # only use this to plot the GRBs
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    inputf = direc + "/Soderberg2009Fig4.1"
+
+    dat = Table.read(inputf, format='ascii')
+    x = dat['col1']
+    y = dat['col2']
+
+    choose = np.logical_and(x > 1, y > 3E49)
+    ax.scatter(
+            x[choose], y[choose], marker='x', c='k', s=50, label="GRBs")
+
+    # Swift TDE
+    # just use one epoch
+    # epoch 3: day 18
+    v = 1.7
+    E = 2.7E51
+    ax.scatter(
+            v, E, marker='o', edgecolor='k', facecolor='k', s=50, label="TDE")
+    ax.text(
+            v/1.1, E, "Swift J1644", fontsize=12,
+            horizontalalignment='right',
+            verticalalignment='top')
 
     # SN 2003L
     v = 0.12
@@ -174,10 +196,10 @@ def vele(ax):
         fontsize=14)
     ax.set_ylabel(
             "Energy (erg): $\epsilon_B=\epsilon_e=0.33$", fontsize=14)
-    ax.set_xlim(0.007, 3.1)
-    ax.set_ylim(1E47, 8E49)
+    ax.set_xlim(0.007, 8)
+    ax.set_ylim(4E47, 4E51)
 
-    ax.legend(loc='lower left', fontsize=14)
+    ax.legend(loc='upper left', fontsize=14)
 
 
 
@@ -291,8 +313,8 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # Lines
-    y = chev_lines(ax, 7, 0.1)
-    y = chev_lines(ax, 70, 1)
+    y = chev_lines(ax, 7, 1)
+    y = chev_lines(ax, 70, 0.1)
     y = chev_lines(ax, 700, 0.01)
 
     # AT2018cow

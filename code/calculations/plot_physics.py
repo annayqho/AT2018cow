@@ -148,6 +148,24 @@ def at2018cow():
     run(nupeak, fpeak, d, gamma, d_mpc)
 
 
+def tde():
+    """ we use the values at 4 different days """
+    dt = 5+3.04
+    nupeak = 600
+    fpeak = 80E-3
+    dt = 10+3.04
+    nupeak = 250
+    fpeak = 40E-3
+    dt = 15+3.04
+    nupeak = 140
+    fpeak = 30E-3
+    d = Planck15.luminosity_distance(z=0.354).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.354).value
+    gamma = 3
+    # need to add 3.04 to all days
+    run(dt, nupeak, fpeak, d, gamma, d_mpc)
+
+
 def sn2003L():
     """ Soderberg 2005
     "At 30 days, the peak flux density is 3.2 mJy at 22.5 GHz
@@ -339,4 +357,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    grb031203()
+    sn2006aj()
