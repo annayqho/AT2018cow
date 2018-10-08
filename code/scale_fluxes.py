@@ -116,9 +116,9 @@ def sma_lc():
     flux_f_345 = []
     eflux_f_345 = []
     for ii,dt_val in enumerate(np.unique(dt)):
-        # Count the number of points on this day measured at 231.5 GHz
+        # Count the number of points on this day measured near 345 GHz
         choose = np.logical_and(
-                nu[dt==dt_val] <= 341.5, nu[dt==dt_val] >= 349)
+                nu[dt==dt_val] >= 341.5, nu[dt==dt_val] <= 349)
         if sum(choose) > 0:
             # then add this point
             dt_f_345.append(dt_val)
@@ -143,5 +143,4 @@ def sma_lc():
     flux_f_345 = np.array(flux_f_345)
     eflux_f_345 = np.array(eflux_f_345)
 
-    return (dt,nu,f_scaled,ef_scaled), (dt_f_230, flux_f_230, eflux_f_230),
-            (dt_f_345, flux_f_345, eflux_f_345)
+    return (dt,nu,f_scaled,ef_scaled), (dt_f_230, flux_f_230, eflux_f_230), (dt_f_345, flux_f_345, eflux_f_345)

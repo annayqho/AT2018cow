@@ -48,11 +48,10 @@ def sma(ax):
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     ax.errorbar(
             dt, f, ef_comb, 
-            fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=13,
+            fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=11,
             label="341.5--349 GHz")
     ax.plot(
-            dt, f, linestyle='-', c='k', lw=1.5)
-            c='#f98e09', lw=1.5)
+            dt, f, linestyle='-', c='#f98e09', lw=1.5)
 
     # non-detection
     # what is the 3-sigma of the non-detection?
