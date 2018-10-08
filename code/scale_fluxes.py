@@ -59,23 +59,22 @@ def sma_lc():
         f_scaled[ii] = f[ii] * ratio
         ef_scaled[ii] = ef[ii] * ratio
 
-    # Generate the sma_radio_lc_231.dat file
-    # This is the light curve of 231.5 GHz
-    dt_final = []
-    flux_final = []
-    eflux_final = []
+    # Generate the light curve in the range 230.6-234.6
+    dt_f_230 = []
+    flux_f_230 = []
+    eflux_f_230 = []
 
+    # Count the number of points on this day measured at 231.5 GHz
     for ii,dt_val in enumerate(np.unique(dt)):
-        # Count the number of points on this day measured at 231.5 GHz
         choose = np.logical_and(
                 nu[dt==dt_val] <= 234.6, nu[dt==dt_val] >= 230.6)
         if sum(choose) > 0:
             # then add this point
-            dt_final.append(dt_val)
+            dt_f_230.append(dt_val)
         # If the answer is 1, then store that point
         if sum(choose) == 1:
-            flux_final.append(f_scaled[dt==dt_val][choose][0])
-            eflux_final.append(ef_scaled[dt==dt_val][choose][0])
+            flux_f_230.append(f_scaled[dt==dt_val][choose][0])
+            eflux_f_230.append(ef_scaled[dt==dt_val][choose][0])
         # If the answer is 2, then take the average of those points
         if sum(choose) == 2:
             w = 1/(ef_scaled[dt==dt_val][choose])**2
@@ -84,8 +83,8 @@ def sma_lc():
                     weights=w,
                     returned=True)
             efmean = np.sqrt(1/np.sum(w))
-            flux_final.append(fmean)
-            eflux_final.append(efmean)
+            flux_f_230.append(fmean)
+            eflux_f_230.append(efmean)
         # If the answer is > 2, something is wrong...
         if sum(choose) > 2:
             print("something is wrong!")
@@ -96,19 +95,53 @@ def sma_lc():
             # choose the points with 243.3 and scale them to 231.5
             toscale = nu[dt==dt_val] == 243.3
             if sum(toscale) == 1:
-                dt_final.append(dt_val)
-                flux_final.append(f_scaled[dt==dt_val][toscale][0] * (243.3/231.5))
-                eflux_final.append(
+                dt_f_230.append(dt_val)
+                flux_f_230.append(f_scaled[dt==dt_val][toscale][0] * (243.3/231.5))
+                eflux_f_230.append(
                         ef_scaled[dt==dt_val][toscale][0] * (243.3/231.5))
             else:
                 toscale = nu[dt==dt_val] == 218
                 if sum(toscale) == 1:
-                    dt_final.append(dt_val)
-                    flux_final.append(f_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
-                    eflux_final.append(
+                    dt_f_230.append(dt_val)
+                    flux_f_230.append(f_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
+                    eflux_f_230.append(
                             ef_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
-    dt_final = np.array(dt_final)
-    flux_final = np.array(flux_final)
-    eflux_final = np.array(eflux_final)
+    dt_f_230 = np.array(dt_f_230)
+    flux_f_230 = np.array(flux_f_230)
+    eflux_f_230 = np.array(eflux_f_230)
 
-    return (dt,nu,f_scaled,ef_scaled), (dt_final, flux_final, eflux_final)
+    
+    # Generate the light curve in the range 341.5-349 GHz
+    dt_f_345 = []
+    flux_f_345 = []
+    eflux_f_345 = []
+    for ii,dt_val in enumerate(np.unique(dt)):
+        # Count the number of points on this day measured at 231.5 GHz
+        choose = np.logical_and(
+                nu[dt==dt_val] <= 341.5, nu[dt==dt_val] >= 349)
+        if sum(choose) > 0:
+            # then add this point
+            dt_f_345.append(dt_val)
+        # If the answer is 1, then store that point
+        if sum(choose) == 1:
+            flux_f_345.append(f_scaled[dt==dt_val][choose][0])
+            eflux_f_345.append(ef_scaled[dt==dt_val][choose][0])
+        # If the answer is 2, then take the average of those points
+        if sum(choose) == 2:
+            w = 1/(ef_scaled[dt==dt_val][choose])**2
+            fmean, wsum = np.average(
+                    f_scaled[dt==dt_val][choose], 
+                    weights=w,
+                    returned=True)
+            efmean = np.sqrt(1/np.sum(w))
+            flux_f_345.append(fmean)
+            eflux_f_345.append(efmean)
+        # If the answer is > 2, something is wrong...
+        if sum(choose) > 2:
+            print("something is wrong!")
+    dt_f_345 = np.array(dt_f_345)
+    flux_f_345 = np.array(flux_f_345)
+    eflux_f_345 = np.array(eflux_f_345)
+
+    return (dt,nu,f_scaled,ef_scaled), (dt_f_230, flux_f_230, eflux_f_230),
+            (dt_f_345, flux_f_345, eflux_f_345)

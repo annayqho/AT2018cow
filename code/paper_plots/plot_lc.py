@@ -31,11 +31,9 @@ def sma(ax):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
 
-    a, b = sma_lc()
-    dt, f, ef = b
+    a, b, c = sma_lc()
+    dt, f, ef = b # 230 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
-    print(len(dt))
-    print(len(f))
     ax.scatter(
             dt, f,
             marker='s', c='k',
@@ -45,6 +43,16 @@ def sma(ax):
             fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
             dt, f, linestyle='-', c='k', lw=1.5)
+
+    dt, f, ef = c # 345 GHz light curve
+    ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
+    ax.errorbar(
+            dt, f, ef_comb, 
+            fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=13,
+            label="341.5--349 GHz")
+    ax.plot(
+            dt, f, linestyle='-', c='k', lw=1.5)
+            c='#f98e09', lw=1.5)
 
     # non-detection
     # what is the 3-sigma of the non-detection?
@@ -59,14 +67,6 @@ def sma(ax):
             76, val+3*sig, 0, -3*sig, length_includes_head=True, 
             head_width=5, head_length=0.1, fc='k')
     
-    choose = np.logical_and(freq >= 341.5, freq <= 349)
-    ax.errorbar(
-            days[choose], flux[choose], eflux[choose],
-            fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=13,
-            label="341.5--349 GHz")
-    ax.plot(
-            days[choose], flux[choose], linestyle='-', 
-            c='#f98e09', lw=1.5)
 
     # for 351.0, the non-detection is -0.32 +/- 1.76
     val = -0.32
@@ -142,7 +142,7 @@ def xray(ax):
             mfc='#57106e', mec='black',
             label="40-80 keV", c='k', ms=msize)
 
-    ax.set_xlabel("Days since 2018 June 16 UT (MJD 58285)", fontsize=16)
+    ax.set_xlabel("Days since MJD 58285.0 (2018 June 16 UT)", fontsize=16)
     ax.set_xlim(2.5,100)
     ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
