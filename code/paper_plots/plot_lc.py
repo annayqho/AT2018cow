@@ -34,6 +34,8 @@ def sma(ax):
     a, b = sma_lc()
     dt, f, ef = b
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
+    print(len(dt))
+    print(len(f))
     ax.scatter(
             dt, f,
             marker='s', c='k',

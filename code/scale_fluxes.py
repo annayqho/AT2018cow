@@ -66,10 +66,12 @@ def sma_lc():
     eflux_final = []
 
     for ii,dt_val in enumerate(np.unique(dt)):
-        dt_final.append(dt_val)
         # Count the number of points on this day measured at 231.5 GHz
         choose = np.logical_and(
                 nu[dt==dt_val] <= 234.6, nu[dt==dt_val] >= 230.6)
+        if sum(choose) > 0:
+            # then add this point
+            dt_final.append(dt_val)
         # If the answer is 1, then store that point
         if sum(choose) == 1:
             flux_final.append(f_scaled[dt==dt_val][choose][0])
@@ -94,12 +96,14 @@ def sma_lc():
             # choose the points with 243.3 and scale them to 231.5
             toscale = nu[dt==dt_val] == 243.3
             if sum(toscale) == 1:
+                dt_final.append(dt_val)
                 flux_final.append(f_scaled[dt==dt_val][toscale][0] * (243.3/231.5))
                 eflux_final.append(
                         ef_scaled[dt==dt_val][toscale][0] * (243.3/231.5))
             else:
                 toscale = nu[dt==dt_val] == 218
                 if sum(toscale) == 1:
+                    dt_final.append(dt_val)
                     flux_final.append(f_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
                     eflux_final.append(
                             ef_scaled[dt==dt_val][toscale][0] * (218.0/231.5))
