@@ -10,7 +10,7 @@ from astropy.time import Time
 def sma_lc():
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     lines = open("%s/SMA_AT2018cow_quasar.txt" %data_dir, "r").readlines()
-    t0 = Time('2018-06-16') # MJD 58285.0, what Dan has in his light curves
+    t0 = Time(58285, format='mjd') # our zero-point
     dt = []
     nu = []
     f = []
@@ -19,8 +19,9 @@ def sma_lc():
 
     for line in lines:
         has_date = 'Jun' in line or 'Jul' in line or 'Aug' in line
-        if has_date and len(line.split()) > 10:
-            date = line.split()[1]
+        items = line.split()
+        if has_date and len(items) > 10:
+            date = items[1]
             if date == 'Jun':
                 mm = '06'
             elif date == 'Jul':
@@ -30,7 +31,8 @@ def sma_lc():
             else:
                 print("something went wrong")
 
-            dt.append((Time('2018-%s-%s' %(mm,line.split()[2]))-t0).value)
+            t_raw = Time('2018-%s-%s' %(mm,items[2])).mjd + float(items[3])/24
+            dt.append(t_raw - t0.mjd)
             nu.append(line.split()[6])
             f.append(line.split()[7])
             ef.append(line.split()[9])
@@ -66,7 +68,8 @@ def sma_lc():
     for ii,dt_val in enumerate(np.unique(dt)):
         dt_final.append(dt_val)
         # Count the number of points on this day measured at 231.5 GHz
-        choose = np.logical_and(nu[dt==dt_val] <= 234.6, nu[dt==dt_val] >= 230.6)
+        choose = np.logical_and(
+                nu[dt==dt_val] <= 234.6, nu[dt==dt_val] >= 230.6)
         # If the answer is 1, then store that point
         if sum(choose) == 1:
             flux_final.append(f_scaled[dt==dt_val][choose][0])
