@@ -92,7 +92,7 @@ def sma(ax):
             fmt='o', c='#57106e', lw=1.5, ms=7,
             label="34 GHz")
     ax.plot(x, y, ls='--', c='#57106e')
-    ax.text(17, 10, r'$f_\nu \propto t^2$', fontsize=12)
+    ax.text(17, 9.5, r'$f_\nu \propto t^2$', fontsize=12)
 
     # for SMA proposal
     #ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
