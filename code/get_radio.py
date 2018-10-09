@@ -34,7 +34,8 @@ def get_data_all():
     for ii,val in enumerate(flux_raw):
         if tel[ii] == 'ALMA':
             # ALMA points only have systematic uncertainties
-            flux[ii] = val.split("$")[1]
+            add = val.split("$")[1].split('pm')[0]
+            flux[ii] = add
             eflux_form[ii] = -99
             if freq[ii] < 200: # bands 3 and 4
                 eflux_sys[ii] = 0.05*flux[ii]

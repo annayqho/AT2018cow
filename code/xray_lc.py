@@ -45,7 +45,9 @@ def get_nustar():
     """
     dat = Table.read(
             direc + "/nustar.txt", format='ascii', delimiter='&')
-    dt = dat['MJD'] - 58285
+    # mean observation time
+    t = dat['MJD'] + (dat['Exp']/86400)/2
+    dt = t - 58285
     out = np.array([cflux(val) for val in dat['Flux1']])
     # each 'f' is the spectrum for a given epoch
     f1 = out[:,0]

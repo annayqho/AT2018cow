@@ -71,10 +71,12 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
         ylab = out[0]*xlab**2 + out[1]*xlab + out[2]
         ax.plot(xlab, ylab, c='k', ls='--')
 
+    if day == 10:
+        day = '10.2--10.5'
     if day == 14:
         day = '13 \& 14'
     ax.text(
-            0.9, 0.1, "Day %s" %day, 
+            0.9, 0.1, "$\Delta t\,$[days]=%s" %day, 
             transform=ax.transAxes, horizontalalignment='right', 
             fontsize=14)
 
@@ -88,55 +90,54 @@ if __name__=="__main__":
             3, 1, figsize=(8,8), sharex=True, sharey=True)
 
     # spectrum on Day 10
+    # 10.26 for SMA, 10.48 for ATCA
     ax = axarr[0]
     tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
-    choose = day == 10
+    choose = np.logical_and(day > 10.2, day < 10.5)
     islim = np.array([False]*sum(choose))
     islim[freq[choose]==5.5] = True
     plot_day(ax,10,freq[choose],flux[choose],islim)
 
-    # spectrum on Day 14
-    ax = axarr[1]
-    tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
-    choose_cm = np.logical_and(day==13, tel=='ATCA')
-    choose_mm = np.logical_and(
-            day==14, 
-            np.logical_or(tel=='SMA', tel=='ALMA'))
-    choose = np.logical_or(choose_cm, choose_mm)
-    islim = np.array([False]*sum(choose))
-    plot_day(ax,14,freq[choose],flux[choose],islim)
+    # spectrum on Day 13/14
+    # 14.36 for SMA, 13.47 for ATCA, 14.14 for ALMA
+    # ax = axarr[1]
+    # tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
+    # choose = np.logical_and(day < 14.15, day > 13.35)
+    # islim = np.array([False]*sum(choose))
+    # plot_day(ax,14,freq[choose],flux[choose],islim)
 
     # bottom panel: spectrum on Day 22
-    ax = axarr[2]
-    freq,flux = get_spectrum(22)
-    islim = np.array([False]*(len(freq)))
-    plot_day(ax, 22, freq, flux, islim)
-    ax.set_xlabel("Frequency [GHz]", fontsize=14)
-    ax.scatter(
-            671, 31.5, marker='*', s=100, 
-            facecolor='white', edgecolor='black')
-    ax.text(
-            750, 25, 'Day 24', fontsize=10)
-    ax.text(
-            0.1, 0.93, "$\\nu_p \\approx 100, F_p \\approx 94$", 
-            fontsize=14, transform=ax.transAxes, 
-            horizontalalignment='left', verticalalignment='top') 
+    # 22.02 to 22.04 for ALMA
+    #ax = axarr[2]
+    #choose = np.logical_and(day < 22.05, day > 22.01) 
+    #islim = np.array([False]*(len(freq[choose])))
+    #plot_day(ax, 22, freq[choose], flux[choose], islim)
+    #ax.set_xlabel("Frequency [GHz]", fontsize=14)
+    #ax.scatter(
+    #        671, 31.5, marker='*', s=100, 
+    #        facecolor='white', edgecolor='black')
+    #ax.text(
+    #        750, 25, 'Day 24', fontsize=10)
+    #ax.text(
+    #        0.1, 0.93, "$\\nu_p \\approx 100, F_p \\approx 94$", 
+    #        fontsize=14, transform=ax.transAxes, 
+    #        horizontalalignment='left', verticalalignment='top') 
 
     # Zoomed-in window
-    axins = inset_axes(
-            ax, 2, 1, loc=1,
-            bbox_to_anchor=(0.4,0.8),
-            bbox_transform=ax.transAxes)
-    plot_day(
-            axins, 22, freq, flux, islim,
-            formatting=False, fit_peak=False, quad=True)
-    axins.set_xlim(88, 106)
-    axins.set_ylim(90, 95)
-    axins.tick_params(axis='both', labelsize=12)
-    mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec="0.5")
-    axins.xaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
-    axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
+    # axins = inset_axes(
+    #         ax, 2, 1, loc=1,
+    #         bbox_to_anchor=(0.4,0.8),
+    #         bbox_transform=ax.transAxes)
+    # plot_day(
+    #         axins, 22, freq, flux, islim,
+    #         formatting=False, fit_peak=False, quad=True)
+    # axins.set_xlim(88, 106)
+    # axins.set_ylim(90, 95)
+    # axins.tick_params(axis='both', labelsize=12)
+    # mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec="0.5")
+    # axins.xaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
+    # axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
 
 
-    #plt.show()
-    plt.savefig("spec.png")
+    plt.show()
+    #plt.savefig("spec.png")
