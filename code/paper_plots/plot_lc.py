@@ -35,14 +35,14 @@ def sma(ax):
     dt, f, ef = b # 230 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     ax.scatter(
-            dt, f,
+            dt[:-1], f[:-1],
             marker='s', c='k',
             label="230.6--234.6 GHz")
     ax.errorbar(
-            dt, f, ef_comb, 
+            dt[:-1], f[:-1], ef_comb[:-1], 
             fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
-            dt, f, linestyle='-', c='k', lw=1.5)
+            dt[:-1], f[:-1], linestyle='-', c='k', lw=1.5)
 
     dt, f, ef = c # 345 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
@@ -59,22 +59,22 @@ def sma(ax):
     # for 231.5 GHz, it's X=0.62, 3-sig = 3*0.64
     val = 0.62
     sig = 0.64
-    ax.scatter(76, val+3*sig, marker="_", c='k', s=200)
-    ax.scatter(76, val, marker="_", c='k', s=100)
-    ax.scatter(76, val, marker=".", c='k', s=30)
+    ax.scatter(76.27, val+3*sig, marker="_", c='k', s=200)
+    ax.scatter(76.27, val, marker="_", c='k', s=100)
+    ax.scatter(76.27, val, marker=".", c='k', s=30)
     ax.arrow(
-            76, val+3*sig, 0, -3*sig, length_includes_head=True, 
+            76.27, val+3*sig, 0, -3*sig, length_includes_head=True, 
             head_width=5, head_length=0.1, fc='k')
     
 
     # for 351.0, the non-detection is -0.32 +/- 1.76
     val = -0.32
     sig = 1.76
-    ax.scatter(76, val+3*sig, marker="_", c='#f98e09', s=200)
-    ax.scatter(76, val, marker="_", c='#f98e09', s=100)
-    ax.scatter(76, val, marker=".", c='#f98e09', s=30)
+    ax.scatter(76.27, val+3*sig, marker="_", c='#f98e09', s=200)
+    ax.scatter(76.27, val, marker="_", c='#f98e09', s=100)
+    ax.scatter(76.27, val, marker=".", c='#f98e09', s=30)
     ax.arrow(
-            76, val+3*sig, 0, -3*sig, length_includes_head=True, 
+            76.27, val+3*sig, 0, -3*sig, length_includes_head=True, 
             head_width=5, head_length=0.1, fc='#f98e09', ec='#f98e09')
 
     # Do 34 GHz

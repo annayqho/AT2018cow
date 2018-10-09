@@ -5,6 +5,7 @@ import sys
 sys.path.append("/Users/annaho/Github/Query_VLASS")
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
 from astropy.coordinates import SkyCoord
+from astropy.time import Time
 from astropy import units as u
 from scale_fluxes import sma_lc
 
@@ -75,9 +76,8 @@ for ii,t in enumerate(tvals):
             print("something is wrong")
         if int(t) == 31:
             fstr += '$^a$'
-        row = rowstr %(t, 'SMA', nuval, fstr)
+        row = rowstr %(np.round(t,2), 'SMA', nuval, fstr)
         outputf.write(row)
-
 
 # Next, get the ATCA light curves with fractional dt and scaled flux
 # Day 10: 09:00 - 14:00 UT, so mean=11.30, which is fractional day 0.48
@@ -85,7 +85,7 @@ for ii,t in enumerate(tvals):
 # Day 17: 09:00 - 13:45 UT, so mean=11:22.5, which is fractional day 0.47
 dt = np.array(
         [10.48, 10.48, 10.48, 13.47, 13.47, 13.47, 13.47, 13.47, 17.47, 17.47, 
-         19, 28, 34, 81])
+         19.615, 28.44, 34.43, 81.37])
 nu = np.array(
         [5.5, 9, 34, 5.5, 9, 16.7, 21.2, 34, 5.5, 9, 
          34, 34, 34, 34])
@@ -108,14 +108,36 @@ for ii,t in enumerate(dt):
 
 
 # Finally, get the ALMA light curves with fractional dt and scaled flux
-# I used the Observing Tool to find this
-# Day 14: 
-# Day 22: 
-# Day 24: 
-
+# I went to this site: http://almascience.nrao.edu/aq/
+# I assume that the times are in UT...?
+t0 = Time(58285, format='mjd')
+t = []
+t.extend(['2018-06-30T00:48:10']*4) # Band 7
+t.extend(['2018-06-30T03:22:38']*4) # Band 8
+t.extend(['2018-07-08T00:35:42']*4) # Band 4
+t.extend(['2018-07-08T00:53:03']*4) # Band 5
+t.extend(['2018-07-09T01:31:41']) # Band 9
+t = Time(t, format='isot', scale='utc')
+dt = (t-t0).value
+nu = np.array(
+    [336.5, 338.5, 348.5, 350.5, 398, 400, 410, 412,
+     90.5, 92.5, 102.5, 104.5, 138, 140, 150, 152,
+     671])
+f = np.array(
+    [29.40, 29.10, 28.49, 28.29, 26.46, 26.21, 25.69, 25.95,
+     91.18, 92.31, 93.97, 93.57, 85.10, 84.58, 80.62, 79.71,
+     31.5])
+ef = np.array(
+    [2.94, 2.91, 2.85, 2.83, 2.65, 2.62, 2.57, 2.60, 
+     0.46, 0.46, 0.47, 0.47, 0.43, 0.42, 0.40, 0.40,
+     6.3])
+for ii,t in enumerate(dt):
+    fstr = '$%s \pm %s$' %(f[ii], ef[ii])
+    row = rowstr %(np.round(t,2), 'ALMA', nu[ii], fstr)
+    outputf.write(row)
 
 
 outputf.write("\enddata \n")
-outputf.write("\tablecomments{\\${^a}$ Systematic uncertainty 20\% due to uncertain flux calibration}")
+outputf.write("\\tablecomments{\${^a}$ Systematic uncertainty 20\% due to uncertain flux calibration}")
 outputf.write("\end{deluxetable} \n")
 outputf.close()
