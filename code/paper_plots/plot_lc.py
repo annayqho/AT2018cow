@@ -166,5 +166,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()
