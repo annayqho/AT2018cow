@@ -56,7 +56,7 @@ def run_day_10():
     print("Analysis of Day 10" %day)
     choose_tel = tel == 'SMA'
     choose_freq = freq > 100
-    choose_day = day == 10
+    choose_day = np.logical_and(day >= 10.2, day <= 10.5)
     choose = choose_tel & choose_freq & choose_day
     nu = freq[choose]
     print("Frequency")
