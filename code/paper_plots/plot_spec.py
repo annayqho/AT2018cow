@@ -45,9 +45,9 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
             em = 0.03
             b = 5.9824
         elif day == 14:
-            m = -0.93
-            em = 0.27
-            b = 3.836
+            m = -0.75
+            em = 0.01
+            b = 3.36490402919
         elif day == 22:
             m = -1.1
             em = 0.2
@@ -74,7 +74,7 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
     if day == 10:
         day = '10.2--10.5'
     if day == 14:
-        day = '13 \& 14'
+        day = '13.36--14.38'
     ax.text(
             0.9, 0.1, "$\Delta t\,$[days]=%s" %day, 
             transform=ax.transAxes, horizontalalignment='right', 
@@ -100,11 +100,13 @@ if __name__=="__main__":
 
     # spectrum on Day 13/14
     # 14.36 for SMA, 13.47 for ATCA, 14.14 for ALMA
-    # ax = axarr[1]
-    # tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
-    # choose = np.logical_and(day < 14.15, day > 13.35)
-    # islim = np.array([False]*sum(choose))
-    # plot_day(ax,14,freq[choose],flux[choose],islim)
+    ax = axarr[1]
+    tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
+    choose = np.logical_and(day < 14.38, day > 13.36)
+    islim = np.array([False]*sum(choose))
+    print(freq[choose])
+    print(flux[choose])
+    plot_day(ax,14,freq[choose],flux[choose],islim)
 
     # bottom panel: spectrum on Day 22
     # 22.02 to 22.04 for ALMA

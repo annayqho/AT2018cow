@@ -65,17 +65,15 @@ def run_day_10():
     print("Flux")
     print(f)
     print("Unc. on Flux")
-    #ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
-    ef = 0.15*f
+    ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
+    #ef = 0.15*f
     print(ef)
     run(nu, f, ef)
 
 
 def run_day_14():
     tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
-    choose_day = np.logical_and(
-            day==14,
-            np.logical_or(tel=='SMA', tel=='ALMA'))
+    choose_day = np.logical_and(day < 14.38, day > 13.36)
     print("Analysis of Day 14")
     choose = np.logical_and(choose_day, freq > 110)
     nu = freq[choose]
@@ -86,8 +84,10 @@ def run_day_14():
     print(f)
     print("Unc. on Flux")
     ef = 0.1*flux[choose]
+    #ef = eflux_form[choose]
     choose_sma = tel[choose]=='SMA'
-    ef[choose_sma] = 0.2*f[choose_sma]
+    ef[choose_sma] = 0.15*f[choose_sma]
+    #ef = np.sqrt(eflux_form[choose]**2 + eflux_sys[choose]**2)
     print(ef)
     run(nu, f, ef)
 
@@ -110,6 +110,6 @@ def run_day_22():
 
 
 if __name__=="__main__":
-    run_day_10()
-    #run_day_14()
+    #run_day_10()
+    run_day_14()
     #run_day_22()
