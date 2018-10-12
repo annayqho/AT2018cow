@@ -93,7 +93,11 @@ def run_day_14():
 
 
 def run_day_22():
-    freq,flux = get_spectrum(22)
+    freq = np.array([90.5, 92.5, 102.5, 104.5, 138., 140., 150., 152., 215.5, 
+        231.5, 34.])
+    flux = np.array([91.18, 92.31, 93.97, 93.57, 85.1, 84.58, 80.62, 79.71,
+        52.67990268, 50.8507056, 18.67326346])
+
     print("Analysis of Day 22")
     choose = freq > 110
     nu = freq[choose]
@@ -111,5 +115,5 @@ def run_day_22():
 
 if __name__=="__main__":
     #run_day_10()
-    run_day_14()
-    #run_day_22()
+    #run_day_14()
+    run_day_22()
