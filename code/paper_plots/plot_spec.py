@@ -72,11 +72,13 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
         ax.plot(xlab, ylab, c='k', ls='--')
 
     if day == 10:
-        day = '10.2--10.5'
+        day = '=10.2--10.5'
     if day == 14:
-        day = '13.36--14.38'
+        day = '=13.36--14.38'
+    if day == 22:
+        day = '$\\approx 22$'
     ax.text(
-            0.9, 0.1, "$\Delta t\,$[days]=%s" %day, 
+            0.9, 0.1, "$\Delta t\,$[days]%s" %day, 
             transform=ax.transAxes, horizontalalignment='right', 
             fontsize=14)
 
