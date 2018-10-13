@@ -7,6 +7,7 @@ import matplotlib
 from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
+matplotlib.rcParams['text.latex.preamble']=[r"\usepackage{amsmath}"]
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
@@ -93,19 +94,19 @@ def at2018cow(ax, col, legend):
     d = Planck15.luminosity_distance(z=0.014).cgs.value
 
     # high frequency
-    a, b = sma_lc()
+    a, b, c = sma_lc()
     dt, f, ef = b
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     nu = 231.5E9
     lum = plot_line(
             ax[0], d, dt, nu*f, 
             'AT2018cow', None, col, legend)
-    ax[0].text(dt[0]/1.05, lum[-1], 'AT2018cow', fontsize=11,
+    ax[0].text(dt[0]/1.2, lum[0], 'AT2018cow', fontsize=11,
             verticalalignment='center',
             horizontalalignment='right')
 
     # low frequency
-    nu = 34E9
+    nu = 9E9
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
     dat = Table.read(
         "%s/radio_lc.dat" %data_dir, delimiter="&",
@@ -122,13 +123,13 @@ def at2018cow(ax, col, legend):
     eflux_form = np.array(
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
-    choose = freq == 34
+    choose = freq == 9
     lum = plot_line(
             ax[1], d, days[choose], nu*flux[choose], 
             'AT2018cow', None, col, legend)
-    ax[1].text(days[choose][-1]*1.2, lum[-1], 'AT2018cow', fontsize=11,
+    ax[1].text(days[choose][-1]/1.2, lum[-1], 'AT2018cow', fontsize=11,
             verticalalignment='top',
-            horizontalalignment='left')
+            horizontalalignment='right')
 
 
 def maxi(ax):
@@ -555,8 +556,8 @@ if __name__=="__main__":
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
-    axarr[0].set_title("$\\nu > 90\,$GHz", fontsize=14)
-    axarr[1].set_title("$\\nu < 10\,$GHz", fontsize=14)
+    axarr[0].set_title(r"$\boldsymbol{\nu > 90\,\mathrm{GHz}}$", fontsize=16)
+    axarr[1].set_title(r"$\boldsymbol{\nu < 10\,\mathrm{GHz}}$", fontsize=16)
     for ax in axarr:
         ax.tick_params(axis='both', labelsize=14)
         ax.set_xlim(0.3, 2000) 

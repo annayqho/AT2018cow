@@ -18,6 +18,9 @@ c1 = 6.27E18
 El = 8.17E-7
 alpha = 1
 f = 0.5
+q = 4.8E-10
+m_e = 9.1E-28
+sigmat = 6.6524E-25
 
 
 def get_R_full(Fp, nup):
@@ -138,14 +141,20 @@ def run(dt, nupeak, fpeak, d, gamma, d_mpc):
     print(nuff)
     Lff = 1.43E-27 * n_e**2 * Te**(1/2) * (4/3) * np.pi * (6E16)**3
     print(Lff)
+    # Cooling frequency
+    gammac = 6 * np.pi * m_e * c / (sigmat * B**2 * dt * 86400)
+    print("gammac", gammac)
+    nuc = gammac**2 * q * B / (2 * np.pi * m_e * c)
+    print("nuc", nuc)
 
 
 def at2018cow():
     nupeak = 100
     fpeak = 94E-3
+    gamma = 3
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     d_mpc = Planck15.luminosity_distance(z=0.014).value
-    run(nupeak, fpeak, d, gamma, d_mpc)
+    run(22, nupeak, fpeak, d, gamma, d_mpc)
 
 
 def tde():
@@ -357,4 +366,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    sn2006aj()
+    sn2003L()
