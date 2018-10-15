@@ -378,4 +378,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    at2018cow()
+    sn1998bw()

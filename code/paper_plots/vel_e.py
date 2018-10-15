@@ -319,10 +319,10 @@ def peaklum(ax):
 
     # AT2018cow
     ax.scatter(
-            22*100/5, 2E29, marker='*', s=300, 
+            22*100/5, 4.4E29, marker='*', s=300, 
             facecolors='black', edgecolors='black')
     ax.text(
-            22*100/5, 3E29, "AT2018cow", fontsize=14, 
+            22*100/5, 4.8E29, "AT2018cow", fontsize=14, 
             verticalalignment='bottom', 
             horizontalalignment='center')
 
@@ -344,5 +344,5 @@ vele(axarr[1])
 peaklum(axarr[0])
 plt.tight_layout(w_pad=4.0)
 
-plt.show()
-#plt.savefig("chevalier_diagram.png")
+#plt.show()
+plt.savefig("chevalier_diagram.png")
