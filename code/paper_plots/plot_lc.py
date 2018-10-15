@@ -105,10 +105,10 @@ def sma(ax):
 
     ax.set_ylim(0.5,100)
     ax.set_yscale('log')
-    ax.set_xscale('log')
+    #ax.set_xscale('log')
     ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
-    ax.legend(fontsize=12, loc='lower left')
+    ax.legend(fontsize=12, loc='lower left',ncol=3)
     ax.set_yticks([0.5, 10, 50])
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
@@ -148,7 +148,7 @@ def xray(ax):
     ax.xaxis.set_tick_params(labelsize=14)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.set_yscale('log')
-    ax.legend(fontsize=11, loc='lower left', ncol=2)
+    ax.legend(fontsize=11, loc='lower left', ncol=3)
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
 
@@ -166,5 +166,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    plt.savefig("lc.png")
-    #plt.show()
+    #plt.savefig("lc.png")
+    plt.show()

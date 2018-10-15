@@ -27,10 +27,9 @@ def chev_lines(ax, x, v):
     v: velocity in units of c
     """
     xvals = np.linspace(1,3000)
-    logy = (36/17)*\
-            ((17*26/36) + \
-            np.log10(v*3e10/(10*3.1E9)) + \
-            np.log10(xvals))
+    logy = (26) + \
+            (19/9) * np.log10(v) + \
+            (19/9) * np.log10(xvals)
     yvals = 10**logy
     ax.plot(xvals, yvals, ls='--', c='k')
     rotangle = 70
@@ -181,8 +180,8 @@ def vele(ax):
     # make a twin axis
     ax2 = ax.twinx()
     ax2.set_ylabel(
-            "Energy (erg): $\epsilon_B=0.01, \epsilon_e=0.1$", fontsize=14,
-            rotation=270, labelpad=15.0)
+            "Energy (erg) $= U_B/\epsilon_B$, $\qquad \epsilon_B=0.01$", 
+            fontsize=14, rotation=270, labelpad=15.0)
     y_f = lambda y_i: y_i*33
     ymin, ymax = ax.get_ylim()
     ax2.set_ylim((y_f(ymin), y_f(ymax)))
@@ -195,7 +194,8 @@ def vele(ax):
         "Blastwave Velocity $(\\Gamma \\beta)$",
         fontsize=14)
     ax.set_ylabel(
-            "Energy (erg): $\epsilon_B=\epsilon_e=0.33$", fontsize=14)
+            "Energy (erg) $= U_B/\epsilon_B$, \qquad $\epsilon_B=0.33$", 
+            fontsize=14)
     ax.set_xlim(0.007, 8)
     ax.set_ylim(4E47, 4E51)
 
@@ -344,5 +344,5 @@ vele(axarr[1])
 peaklum(axarr[0])
 plt.tight_layout(w_pad=4.0)
 
-#plt.show()
-plt.savefig("chevalier_diagram.png")
+plt.show()
+#plt.savefig("chevalier_diagram.png")

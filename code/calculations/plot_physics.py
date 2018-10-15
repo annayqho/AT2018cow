@@ -11,16 +11,18 @@ from synchrotron_fit import self_abs, fit_self_abs
 
 # CONSTANTS
 c = 3E10
-mp = 1.67E-24
+m_p = 1.67E-24
 c6 = 8.16E-41
 c5 = 6.29E-24
 c1 = 6.27E18
 El = 8.17E-7
 alpha = 1
 f = 0.5
-q = 4.8E-10
+q_e = 4.8E-10
 m_e = 9.1E-28
 sigmat = 6.6524E-25
+e_e = 1/3
+e_B = 1/3
 
 
 def get_R_full(Fp, nup):
@@ -115,46 +117,56 @@ def multiple_days():
         plt.close()
 
 
-def run(dt, nupeak, fpeak, d, gamma, d_mpc):
+def run(dt, nupeak, fpeak, d, p, d_mpc):
     """ nupeak in GHz, fpeak in Jy, dist in cm """
     print("lpeak", fpeak*1E-23*4*np.pi*d**2)
     R = get_R(fpeak, nupeak, d_mpc)
     print("R", R/10**15)
     B = get_B(fpeak, nupeak, d_mpc)
+    print("B", B)
     V = (4/3) * f * np.pi * R**3
     v = R/(86400*dt)
     beta = v/c
     print("Beta", beta)
     P = 3*B**2/(8*np.pi)
     rho = (4*P/3)/v**2
-    print(rho)
-    n_p = rho/mp
+    #print(rho)
+    n_p = rho/m_p
     n_e = n_p
     print("ne", n_e)
     UB = (B**2)/(8*np.pi) * V
-    print(UB)
+    #print(UB)
     print("E", 3*UB)
     tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
-    print(tauff)
+    print("tau_ff", tauff)
     Te = 1.2E6
     nuff = (1/(68*(Te/8000)**(-1.35)))**(-1/2.1)
-    print(nuff)
+    print("nu_ff [GHz]", nuff)
     Lff = 1.43E-27 * n_e**2 * Te**(1/2) * (4/3) * np.pi * (6E16)**3
-    print(Lff)
+    print("L_ff", Lff)
+    # Gamma_m
+    gammam = e_e * (m_p / m_e) * ((p-2)/(p-1)) * beta**2
+    print("gamma_m", gammam)
+    # Gyrofrequency
+    gammag = q_e*B / (2 * np.pi * m_e * c)
+    print("gyrofrequency [MHz]", gammag/1E6)
+    # nu_m
+    num = gammam**2 * gammag
+    print("nu_m [GHz]", num/1E9)
     # Cooling frequency
     gammac = 6 * np.pi * m_e * c / (sigmat * B**2 * dt * 86400)
     print("gammac", gammac)
-    nuc = gammac**2 * q * B / (2 * np.pi * m_e * c)
-    print("nuc", nuc)
+    nuc = gammac**2 * q_e * B / (2 * np.pi * m_e * c)
+    print("nu_cc [GHz]", nuc/1E9)
 
 
 def at2018cow():
     nupeak = 100
     fpeak = 94E-3
-    gamma = 3
+    p = 3
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     d_mpc = Planck15.luminosity_distance(z=0.014).value
-    run(22, nupeak, fpeak, d, gamma, d_mpc)
+    run(22, nupeak, fpeak, d, p, d_mpc)
 
 
 def tde():
@@ -366,4 +378,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    sn2003L()
+    at2018cow()

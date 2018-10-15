@@ -110,6 +110,7 @@ for ii,t in enumerate(dt):
 # Finally, get the ALMA light curves with fractional dt and scaled flux
 # I went to this site: http://almascience.nrao.edu/aq/
 # I assume that the times are in UT...?
+# Yes, Bjorn confirms that they are in UT
 t0 = Time(58285, format='mjd')
 t = []
 t.extend(['2018-06-30T00:48:10']*4) # Band 7

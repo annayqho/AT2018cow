@@ -64,7 +64,7 @@ def run_day(ax, dt, nu, f, ef, xticks, yticks, day, legpos='lower right'):
             0.05, 0.95, day, fontsize=10, 
             transform=ax.transAxes, verticalalignment='top')
     ax.set_yscale('log')
-    ax.set_xscale('log')
+    #ax.set_xscale('log')
     ax.tick_params(axis='both', labelsize=14)
     ax.legend(fontsize=10, loc=legpos, ncol=2)
     ax.set_yticks(yticks)
@@ -137,7 +137,7 @@ def jun22(ax):
     ef = np.array(ef)
 
     yticks = [32, 34, 36, 38, 40]
-    xticks = [6, 7, 8, 9]
+    xticks = [6.5, 7.5, 8.5]
 
     run_day(ax, dt, nu, f, ef, xticks, yticks, 'Day 6', legpos='lower right')
 
@@ -230,7 +230,7 @@ def jun25(ax):
     f = np.append(f, np.array([38.10, 39.43, 33.62]))
     ef = np.append(ef, np.array([2.12, 1.59, 1.77]))
 
-    xticks = [3, 5, 7, 9, 11]
+    xticks = [4, 5, 6, 7, 8, 9]
     yticks = [10, 20, 30, 40, 50]
     run_day(ax, dt, nu, f, ef, xticks, yticks, 'Day 9', legpos='lower right')
     ax.set_xlabel("Hours since 0h UT", fontsize=16)
