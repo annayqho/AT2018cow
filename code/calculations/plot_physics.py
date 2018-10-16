@@ -130,7 +130,7 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     print("Beta", beta)
     P = 3*B**2/(8*np.pi)
     rho = (4*P/3)/v**2
-    #print(rho)
+    print("rho", rho)
     n_p = rho/m_p
     n_e = n_p
     print("ne", n_e)
@@ -378,4 +378,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    sn1998bw()
+    at2018cow()

@@ -17,7 +17,7 @@ from astropy.cosmology import Planck15
 squaresize = 50
 
 
-def chev_lines(ax, x, v):
+def vel_lines(ax, x, v):
     """ Equation 16 from Chevalier 1998 
     
     Parameters
@@ -31,13 +31,35 @@ def chev_lines(ax, x, v):
             (19/9) * np.log10(v) + \
             (19/9) * np.log10(xvals)
     yvals = 10**logy
-    ax.plot(xvals, yvals, ls='--', c='k')
+    ax.plot(xvals, yvals, ls='--', c='k', lw=0.5)
     rotangle = 70
     ax.text(
             x, 7E27, "$R/\Delta t = %sc$" %v, 
-            fontsize=14, rotation=rotangle,
+            fontsize=10, rotation=rotangle,
             horizontalalignment='center', verticalalignment='top')
     return yvals
+
+
+def density_curves(ax, x, ne):
+    """ 
+    Parameters
+    ----------
+    ax: axis to plot the stuff on
+    x: the value of (dt / 1 d) * (nu_p / 5 GHz)
+    v: density in units of parts per cm cubed
+    """
+    xvals = np.linspace(1,3000)
+    logy = (19/22) * np.log10(79) + 26 - (19/22)*np.log10(ne) + \
+            (19/22) * 2 * np.log10(xvals**2 / 22) # divide out 22 days
+    yvals = 10**logy
+    ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
+    rotangle = 75 
+    ax.text(
+            x, 4E29, "$n_e = 10^{%s} \mathrm{cm}^{-3}$" %int(np.log10(ne)), 
+            fontsize=10, rotation=rotangle,
+            horizontalalignment='center', verticalalignment='top')
+    return yvals
+
 
 
 def vele(ax):
@@ -313,16 +335,21 @@ def peaklum(ax):
             horizontalalignment='center')
 
     # Lines
-    y = chev_lines(ax, 7, 1)
-    y = chev_lines(ax, 70, 0.1)
-    y = chev_lines(ax, 700, 0.01)
+    y = vel_lines(ax, 7, 1)
+    y = vel_lines(ax, 70, 0.1)
+    y = vel_lines(ax, 700, 0.01)
+
+    # Curves
+    y = density_curves(ax, 7, 1E-1)
+    y = density_curves(ax, 70, 1E3)
+    y = density_curves(ax, 700, 1E7)
 
     # AT2018cow
     ax.scatter(
             22*100/5, 4.4E29, marker='*', s=300, 
             facecolors='black', edgecolors='black')
     ax.text(
-            22*100/5, 4.8E29, "AT2018cow", fontsize=14, 
+            22*100/5, 5E29, "AT2018cow", fontsize=14, 
             verticalalignment='bottom', 
             horizontalalignment='center')
 
