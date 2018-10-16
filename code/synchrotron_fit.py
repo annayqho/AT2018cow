@@ -19,5 +19,5 @@ def fit_self_abs(freq, flux, flux_err=[]):
     else:       
         popt, pcov = curve_fit(
                 self_abs, freq, flux)
-    return popt[0]
+    return popt, pcov
 
