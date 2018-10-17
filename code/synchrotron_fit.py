@@ -6,7 +6,7 @@ from scipy.optimize import curve_fit
 
 def self_abs(x, b):
     """ Fitting function for self-absorbed part """
-    y = 10**(2*np.log10(x)+b)
+    y = 10**(2.5*np.log10(x)+b)
     return y
 
 
