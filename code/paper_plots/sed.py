@@ -163,6 +163,18 @@ for ii,day in enumerate(days):
     plt.scatter(
             x[choose], y[choose], edgecolor='k', facecolor=cols[ii], 
             label=r"Day %s" %(day), marker=markers[ii], lw=0.5)
+    # For Day 14, choose the highest-frequency radio point and draw
+    # a line connecting 340E9 Hz to 1.5E14 Hz
+    xplt = np.logspace(np.log10(340E9), np.log10(1.5E14))
+    yplt = 4E40*(xplt/230E9)**(1-0.75)
+    plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
+    ind = int(len(xplt)/2)
+    plt.text(xplt[ind], yplt[ind], '$\propto \\nu^{-0.75}$', fontsize=11,
+            horizontalalignment='center', verticalalignment='bottom')
+    yplt = 4E40*(xplt/230E9)**(1-1)
+    plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
+    plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{-1}$', fontsize=11,
+            horizontalalignment='center', verticalalignment='top')
     choose = b == 'x'
     plot_xray(y[choose][0], cols[ii])
     if ii == 2:
@@ -225,5 +237,5 @@ plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
-#plt.savefig("sed.png")
-plt.show()
+plt.savefig("sed.png")
+#plt.show()

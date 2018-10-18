@@ -43,6 +43,7 @@ def sma(ax):
             fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
             dt[:-1], f[:-1], linestyle='-', c='k', lw=1.5)
+    plt.axvline(x=16)
 
     dt, f, ef = c # 345 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
@@ -105,7 +106,7 @@ def sma(ax):
 
     ax.set_ylim(0.5,100)
     ax.set_yscale('log')
-    #ax.set_xscale('log')
+    ax.set_xscale('log')
     ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
     ax.legend(fontsize=12, loc='lower left',ncol=3)
@@ -125,6 +126,7 @@ def xray(ax):
 
     msize=7
     dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
+    print(dt)
     ax.errorbar(
             dt, f1*1E12, yerr=ef1*1E12, fmt='o', label="3-10 keV",
             mfc='#bc3754', mec='k', c='k', ms=msize)
