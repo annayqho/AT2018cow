@@ -55,9 +55,9 @@ def density_curves(ax, x, ne):
     ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
     rotangle = 75 
     ax.text(
-            x, 4E29, "$n_e = 10^{%s} \mathrm{cm}^{-3}$" %int(np.log10(ne)), 
+            x, 5E29, "$n_e = 10^{%s} \mathrm{cm}^{-3}$" %int(np.log10(ne)), 
             fontsize=10, rotation=rotangle,
-            horizontalalignment='center', verticalalignment='top')
+            horizontalalignment='left', verticalalignment='top')
     return yvals
 
 
@@ -199,19 +199,7 @@ def vele(ax):
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-    # make a twin axis
-    ax2 = ax.twinx()
-    ax2.set_ylabel(
-            "Energy (erg) $= U_B/\epsilon_B$, $\qquad \epsilon_B=0.01$", 
-            fontsize=14, rotation=270, labelpad=15.0)
-    y_f = lambda y_i: y_i*33
-    ymin, ymax = ax.get_ylim()
-    ax2.set_ylim((y_f(ymin), y_f(ymax)))
-    ax2.plot([],[])
-    ax2.set_yscale('log')
-
     ax.tick_params(axis='both', labelsize=14)
-    ax2.tick_params(axis='both', labelsize=14)
     ax.set_xlabel(
         "Blastwave Velocity $(\\Gamma \\beta)$",
         fontsize=14)
@@ -221,11 +209,10 @@ def vele(ax):
     ax.set_xlim(0.007, 8)
     ax.set_ylim(4E47, 4E51)
 
-    ax.legend(loc='upper left', fontsize=14)
+    ax.legend(loc='lower center', fontsize=10, ncol=3)
 
 
 
-def peaklum(ax):
     # 88Z
     tnu = (1253)*(5/5)
     lpeak = 2.2E28
@@ -355,7 +342,7 @@ def peaklum(ax):
 
 
     ax.set_xlim(2, 3000)
-    ax.set_ylim(1E27, 1E30)
+    ax.set_ylim(5E26, 1E30)
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.tick_params(axis='both', labelsize=14)
@@ -366,10 +353,9 @@ def peaklum(ax):
         fontsize=14)
 
     
-fig,axarr = plt.subplots(1,2, figsize=(10,5))
-vele(axarr[1])
-peaklum(axarr[0])
-plt.tight_layout(w_pad=4.0)
+fig,ax = plt.subplots(1,1, figsize=(4.5,5))
+vele(ax)
+plt.tight_layout()
 
 #plt.show()
-plt.savefig("chevalier_diagram.png")
+plt.savefig("lum_tnu.png")

@@ -28,11 +28,11 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
         ax.set_yscale('log')
         ax.set_ylabel("Sp. Flux Dens. [mJy]", fontsize=14)
         ax.text(
-                0.3, 0.45, "$F_\\nu \propto \\nu^{2.5}$", 
+                0.35, 0.45, "$F_\\nu \propto \\nu^{2.5}$", 
                 transform=ax.transAxes, horizontalalignment='right', 
                 fontsize=14)
     if fit_peak:
-        choose = np.logical_and(nu<70, ~islim)
+        choose = np.logical_and(np.logical_and(nu>12, nu<70), ~islim)
         b,berr = fit_self_abs(nu[choose],flux[choose],0.1*flux[choose])
         b = b[0]
         xfit = np.linspace(5, 200)
