@@ -13,7 +13,7 @@ import numpy as np
 from astropy.cosmology import Planck15
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
-from get_optical import get_opt_sed
+from get_optical import get_opt_sed,get_bb,get_nonthermal
 from xray_lc import get_xrt, get_nustar
 from get_radio import get_spectrum, get_data_all
 
@@ -158,23 +158,34 @@ cols = ['#f98e09', '#bc3754', '#57106e']
 markers = ['o', 's', 'D']
 
 for ii,day in enumerate(days):
+    # Plot the optical blackbody on that day
+    x, y, R = get_bb(day) # R is radius of source
+    plt.plot(x, 4*np.pi**2*R**2*x*y, c=cols[ii])
+
+    # Get the nonthermal spectrum on that day
+    x, y = get_nonthermal(day)  # in F_nu
+    nuLnu = 4*np.pi*d**2*x*y
+    plt.plot(x, nuLnu, c=cols[ii], ls='--')
+    
     b, x, y = get_sed(day)
-    choose = b != 'x'
+    # Plot the radio SED
+    choose = b == 'r'
     plt.scatter(
             x[choose], y[choose], edgecolor='k', facecolor=cols[ii], 
-            label=r"Day %s" %(day), marker=markers[ii], lw=0.5)
+            label=r"Day %s" %(day), marker=markers[ii], lw=0.5, s=20)
+
     # For Day 14, choose the highest-frequency radio point and draw
     # a line connecting 340E9 Hz to 1.5E14 Hz
-    xplt = np.logspace(np.log10(340E9), np.log10(1.5E14))
-    yplt = 4E40*(xplt/230E9)**(1-0.75)
-    plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
-    ind = int(len(xplt)/2)
-    plt.text(xplt[ind], yplt[ind], '$\propto \\nu^{-0.75}$', fontsize=11,
-            horizontalalignment='center', verticalalignment='bottom')
-    yplt = 4E40*(xplt/230E9)**(1-1)
-    plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
-    plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{-1}$', fontsize=11,
-            horizontalalignment='center', verticalalignment='top')
+    #xplt = np.logspace(np.log10(340E9), np.log10(1.5E14))
+    #yplt = 4E40*(xplt/230E9)**(1-0.75)
+    #plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
+    #ind = int(len(xplt)/2)
+    #plt.text(xplt[ind], yplt[ind], '$\propto \\nu^{-0.75}$', fontsize=11,
+    #        horizontalalignment='center', verticalalignment='bottom')
+    #yplt = 4E40*(xplt/230E9)**(1-1)
+    #plt.plot(xplt, yplt, ls='--', c='k', lw=0.5)
+    #plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{-1}$', fontsize=11,
+    #        horizontalalignment='center', verticalalignment='top')
     choose = b == 'x'
     plot_xray(y[choose][0], cols[ii])
     if ii == 2:
@@ -190,14 +201,32 @@ f = 31.5
 lum = mjy_to_lum(f)
 plt.errorbar(
         nu, nu*lum, yerr=0.2*lum,
-        fmt='*', mec='k', mfc='white', ms=13, mew=0.5)
-        #label=r"Day 24")
+        fmt='*', mec='k', mfc='white', ms=10, mew=0.5)
+plt.scatter(
+        nu, nu*lum, 
+        marker='*', edgecolor='k', facecolor='white', s=80,
+        label="Day 24")
 
-nu_opt, fnu_opt = get_opt_sed(24)
-lum_opt = nu_opt*mjy_to_lum(fnu_opt)
-plt.errorbar(
-        nu_opt, lum_opt, 
-        fmt='*', mec='k', mfc='white', label=r"Day 24", ms=13, mew=0.5)
+# Day 24 UVOIR measurements
+x, y, R = get_bb(24) # R is radius of source
+plt.plot(x, 4*np.pi**2*R**2*x*y, 'grey')
+
+# Get the nonthermal spectrum on that day
+x, y = get_nonthermal(24)  # in F_nu
+nuLnu = 4*np.pi*d**2*x*y
+plt.plot(x, nuLnu, ls='--', c='grey')
+
+# Plot lines from Day 24
+xplt = np.logspace(np.log10(1E12), np.log10(1.5E14))
+yplt = 9E40*(xplt/600E9)**(1-0.75)
+plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
+ind = int(len(xplt)/2)
+plt.text(xplt[ind], yplt[ind], '$\propto \\nu^{-0.75}$', fontsize=11,
+        horizontalalignment='center', verticalalignment='bottom')
+yplt = 9E40*(xplt/600E9)**(1-1)
+plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
+plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{-1}$', fontsize=11,
+        horizontalalignment='center', verticalalignment='top')
 
 # Plot the NuSTAR data
 dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
@@ -227,6 +256,8 @@ energy = nu * 6.626E-27
 y = f * energy**(-alpha) * 4 * np.pi * d**2
 #plt.plot(nu, y, ls=':', c='k')
 
+plt.xlim(1E9, 5E18)
+plt.ylim(1E35, 5E44)
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel("Frequency [Hz]", fontsize=16)

@@ -43,7 +43,7 @@ def sma(ax):
             fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
             dt[:-1], f[:-1], linestyle='-', c='k', lw=1.5)
-    plt.axvline(x=16)
+    plt.axvline(x=30)
 
     dt, f, ef = c # 345 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
