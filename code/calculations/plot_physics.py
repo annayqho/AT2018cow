@@ -16,13 +16,12 @@ c6 = 8.16E-41
 c5 = 6.29E-24
 c1 = 6.27E18
 El = 8.17E-7
-alpha = 1
 f = 0.5
 q_e = 4.8E-10
 m_e = 9.1E-28
 sigmat = 6.6524E-25
-e_e = 1/3
-e_B = 1/3
+eps_e = 0.1
+eps_B = 0.01
 
 
 def get_R_full(Fp, nup):
@@ -40,6 +39,7 @@ def get_R(Fp, nup, d_mpc):
 
     Returns Rp in cm
     """
+    alpha = eps_e / eps_B
     Rp = 8.8E15 * alpha**(-1/19) * (f/0.5)**(-1/19) * (Fp)**(9/19) * \
          d_mpc**(18/19) * (nup/5)**(-1)
     return Rp
@@ -52,6 +52,7 @@ def get_B(Fp, nup, d_mpc):
     
     Returns Bp in Gauss
     """
+    alpha = eps_e / eps_B
     Bp = 0.58 * alpha**(-4/19) * (f/0.5)**(-4/19) * (Fp)**(-2/19) * \
          d_mpc**(-4/19) * (nup/5)
     return Bp
@@ -128,15 +129,14 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     v = R/(86400*dt)
     beta = v/c
     print("Beta", beta)
-    P = 3*B**2/(8*np.pi)
+    P = B**2/(8*np.pi*eps_B)
     rho = (4*P/3)/v**2
     print("rho", rho)
     n_p = rho/m_p
     n_e = n_p
     print("ne", n_e)
     UB = (B**2)/(8*np.pi) * V
-    #print(UB)
-    print("E", 3*UB)
+    print("E", UB/eps_B)
     tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
     print("tau_ff", tauff)
     Te = 1.2E6
@@ -145,7 +145,7 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     Lff = 1.43E-27 * n_e**2 * Te**(1/2) * (4/3) * np.pi * (6E16)**3
     print("L_ff", Lff)
     # Gamma_m
-    gammam = e_e * (m_p / m_e) * ((p-2)/(p-1)) * beta**2
+    gammam = eps_e * (m_p / m_e) * ((p-2)/(p-1)) * beta**2
     print("gamma_m", gammam)
     # Gyrofrequency
     gammag = q_e*B / (2 * np.pi * m_e * c)
