@@ -136,6 +136,8 @@ def plot_xray(flux, c):
     nu1 = 7.2E16
     A = flux*(1-alpha) / (nu0**alpha * (nu2**(1-alpha) - nu1**(1-alpha)))
     xplot = np.linspace(7.2E16, 2.4E18, 1000)
+    print(A)
+    print(nu0)
     yplot = A*(xplot/nu0)**(-alpha)
     plt.plot(xplot, xplot*yplot, c=c, ls='-')
     if c=='white':
@@ -268,5 +270,5 @@ plt.legend(fontsize=12, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.png")
-#plt.show()
+#plt.savefig("sed.png")
+plt.show()

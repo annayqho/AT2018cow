@@ -55,8 +55,8 @@ def get_bb(day):
     h = 4.136E-15
     k = 1.38E-16
     x = np.logspace(np.log10(c/hi_wl), np.log10(c/low_wl))
-    # We're in the regime of Wien Law, hnu >> kT
     y = blackbody_nu(x, T)
+    print("temp", T)
     return x, y, R
 
 
