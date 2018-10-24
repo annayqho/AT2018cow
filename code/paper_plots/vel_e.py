@@ -41,6 +41,17 @@ def vele(ax):
             horizontalalignment='right',
             verticalalignment='top')
 
+    # ASASSN14li
+    # Using Day 143, the first day the peak is resolved
+    v = 0.05
+    E = 9.34E47
+    ax.scatter(
+            v, E, marker='o', edgecolor='k', facecolor='k', s=50, label=None)
+    ax.text(
+            v/1.5, E/1.4, "ASASSN14li", fontsize=12,
+            horizontalalignment='center',
+            verticalalignment='top')
+ 
     # SN 2003L
     v = 0.12
     E = 6.9E47

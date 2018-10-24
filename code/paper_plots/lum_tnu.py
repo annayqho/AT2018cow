@@ -78,6 +78,17 @@ def density_curves(ax, x, ne):
 
 
 def lumtnu(ax):
+    # ASASSN14li
+    tnu = (143)*(8.20/5)
+    lpeak = 1.8E28
+    ax.scatter(
+            tnu, lpeak, marker='o', edgecolor='k', facecolor='black', s=100,
+            label='TDE')
+    ax.text(
+            tnu, lpeak/1.3, "ASASSN14li", fontsize=12,
+            verticalalignment='top',
+            horizontalalignment='center')
+
     # 88Z
     tnu = (1253)*(5/5)
     lpeak = 2.2E28
@@ -94,7 +105,7 @@ def lumtnu(ax):
     lpeak = 4.3E27
     ax.scatter(
             tnu, lpeak, marker='o', edgecolor='k', facecolor='white', s=100,
-            label='SN II')
+            label=None)
     ax.text(
             tnu, lpeak/1.2, "79C", fontsize=12,
             verticalalignment='top',
@@ -226,6 +237,7 @@ y = mdot_curves(ax, 180, 1E-6)
 y = mdot_curves(ax, 1800, 1E-4)
 y = mdot_curves(ax, 1.8, 1E-2)
 ax.get_yaxis().set_visible(False)
+ax.legend(loc='lower center', ncol=2)#, columnspacing=0.1)
 #y = mdot_curves(ax, 700, 1E1)
 
 plt.tight_layout()

@@ -20,8 +20,8 @@ f = 0.5
 q_e = 4.8E-10
 m_e = 9.1E-28
 sigmat = 6.6524E-25
-eps_e = 0.3
-eps_B = 0.01
+eps_e = 1/3
+eps_B = 1/3
 
 
 def get_R_full(Fp, nup):
@@ -184,6 +184,16 @@ def tde():
     d_mpc = Planck15.luminosity_distance(z=0.354).value
     gamma = 3
     # need to add 3.04 to all days
+    run(dt, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def asassn14li():
+    dt = 143 # first day with resolved spectral peak
+    nupeak = 8.20
+    fpeak = 1.76E-3
+    d = Planck15.luminosity_distance(z=0.0206).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.0206).value
+    gamma = 3
     run(dt, nupeak, fpeak, d, gamma, d_mpc)
 
 
@@ -378,4 +388,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    at2018cow()
+    asassn14li()
