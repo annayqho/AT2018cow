@@ -49,7 +49,7 @@ def mdot_curves(ax, x, mdotv):
     ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
     rotangle = 84
     ax.text(
-            x, 5E29, 
+            x, 9E29, 
             "$\dot{M}/v = 10^{%s}$" %int(np.log10(mdotv)), 
             fontsize=10, rotation=rotangle,
             horizontalalignment='left', verticalalignment='top')
@@ -207,9 +207,9 @@ def lumtnu(ax):
             22*100/5, 4.4E29, marker='*', s=300, 
             facecolors='black', edgecolors='black')
     ax.text(
-            22*100/5, 5E29, "AT2018cow", fontsize=14, 
+            22*100/7, 5.5E29, "AT2018cow", fontsize=12, 
             verticalalignment='bottom', 
-            horizontalalignment='center')
+            horizontalalignment='left')
 
 
     ax.set_xlim(2, 3000)
@@ -222,21 +222,15 @@ def lumtnu(ax):
         fontsize=14)
 
     
-fig,axarr = plt.subplots(1,2, figsize=(8,5))
-ax = axarr[0]
-lumtnu(ax)
-y = density_curves(ax, 7, 1E-1)
-y = density_curves(ax, 70, 1E3)
-y = density_curves(ax, 700, 1E7)
-ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
-    fontsize=14)
-ax = axarr[1]
+fig,ax = plt.subplots(1,1, figsize=(4.4,5))
 lumtnu(ax)
 y = mdot_curves(ax, 18, 1E-8)
 y = mdot_curves(ax, 180, 1E-6)
 y = mdot_curves(ax, 1800, 1E-4)
 y = mdot_curves(ax, 1.8, 1E-2)
-ax.get_yaxis().set_visible(False)
+ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
+    fontsize=14)
+#ax.get_yaxis().set_visible(False)
 ax.legend(loc='lower center', ncol=2)#, columnspacing=0.1)
 #y = mdot_curves(ax, 700, 1E1)
 

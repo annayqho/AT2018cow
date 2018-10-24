@@ -58,6 +58,14 @@ def get_B(Fp, nup, d_mpc):
     return Bp
     
 
+def get_U(Fp, nup, d_mpc):
+    """ This is Equation 12 in our paper
+    Fp in Jy, nup in GHz, D in Mpc """
+    prefactor = 1.92E46
+    U = prefactor * (1/eps_B) * (eps_e/eps_B)**(-11/19) * (f/0.5)**(8/19) * \
+            (Fp)**(23/19) * (d_mpc)**(46/19) * (nup/5)**(-1)
+    return U
+
 
 def multiple_days():
     for dt in np.arange(8,31):
@@ -136,7 +144,8 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     n_e = n_p
     print("ne", n_e)
     UB = V * (B**2)/(8*np.pi) 
-    print("E", UB/eps_B)
+    U = get_U(fpeak, nupeak, d_mpc)
+    print("E", U)
     tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
     print("tau_ff", tauff)
     Te = 1.2E6
@@ -220,10 +229,10 @@ def sn2007bg():
     d = 152 Mpc
     """
     nupeak = 8.46
-    fpeak = 1490E-6
     redshift = 0.0335
     d = Planck15.luminosity_distance(z=redshift).cgs.value
     d_mpc = Planck15.luminosity_distance(z=redshift).value
+    fpeak = 1E23 * 4.1E28 / (4 * np.pi * d**2)
     gamma = 3.2 # they don't give it in the paper though
     dt = 55.9
     run(dt, nupeak, fpeak, d, gamma, d_mpc)
@@ -388,4 +397,4 @@ def grb031203():
     
 
 if __name__=="__main__":
-    asassn14li()
+    at2018cow()

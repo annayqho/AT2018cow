@@ -26,14 +26,14 @@ def vele(ax):
     y = dat['col2']
 
     choose = np.logical_and(x > 1, y > 3E49)
-    ax.scatter(
-            x[choose], y[choose], marker='x', c='k', s=50, label="GRBs")
+    #ax.scatter(
+    #        x[choose], y[choose], marker='x', c='k', s=50, label="GRBs")
 
     # Swift TDE
     # just use one epoch
     # epoch 3: day 18
     v = 1.7
-    E = 2.7E51
+    E = 2.690162794624484e+51
     ax.scatter(
             v, E, marker='o', edgecolor='k', facecolor='k', s=50, label="TDE")
     ax.text(
@@ -44,17 +44,17 @@ def vele(ax):
     # ASASSN14li
     # Using Day 143, the first day the peak is resolved
     v = 0.05
-    E = 9.34E47
+    E = 9.385748112535813e+47
     ax.scatter(
             v, E, marker='o', edgecolor='k', facecolor='k', s=50, label=None)
     ax.text(
-            v/1.5, E/1.4, "ASASSN14li", fontsize=12,
+            v/1.5, E/1.1, "ASASSN14li", fontsize=12,
             horizontalalignment='center',
             verticalalignment='top')
  
     # SN 2003L
     v = 0.12
-    E = 6.9E47
+    E = 6.969524134247872e+47
     ax.scatter(
             v, E, marker='+', c='k', s=100, label="SNe Ibc")
     ax.text(
@@ -64,99 +64,99 @@ def vele(ax):
 
     # SN 2007bg
     v = 0.19
-    E = 2.5E48
+    E = 2.4548568053628734e+48
     ax.scatter(
             v, E, marker='+', c='k', s=100, label=None)
     ax.text(
-            v, E*1.3, "2007bg", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
+            v*1.3, E, "2007bg", fontsize=12,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     # SN 2003bg
     v = 0.11
-    E = 8.7E47
+    E = 8.736630286056538e+47
     ax.scatter(
             v, E, marker='+', c='k', s=100, label=None)
     ax.text(
-            v, E*1.3, "2003bg", fontsize=12,
+            v, E*1.1, "2003bg", fontsize=12,
             verticalalignment='bottom',
             horizontalalignment='center')
 
     # SN 1998bw
     v = 1.26
-    E = 4.8E48
+    E = 4.7885240374184584e+48
     ax.scatter(
             v, E, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label="LLGRB-SNe")
     ax.text(
-            v, E*1.3, "1998bw", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
+            v*1.2, E, "1998bw", fontsize=12,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     # SN 2009bb
     v = 0.71
-    E = 2.9E48
+    E = 2.9571483301386266e+48
     ax.scatter(
             v, E, marker='+', c='k', s=100)
     ax.text(
-            v, E*1.3, "2009bb", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
+            v*1.2, E, "2009bb", fontsize=12,
+            verticalalignment='center',
+            horizontalalignment='left')
 
     # SN 2006aj
-    v = 2.1
-    E = 7.4E47
+    v = 2.12
+    E = 7.463410905948252e+47
     ax.scatter(
             v, E, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            v, E*1.3, "2006aj", fontsize=12,
+            v, E*1.1, "2006aj", fontsize=12,
             verticalalignment='bottom',
             horizontalalignment='center')
 
     # SN 2010bh
     v = 0.33
-    E = 9.0E47
+    E = 9.092980420991635e+47
     ax.scatter(
             v, E, marker='s', edgecolor='k', s=squaresize,
             facecolor='k', label=None)
     ax.text(
-            v, E*1.3, "2010bh", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
+            v*1.2, E, "2010bh", fontsize=12,
+            verticalalignment='center',
+            horizontalalignment='left')
 
 
     # SN 1988Z
-    v = 0.01
-    E = 2.0E48
+    v = 0.011
+    E = 1.985096671996441e+48
     ax.scatter(
             v, E, marker='o', edgecolor='k', s=100,
             facecolor='white', label="SNe II")
     ax.text(
-            v, E*1.3, "88Z", fontsize=12,
+            v, E*1.1, "88Z", fontsize=12,
             verticalalignment='bottom',
             horizontalalignment='center')
 
     # SN 1979C
     v = 0.016
-    E = 1E48
+    E = 1.0369335161200779e+48
     ax.scatter(
             v, E, marker='o', edgecolor='k', s=100,
             facecolor='white', label=None)
     ax.text(
-            v, E*1.3, "79C", fontsize=12,
+            v, E*1.1, "79C", fontsize=12,
             verticalalignment='bottom',
             horizontalalignment='center')
 
 
-
-
     # AT2018cow
+    v = 0.126807067696
+    E = 3.68387786116342e+48
     ax.scatter(
-            0.173, 2.2E49, 
+            v, E, 
             marker='*', s=300, facecolors='black', edgecolors='black')
     ax.text(
-            0.173, 2.2E49*1.3, "AT2018cow", 
+            v, E*1.1, "AT2018cow", 
             fontsize=14, 
             verticalalignment='bottom', horizontalalignment='center')
 
@@ -169,7 +169,7 @@ def vele(ax):
     ax.set_ylabel(
             "Energy (erg) $= U_B/\epsilon_B$, \qquad $\epsilon_e=\epsilon_B=0.33$", 
             fontsize=14)
-    ax.set_ylim(4E47, 4E51)
+    ax.set_ylim(5E47, 1.3E49)
     ax.tick_params(axis='both', labelsize=14)
     ax.legend(loc='upper left', fontsize=10)
 
