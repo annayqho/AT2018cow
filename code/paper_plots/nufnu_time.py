@@ -29,7 +29,7 @@ def plot_limits(ax, x, y, ratiox, ratioy, col):
                 facecolor=col, headwidth=10, width=1, headlength=7))
 
 
-def plot_line(ax, d, t, nufnu, name, label, col, legend=False):
+def plot_line(ax, d, t, nufnu, name, label, col, legend=False, zorder=1):
     """ Plot a line
     If nu > 90 GHz, make it on the left axis
     If nu < 10 GHz, make it on the right axis
@@ -60,17 +60,17 @@ def plot_line(ax, d, t, nufnu, name, label, col, legend=False):
             marker='s'
             fcol = col 
             s=nsize
-        elif label=='Rel. TDE':
+        elif label=='TDE':
             marker='s'
             fcol = 'white' #unfilled
             s=nsize
     ax.scatter(
             t, lum, facecolor=fcol, edgecolor=col, 
-            marker=marker, s=s)
+            marker=marker, s=s, zorder=zorder)
     if legend:
-        ax.plot(t, lum, c=col, ls='-', label=label)
+        ax.plot(t, lum, c=col, ls='-', label=label, zorder=zorder)
     else:
-        ax.plot(t, lum, c=col, ls='-', label=None)
+        ax.plot(t, lum, c=col, ls='-', label=None, zorder=zorder)
     return lum
 
 
@@ -100,7 +100,7 @@ def at2018cow(ax, col, legend):
     nu = 231.5E9
     lum = plot_line(
             ax[0], d, dt, nu*f, 
-            'AT2018cow', None, col, legend)
+            'AT2018cow', None, col, legend, zorder=10)
     ax[0].text(dt[0]/1.2, lum[0], 'AT2018cow', fontsize=11,
             verticalalignment='center',
             horizontalalignment='right')
@@ -126,7 +126,7 @@ def at2018cow(ax, col, legend):
     choose = freq == 9
     lum = plot_line(
             ax[1], d, days[choose], nu*flux[choose], 
-            'AT2018cow', None, col, legend)
+            'AT2018cow', None, col, legend, zorder=10)
     ax[1].text(days[choose][-1]/1.2, lum[-1], 'AT2018cow', fontsize=11,
             verticalalignment='top',
             horizontalalignment='right')
@@ -175,7 +175,7 @@ def tde(ax, col, legend):
     order = np.argsort(dt_all)
     lum = plot_line(
             ax[0], d, dt_all[order], nufnu_all[order], 
-            'SwiftJ1644+57', 'Rel. TDE', col, legend)
+            'SwiftJ1644+57', 'TDE', col, legend)
     ax[0].text(dt_all[order][-1]*1.1, lum[-1], 'Swift J1644+57', fontsize=11,
             verticalalignment='center',
             horizontalalignment='left')
@@ -213,10 +213,24 @@ def tde(ax, col, legend):
     order = np.argsort(dt_all)
     lum = plot_line(
             ax[1], d, dt_all[order], nufnu_all[order], 
-            'SwiftJ1644+57', 'Rel. TDE', col, legend)
+            'SwiftJ1644+57', 'TDE', col, legend)
     ax[1].text(dt_all[order][0], lum[0]/2, 'Swift J1644+57', fontsize=11,
             verticalalignment='top',
             horizontalalignment='center')
+
+
+def asassn14li(ax, col, legend):
+    """ Alexander et al. 2016 """
+    nu = 5.0E9
+    d = Planck15.luminosity_distance(z=0.0206).cgs.value
+    t = np.array([80, 141.38, 207.33, 246.25, 303.01, 375.94, 389.96])
+    flux = np.array([2, 1.91, 1.74, 1.56, 1.26, 0.81, 0.89])
+    lum = plot_line(
+            ax[1], d, t, nu*flux, 'ASASSN14li', 'TDE', col, legend,
+            zorder=10)
+    ax[1].text(t[-1]/2, lum[-1]/1.5, 'ASASSN14li', fontsize=11,
+            verticalalignment='top',
+            horizontalalignment='left')
 
 
 def sn2003L(ax, col, legend):
@@ -510,6 +524,8 @@ def othersn(ax):
     """
 
 
+
+
 if __name__=="__main__":
     fig, axarr = plt.subplots(1, 2, figsize=(10,7), sharex=True, sharey=True)
     props = dict(boxstyle='round', facecolor='white')
@@ -537,6 +553,7 @@ if __name__=="__main__":
 
     #maxi(ax)
     tde(axarr, '#57106e', legend=True)
+    asassn14li(axarr, '#57106e', None)
 
     sn2003L(axarr, 'lightblue', legend=True)
     sn1979c(axarr, 'lightblue', None)

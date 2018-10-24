@@ -19,7 +19,7 @@ squaresize = 50
 def vele(ax):
     # only use this to plot the GRBs
     direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    inputf = direc + "/Soderberg2009Fig4.1"
+    inputf = direc + "/Soderberg2009Fig4.1.txt"
 
     dat = Table.read(inputf, format='ascii')
     x = dat['col1']
@@ -149,33 +149,33 @@ def vele(ax):
             fontsize=14, 
             verticalalignment='bottom', horizontalalignment='center')
 
-
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-    # make a twin axis
-    ax2 = ax.twinx()
-    ax2.set_ylabel(
-            "Energy (erg) $= U_B/\epsilon_B$, $\qquad \epsilon_B=0.01$", 
-            fontsize=14, rotation=270, labelpad=15.0)
-    y_f = lambda y_i: y_i*33
-    ymin, ymax = ax.get_ylim()
-    ax2.set_ylim((y_f(ymin), y_f(ymax)))
-    ax2.plot([],[])
-    ax2.set_yscale('log')
-
-    ax.tick_params(axis='both', labelsize=14)
-    ax2.tick_params(axis='both', labelsize=14)
     ax.set_xlabel(
         "Blastwave Velocity $(\\Gamma \\beta)$",
         fontsize=14)
     ax.set_ylabel(
-            "Energy (erg) $= U_B/\epsilon_B$, \qquad $\epsilon_B=0.33$", 
+            "Energy (erg) $= U_B/\epsilon_B$, \qquad $\epsilon_e=\epsilon_B=0.33$", 
             fontsize=14)
-    ax.set_xlim(0.007, 8)
     ax.set_ylim(4E47, 4E51)
-
+    ax.tick_params(axis='both', labelsize=14)
     ax.legend(loc='upper left', fontsize=10)
+
+
+    # make a twin axis
+    ax2 = ax.twinx()
+    ax2.set_ylabel(
+            "Energy (erg) $= U_B/\epsilon_B$, $\qquad \epsilon_e=0.1;\epsilon_B=0.01$", 
+            fontsize=14, rotation=270, labelpad=15.0)
+    y_f = lambda y_i: y_i*9
+    ymin, ymax = ax.get_ylim()
+    ax2.set_ylim((y_f(ymin), y_f(ymax)))
+    ax2.plot([],[])
+    ax2.set_yscale('log')
+    ax2.tick_params(axis='both', labelsize=14)
+    ax2.set_xlim(4E-3, 8)
+    ax.set_xlim(4E-3, 8)
 
 fig,ax = plt.subplots(1,1, figsize=(5,5))
 vele(ax)

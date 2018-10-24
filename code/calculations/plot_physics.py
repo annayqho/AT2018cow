@@ -20,7 +20,7 @@ f = 0.5
 q_e = 4.8E-10
 m_e = 9.1E-28
 sigmat = 6.6524E-25
-eps_e = 0.1
+eps_e = 0.3
 eps_B = 0.01
 
 
@@ -135,7 +135,7 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     n_p = rho/m_p
     n_e = n_p
     print("ne", n_e)
-    UB = (B**2)/(8*np.pi) * V
+    UB = V * (B**2)/(8*np.pi) 
     print("E", UB/eps_B)
     tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
     print("tau_ff", tauff)

@@ -40,6 +40,22 @@ def vel_lines(ax, x, v):
     return yvals
 
 
+def mdot_curves(ax, x, mdotv):
+    # Mdot divided by v
+    xvals = np.linspace(1,3000)
+    logy = (19/4) * np.log10(0.002) - (19/4)*np.log10(mdotv) + \
+            (2*19/4)*np.log10(xvals) 
+    yvals = 10**logy
+    ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
+    rotangle = 84
+    ax.text(
+            x, 5E29, 
+            "$\dot{M}/v = 10^{%s}$" %int(np.log10(mdotv)), 
+            fontsize=10, rotation=rotangle,
+            horizontalalignment='left', verticalalignment='top')
+    return yvals
+
+
 def density_curves(ax, x, ne):
     """ 
     Parameters
@@ -61,158 +77,7 @@ def density_curves(ax, x, ne):
     return yvals
 
 
-
-def vele(ax):
-    # only use this to plot the GRBs
-    direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
-    inputf = direc + "/Soderberg2009Fig4.1"
-
-    dat = Table.read(inputf, format='ascii')
-    x = dat['col1']
-    y = dat['col2']
-
-    choose = np.logical_and(x > 1, y > 3E49)
-    ax.scatter(
-            x[choose], y[choose], marker='x', c='k', s=50, label="GRBs")
-
-    # Swift TDE
-    # just use one epoch
-    # epoch 3: day 18
-    v = 1.7
-    E = 2.7E51
-    ax.scatter(
-            v, E, marker='o', edgecolor='k', facecolor='k', s=50, label="TDE")
-    ax.text(
-            v/1.1, E, "Swift J1644", fontsize=12,
-            horizontalalignment='right',
-            verticalalignment='top')
-
-    # SN 2003L
-    v = 0.12
-    E = 6.9E47
-    ax.scatter(
-            v, E, marker='+', c='k', s=100, label="SNe Ibc")
-    ax.text(
-            v*1.1, E, "2003L", fontsize=12,
-            horizontalalignment='left',
-            verticalalignment='center')
-
-    # SN 2007bg
-    v = 0.19
-    E = 2.5E48
-    ax.scatter(
-            v, E, marker='+', c='k', s=100, label=None)
-    ax.text(
-            v, E*1.3, "2007bg", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 2003bg
-    v = 0.11
-    E = 8.7E47
-    ax.scatter(
-            v, E, marker='+', c='k', s=100, label=None)
-    ax.text(
-            v, E*1.3, "2003bg", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 1998bw
-    v = 1.26
-    E = 4.8E48
-    ax.scatter(
-            v, E, marker='s', edgecolor='k', s=squaresize,
-            facecolor='k', label="LLGRB-SNe")
-    ax.text(
-            v, E*1.3, "1998bw", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 2009bb
-    v = 0.71
-    E = 2.9E48
-    ax.scatter(
-            v, E, marker='+', c='k', s=100)
-    ax.text(
-            v, E*1.3, "2009bb", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 2006aj
-    v = 2.1
-    E = 7.4E47
-    ax.scatter(
-            v, E, marker='s', edgecolor='k', s=squaresize,
-            facecolor='k', label=None)
-    ax.text(
-            v, E*1.3, "2006aj", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 2010bh
-    v = 0.33
-    E = 9.0E47
-    ax.scatter(
-            v, E, marker='s', edgecolor='k', s=squaresize,
-            facecolor='k', label=None)
-    ax.text(
-            v, E*1.3, "2010bh", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-
-    # SN 1988Z
-    v = 0.01
-    E = 2.0E48
-    ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='white', label="SNe II")
-    ax.text(
-            v, E*1.3, "88Z", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-    # SN 1979C
-    v = 0.016
-    E = 1E48
-    ax.scatter(
-            v, E, marker='o', edgecolor='k', s=100,
-            facecolor='white', label=None)
-    ax.text(
-            v, E*1.3, "79C", fontsize=12,
-            verticalalignment='bottom',
-            horizontalalignment='center')
-
-
-
-
-    # AT2018cow
-    ax.scatter(
-            0.173, 2.2E49, 
-            marker='*', s=300, facecolors='black', edgecolors='black')
-    ax.text(
-            0.173, 2.2E49*1.3, "AT2018cow", 
-            fontsize=14, 
-            verticalalignment='bottom', horizontalalignment='center')
-
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-
-    ax.tick_params(axis='both', labelsize=14)
-    ax.set_xlabel(
-        "Blastwave Velocity $(\\Gamma \\beta)$",
-        fontsize=14)
-    ax.set_ylabel(
-            "Energy (erg) $= U_B/\epsilon_B$, \qquad $\epsilon_B=0.33$", 
-            fontsize=14)
-    ax.set_xlim(0.007, 8)
-    ax.set_ylim(4E47, 4E51)
-
-    ax.legend(loc='lower center', fontsize=10, ncol=3)
-
-
-
+def lumtnu(ax):
     # 88Z
     tnu = (1253)*(5/5)
     lpeak = 2.2E28
@@ -326,11 +191,6 @@ def vele(ax):
     y = vel_lines(ax, 70, 0.1)
     y = vel_lines(ax, 700, 0.01)
 
-    # Curves
-    y = density_curves(ax, 7, 1E-1)
-    y = density_curves(ax, 70, 1E3)
-    y = density_curves(ax, 700, 1E7)
-
     # AT2018cow
     ax.scatter(
             22*100/5, 4.4E29, marker='*', s=300, 
@@ -349,13 +209,27 @@ def vele(ax):
     ax.set_xlabel(
         "$(\Delta t/1\,\mathrm{day})(\\nu_p/5\,\mathrm{GHz})$",
         fontsize=14)
-    ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
-        fontsize=14)
 
     
-fig,ax = plt.subplots(1,1, figsize=(4.5,5))
-vele(ax)
+fig,axarr = plt.subplots(1,2, figsize=(8,5))
+ax = axarr[0]
+lumtnu(ax)
+y = density_curves(ax, 7, 1E-1)
+y = density_curves(ax, 70, 1E3)
+y = density_curves(ax, 700, 1E7)
+ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
+    fontsize=14)
+ax = axarr[1]
+lumtnu(ax)
+y = mdot_curves(ax, 18, 1E-8)
+y = mdot_curves(ax, 180, 1E-6)
+y = mdot_curves(ax, 1800, 1E-4)
+y = mdot_curves(ax, 1.8, 1E-2)
+ax.get_yaxis().set_visible(False)
+#y = mdot_curves(ax, 700, 1E1)
+
 plt.tight_layout()
+
 
 #plt.show()
 plt.savefig("lum_tnu.png")
