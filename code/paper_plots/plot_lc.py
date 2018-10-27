@@ -37,20 +37,20 @@ def sma(ax):
     ax.scatter(
             dt[:-1], f[:-1],
             marker='s', c='k',
-            label="230.6--234.6 GHz")
+            label="SMA: 230.6--234.6 GHz")
     ax.errorbar(
             dt[:-1], f[:-1], ef_comb[:-1], 
             fmt='s', c='#000004', lw=1.5) # black in inferno
     ax.plot(
             dt[:-1], f[:-1], linestyle='-', c='k', lw=1.5)
-    plt.axvline(x=30)
+    #plt.axvline(x=30)
 
     dt, f, ef = c # 345 GHz light curve
     ef_comb = np.sqrt(ef**2 + (0.15*f)**2)
     ax.errorbar(
             dt, f, ef_comb, 
             fmt='*', c='#f98e09', lw=0.5, alpha=0.8, ms=11,
-            label="341.5--349 GHz")
+            label="SMA: 341.5--349 GHz")
     ax.plot(
             dt, f, linestyle='-', c='#f98e09', lw=1.5)
 
@@ -91,7 +91,7 @@ def sma(ax):
     ax.errorbar(
             days[choose], flux[choose], yerr=eflux[choose],
             fmt='o', c='#57106e', lw=1.5, ms=7,
-            label="34 GHz")
+            label="ATCA: 34 GHz")
     ax.plot(x, y, ls='--', c='#57106e')
     ax.text(17, 9.5, r'$f_\nu \propto t^2$', fontsize=12)
 
@@ -109,7 +109,7 @@ def sma(ax):
     ax.set_xscale('log')
     ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
     ax.yaxis.set_tick_params(labelsize=14)
-    ax.legend(fontsize=12, loc='lower left',ncol=3)
+    ax.legend(fontsize=12, loc='lower left',ncol=1)
     ax.set_yticks([0.5, 10, 50])
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
@@ -168,5 +168,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    #plt.savefig("lc.png")
-    plt.show()
+    plt.savefig("lc.png")
+    #plt.show()

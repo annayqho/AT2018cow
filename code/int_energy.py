@@ -28,15 +28,15 @@ print(xenrad)
 # 3.4E48 erg radiated after 20 days
 
 # Energy radiated at 230 GHz
-a, b = sma_lc()
-dt, f, ef = b
-choose = dt < 22
-dtsec = dt[choose]*86400
-fcgs = f[choose] * 1E-3 * 1E-23
-lcgs = 231.5E9 * fcgs
-smaint = np.trapz(lcgs, dtsec) # erg/cm2 
-smaenrad = smaint * 4 * np.pi * d**2
-print(smaenrad)
+# a, b = sma_lc()
+# dt, f, ef = b
+# choose = dt < 22
+# dtsec = dt[choose]*86400
+# fcgs = f[choose] * 1E-3 * 1E-23
+# lcgs = 231.5E9 * fcgs
+# smaint = np.trapz(lcgs, dtsec) # erg/cm2 
+# smaenrad = smaint * 4 * np.pi * d**2
+# print(smaenrad)
 
 # 5.1E46 erg radiated before 20 days
 # 5.4E46 erg radiated after 20 days

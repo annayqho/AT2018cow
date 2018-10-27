@@ -219,20 +219,34 @@ def lumtnu(ax):
     ax.tick_params(axis='both', labelsize=14)
     ax.set_xlabel(
         "$(\Delta t/1\,\mathrm{day})(\\nu_p/5\,\mathrm{GHz})$",
-        fontsize=14)
+        fontsize=12)
 
     
-fig,ax = plt.subplots(1,1, figsize=(4.4,5))
+fig,ax = plt.subplots(1,1, figsize=(5,5))
 lumtnu(ax)
+y = mdot_curves(ax, 1.8, 1E-10)
 y = mdot_curves(ax, 18, 1E-8)
 y = mdot_curves(ax, 180, 1E-6)
 y = mdot_curves(ax, 1800, 1E-4)
-y = mdot_curves(ax, 1.8, 1E-2)
 ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
-    fontsize=14)
+    fontsize=12)
 #ax.get_yaxis().set_visible(False)
 ax.legend(loc='lower center', ncol=2)#, columnspacing=0.1)
 #y = mdot_curves(ax, 700, 1E1)
+
+# make a twin axis
+ax2 = ax.twinx()
+ax2.set_ylabel(
+        r"$U/R$ (erg/cm) $\qquad \epsilon_e=\epsilon_B=1/3$", 
+        fontsize=12, rotation=270, labelpad=15.0)
+y_f = lambda y_i: 10**((14/19)*(np.log10(y_i)+14.65))
+ymin, ymax = ax.get_ylim()
+ax2.set_ylim((y_f(ymin), y_f(ymax)))
+ax2.plot([],[])
+ax2.set_yscale('log')
+ax2.tick_params(axis='both', labelsize=14)
+ax2.set_xlim(2,3000)
+
 
 plt.tight_layout()
 
