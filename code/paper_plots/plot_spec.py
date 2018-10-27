@@ -15,13 +15,37 @@ from get_radio import get_data_all, get_spectrum
 from synchrotron_fit import self_abs, fit_self_abs
 
 
-def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
+
+def plot_day(ax,day,nu,flux,tel,islim,formatting=True,fit_peak=True,quad=False,showlegend=False):
     """ Run this for one day """
+    choose_tel = tel == 'SMA'
+    choose = np.logical_and(choose_tel, ~islim)
+    ax.errorbar(
+            nu[choose], flux[choose], yerr=0.15*flux[choose],
+            fmt='o', label="SMA", c='k', zorder=10)
+    choose = np.logical_and(choose_tel, islim)
     ax.scatter(
-            nu[~islim], flux[~islim], 
-            marker='o',label="$\Delta t = %s$" %day, c='k')
+            nu[choose], flux[choose], marker='v', c='k')
+
+    choose_tel = tel == 'ALMA'
+    choose = np.logical_and(choose_tel, ~islim)
     ax.scatter(
-            nu[islim], flux[islim], marker='v', c='k')
+            nu[choose], flux[choose], 
+            marker='o', label="ALMA", facecolor='#f98e09',
+            edgecolor='k', zorder=5)
+    choose = np.logical_and(choose_tel, islim)
+    ax.scatter(
+            nu[choose], flux[choose], marker='v', c='#f98e09')
+
+    choose_tel = tel == 'ATCA'
+    choose = np.logical_and(choose_tel, ~islim)
+    ax.scatter(
+            nu[choose], flux[choose], 
+            marker='s', label="ATCA", facecolor='#57106e',
+            edgecolor='#57106e', zorder=5)
+    choose = np.logical_and(choose_tel, islim)
+    ax.scatter(
+            nu[choose], flux[choose], marker='v', c='#57106e')
 
     if formatting:
         ax.set_xscale('log')
@@ -83,6 +107,9 @@ def plot_day(ax,day,nu,flux,islim,formatting=True,fit_peak=True,quad=False):
             transform=ax.transAxes, horizontalalignment='right', 
             fontsize=14)
 
+    if showlegend:
+        ax.legend(loc='upper left', fontsize=12)
+
     ax.set_ylim(0.1, 200)
     ax.tick_params(axis='both', labelsize=14)
     ax.tick_params(axis='both', labelsize=14)
@@ -99,7 +126,7 @@ if __name__=="__main__":
     choose = np.logical_and(day > 10.2, day < 10.5)
     islim = np.array([False]*sum(choose))
     islim[freq[choose]==5.5] = True
-    plot_day(ax,10,freq[choose],flux[choose],islim)
+    plot_day(ax,10,freq[choose],flux[choose],tel[choose],islim, showlegend=True)
 
     # spectrum on Day 13/14
     # 14.36 for SMA, 13.47 for ATCA, 14.14 for ALMA
@@ -107,7 +134,7 @@ if __name__=="__main__":
     tel, freq, day, flux, eflux_form, eflux_sys = get_data_all()
     choose = np.logical_and(day < 14.38, day > 13.36)
     islim = np.array([False]*sum(choose))
-    plot_day(ax,14,freq[choose],flux[choose],islim)
+    plot_day(ax,14,freq[choose],flux[choose],tel[choose],islim)
 
     # bottom panel: spectrum on Day 22
     # 22.02 to 22.04 for ALMA
@@ -115,23 +142,27 @@ if __name__=="__main__":
     choose = np.logical_and(day < 22.05, day > 22.01) 
     nu = freq[choose]
     f = flux[choose]
+    t = tel[choose]
     # interpolate the SMA data between Days 20 and 24
     choose_sma = np.logical_and.reduce((
         day>=20.28, day<=24.39, tel=='SMA', freq==215.5))
     nu = np.append(nu, 215.5)
     f = np.append(f, np.interp(22, day[choose_sma], flux[choose_sma]))
+    t = np.append(t, 'SMA')
     choose_sma = np.logical_and.reduce((
         day>=20.28, day<=24.39, tel=='SMA', freq==231.5))
     nu = np.append(nu, 231.5)
     f = np.append(f, np.interp(22, day[choose_sma], flux[choose_sma]))
+    t = np.append(t, 'SMA')
     # interpolate the ATCA 34 GHz measurement
     choose_atca = np.logical_and.reduce((
         tel=='ATCA', freq==34))
     nu = np.append(nu, 34)
     f = np.append(f, np.interp(22, day[choose_atca], flux[choose_atca]))
+    t = np.append(t, 'ATCA')
 
     islim = np.array([False]*(len(nu)))
-    plot_day(ax, 22, nu, f, islim)
+    plot_day(ax, 22, nu, f, t, islim)
     ax.set_xlabel("Frequency [GHz]", fontsize=14)
     ax.scatter(
             671, 31.5, marker='*', s=100, 
@@ -149,7 +180,7 @@ if __name__=="__main__":
             bbox_to_anchor=(0.4,0.8),
             bbox_transform=ax.transAxes)
     plot_day(
-            axins, 22, nu, f, islim,
+            axins, 22, nu, f, t, islim,
             formatting=False, fit_peak=False, quad=True)
     axins.set_xlim(88, 106)
     axins.set_ylim(90, 95)
