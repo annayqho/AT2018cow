@@ -150,8 +150,8 @@ def lumtnu(ax):
     ax.scatter(
             tnu, lpeak, marker='+', c='k', s=100, label=None)
     ax.text(
-            tnu*1.2, lpeak, "2003bg", fontsize=12,
-            verticalalignment='center',
+            tnu, lpeak/1.1, "2003bg", fontsize=12,
+            verticalalignment='top',
             horizontalalignment='left')
 
     # SN 1998bw
@@ -203,13 +203,33 @@ def lumtnu(ax):
     y = vel_lines(ax, 700, 0.01)
 
     # AT2018cow
+    x1 = 22*100/5
+    y1 = 4.4E29
     ax.scatter(
-            22*100/5, 4.4E29, marker='*', s=300, 
+            x1, y1, marker='*', s=300, 
             facecolors='black', edgecolors='black')
     ax.text(
             22*100/7, 5.5E29, "AT2018cow", fontsize=12, 
             verticalalignment='bottom', 
             horizontalalignment='left')
+    ax.text(
+            x1, y1/1.2, "$\Delta t$=22\,d", fontsize=10, 
+            verticalalignment='top', 
+            horizontalalignment='left')
+
+    # From the Margutti paper
+    x2 = 91*10/5
+    y2 = 4.3E28
+    ax.scatter(
+            x2, y2, marker='*', s=100, 
+            facecolors='black', edgecolors='black')
+    ax.text(
+            x2*1.1, y2*1, "$\Delta t$=91\,d", fontsize=10, 
+            verticalalignment='bottom', 
+            horizontalalignment='left')
+
+    # Arrow from one to the other
+    plt.arrow(x1,y1,x2-x1,y2-y1)
 
 
     ax.set_xlim(2, 3000)
