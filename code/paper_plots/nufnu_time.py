@@ -393,8 +393,8 @@ def grb030329(ax, col, legend):
     f = np.append(
             f, np.array([1613, 1389, 871, 933, 707, 543, 504, 318]) * 1E-3)
     nu = np.append(nu, np.array([2.3E9]*8))
-    lum = plot_line(ax[1], d, t, freq*f, 'GRB030329', 'GRB', col, legend)
-    ax[1].text(t[0]/1.05, lum[0]*1.1, 'GRB030329', fontsize=11,
+    lum = plot_line(ax[1], d, t, nu*f, 'GRB030329', 'GRB', col, legend)
+    ax[1].text(t[-8]*1.05, lum[-8]/1.1, 'GRB030329', fontsize=11,
             verticalalignment='bottom',
             horizontalalignment='left')
     
@@ -420,7 +420,7 @@ def grb130427A(ax, col, legend):
     t = np.array([0.677, 2.04, 4.75, 9.71, 17.95, 63.78, 128.34]) / (1+z)
     f = np.array([1290, 1760, 648, 454, 263, 151, 86]) * 1E-3
     lum = plot_line(ax[1], d, t, freq*f, 'GRB130427A', 'GRB', col, legend)
-    ax[1].text(t[0]*1.05, lum[0], 'GRB130427A', fontsize=11,
+    ax[1].text(t[-3]*1.05, lum[-3], 'GRB130427A', fontsize=11,
             verticalalignment='bottom',
             horizontalalignment='left')
 
