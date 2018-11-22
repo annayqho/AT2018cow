@@ -568,7 +568,7 @@ if __name__=="__main__":
     sn2009bb(axarr, '#bc3754', legend=True)
     sn1998bw(axarr, '#bc3754', None)
 
-    at2018cow(axarr, 'k', None)
+    #at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
@@ -586,4 +586,4 @@ if __name__=="__main__":
 
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.savefig("lum_evolution_no18cow.png")

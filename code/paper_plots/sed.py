@@ -17,6 +17,10 @@ from get_optical import get_opt_sed,get_bb,get_nonthermal
 from xray_lc import get_xrt, get_nustar
 from get_radio import get_spectrum, get_data_all
 
+
+bigsize=16
+smallsize=14
+
 d = Planck15.luminosity_distance(z=0.014).cgs.value
 
 
@@ -147,7 +151,7 @@ def plot_xray(flux, c):
 
 
 # set up the plot
-fig = plt.figure(figsize=(6,4))
+fig = plt.figure(figsize=(7,4.7))
 
 # the days that have ALMA data:
 # 14, 22, 24
@@ -193,7 +197,7 @@ for ii,day in enumerate(days):
     if ii == 2:
         plt.text(
                 x[choose][0], y[choose][0], 
-                '$\propto \\nu^{0.54}$', fontsize=12)
+                '$\propto \\nu^{0.54}$', fontsize=smallsize)
 
 
 
@@ -223,11 +227,11 @@ xplt = np.logspace(np.log10(1E12), np.log10(1.5E14))
 yplt = 9E40*(xplt/600E9)**(1-0.75)
 plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
 ind = int(len(xplt)/2)
-plt.text(xplt[ind], yplt[ind], r'$\nu L_\nu \propto \nu^{0.25}$', fontsize=11,
+plt.text(xplt[ind], yplt[ind], r'$\nu L_\nu \propto \nu^{0.25}$', fontsize=smallsize,
         horizontalalignment='center', verticalalignment='bottom')
 yplt = 9E40*(xplt/600E9)**(1-1)
 plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
-plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{0}$', fontsize=11,
+plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{0}$', fontsize=smallsize,
         horizontalalignment='center', verticalalignment='top')
 
 # Plot the NuSTAR data
@@ -262,11 +266,11 @@ plt.xlim(1E9, 5E18)
 plt.ylim(1E35, 5E44)
 plt.xscale('log')
 plt.yscale('log')
-plt.xlabel("Frequency [Hz]", fontsize=16)
-plt.ylabel(r"$\nu L_\nu$ (erg/s)", fontsize=16)
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
-plt.legend(fontsize=12, loc='upper left')
+plt.xlabel("Frequency [Hz]", fontsize=bigsize)
+plt.ylabel(r"$\nu L_\nu$ (erg/s)", fontsize=bigsize)
+plt.xticks(fontsize=bigsize)
+plt.yticks(fontsize=bigsize)
+plt.legend(fontsize=bigsize, loc='upper left')
 
 plt.tight_layout()
 

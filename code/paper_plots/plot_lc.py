@@ -143,7 +143,7 @@ def xray(ax):
             mfc='#57106e', mec='black',
             label="40-80 keV", c='k', ms=msize)
 
-    ax.set_xlabel("Days since MJD 58285.0 (2018 June 16 UT)", fontsize=16)
+    ax.set_xlabel("Days (observer frame)  since MJD 58285.0 (2018 June 16 UT)", fontsize=16)
     ax.set_xlim(2.5,100)
     ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
     ax.locator_params(axis='y', nbins=2)
