@@ -32,7 +32,7 @@ markers = ['o', 's', 'v', '^']
 nlab = len(c)
 
 fig,axarr = plt.subplots(4,1, figsize=(8,12), sharex=True, sharey=True)
-plt.subplots_adjust(hspace=0)
+plt.subplots_adjust(hspace=0.1)
 
 ax = axarr[0]
 ax.text(
@@ -106,11 +106,10 @@ ax.legend(ncol=3, loc='lower right')
 ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
 ax.yaxis.set_tick_params(labelsize=14)
 
-
 ax.xaxis.set_tick_params(labelsize=14)
 ax.set_xscale('log')
 ax.set_yscale('log')
-ax.set_ylim(0.9,100)
+ax.set_ylim(1.0,100)
 ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
 
 #plt.show()
