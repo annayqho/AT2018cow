@@ -90,8 +90,8 @@ def sma(ax):
     y = 10**(out[0]*np.log10(x)+out[1])
     ax.errorbar(
             days[choose], flux[choose], yerr=eflux[choose],
-            fmt='o', c='#57106e', lw=1.5, ms=7,
-            label="ATCA: 34 GHz")
+            fmt='o', mec='#57106e', lw=1.5, ms=7,
+            label="ATCA: 34 GHz", mfc='white')
     ax.plot(x, y, ls='--', c='#57106e')
     ax.text(17, 9.5, r'$f_\nu \propto t^2$', fontsize=12)
 
@@ -142,6 +142,17 @@ def xray(ax):
             dt, f4*1E12, yerr=ef4*1E12, fmt='s',
             mfc='#57106e', mec='black',
             label="40-80 keV", c='k', ms=msize)
+
+    # Lightly shaded region for the decline phase
+    ax.axvspan(20, 100, color='grey', alpha=0.2)
+    ax.text(
+            0.95, 0.9, "Decline phase", 
+            fontsize=12, transform=ax.transAxes, 
+            horizontalalignment='right', verticalalignment='top')
+    ax.text(
+            0.05, 0.7, "Plateau phase", 
+            fontsize=12, transform=ax.transAxes, 
+            horizontalalignment='left', verticalalignment='center')
 
     ax.set_xlabel("Days (observer frame)  since MJD 58285.0 (2018 June 16 UT)", fontsize=16)
     ax.set_xlim(2.5,100)

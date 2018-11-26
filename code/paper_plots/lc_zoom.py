@@ -18,44 +18,105 @@ def update(dt, nu, f, ef, dt_val, nu_val, f_val, ef_val):
 
 
 def run_day(ax, dt, nu, f, ef, xticks, yticks, day, legpos='lower right'):
-    choose = np.logical_or(nu == 215.5, nu == 243.3)
-    col = '#57106e' # dark purple
+    yellow = '#f98e09'
+    pink = '#bc3754' # pink I think
+
+    choose = nu == 215.5
+    marker = 'v'
 
     if sum(choose) > 0:
         ax.errorbar(
                 dt[choose], f[choose], ef[choose], 
-                fmt='s', c=col, lw=1.5, 
-                label="%s GHz" %nu[choose][0])
+                fmt=marker, c=pink, lw=1.5, 
+                label="%s GHz" %nu[choose][0], ms=7)
         ax.plot(
-                dt[choose], f[choose], linestyle='-', c=col, lw=1.5) 
+                dt[choose], f[choose], linestyle='-', c=pink, lw=1.5) 
 
-    choose = np.logical_or(nu == 231.5, nu == 259.3)
-    col = '#f98e09' # orange
+    choose = nu == 231.5
+    marker = 's'
     if sum(choose) > 0:
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
-                fmt='*', c=col, lw=0.5, alpha=0.8, ms=13,
+                fmt=marker, c='k', lw=0.5, alpha=0.8, ms=7,
                 label="%s GHz" %nu[choose][0])
         ax.plot(
-                dt[choose], f[choose], linestyle='-', c=col, lw=1.5)
+                dt[choose], f[choose], linestyle='-', c='k', lw=1.5)
 
-    choose = np.logical_or.reduce((nu == 330.8, nu == 344.8, nu == 341.5))
-    col = 'black' 
+    choose = nu == 243.3
+    marker = 'v'
+
+    if sum(choose) > 0:
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose], 
+                fmt=marker, mec='k', mfc='white', lw=1.5, 
+                label="%s GHz" %nu[choose][0], ms=7)
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c='k', lw=1.5) 
+
+    choose = nu == 259.3
+    if sum(choose) > 0:
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose],
+                fmt='s', mfc='white', mec='black', lw=0.5, alpha=0.8,
+                label="%s GHz" %nu[choose][0], ms=7)
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c='k', lw=1.5)
+
+    choose = nu == 330.8
     if sum(choose) > 0:
         print(len(ef), len(choose))
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
-                fmt='o', c='k', mec=col, lw=0.5, alpha=0.8, ms=7,
-                label="%s GHz" %nu[choose][0], mfc='white')
+                fmt='o', mec='k', mfc='white', lw=0.5, alpha=0.8, ms=7,
+                label="%s GHz" %nu[choose][0])
         ax.plot(
-                dt[choose], f[choose], linestyle='-', c=col, lw=1.5)
+                dt[choose], f[choose], linestyle='-', c='k', lw=1.5)
 
-    choose = np.logical_or.reduce((nu == 357.5, nu==346.8, nu == 360.8))
-    col = '#bc3754' # yellow
+    choose = nu == 341.5
+    if sum(choose) > 0:
+        print(len(ef), len(choose))
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose],
+                fmt='*', c=yellow, mec=yellow, lw=0.5, alpha=0.8, 
+                label="%s GHz" %nu[choose][0], ms=13)
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c=yellow, lw=1.5)
+
+
+    choose = nu == 344.8
+    if sum(choose) > 0:
+        print(len(ef), len(choose))
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose],
+                fmt='s', c=yellow, lw=0.5, alpha=0.8, ms=7,
+                label="%s GHz" %nu[choose][0])
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c=yellow, lw=1.5)
+
+    choose = nu == 346.8
     if sum(choose) > 0:
         ax.errorbar(
                 dt[choose], f[choose], ef[choose],
-                fmt='o', c=col, lw=0.5, alpha=0.8, ms=7,
+                fmt='o', c=yellow, lw=0.5, alpha=0.8, ms=7,
+                label="%s GHz" %nu[choose][0])
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c=yellow, lw=1.5)
+
+    choose = nu == 357.5
+    col = '#bc3754' # pink I think
+    if sum(choose) > 0:
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose],
+                fmt='s', c=col, lw=0.5, alpha=0.8, ms=7,
+                label="%s GHz" %nu[choose][0])
+        ax.plot(
+                dt[choose], f[choose], linestyle='-', c=col, lw=1.5)
+
+    choose = nu == 360.8
+    if sum(choose) > 0:
+        ax.errorbar(
+                dt[choose], f[choose], ef[choose],
+                fmt='*', c=col, lw=0.5, alpha=0.8, ms=13,
                 label="%s GHz" %nu[choose][0])
         ax.plot(
                 dt[choose], f[choose], linestyle='-', c=col, lw=1.5)

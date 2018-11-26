@@ -124,12 +124,16 @@ def at2018cow(ax, col, legend):
             [float(val.split("pm")[1][0:-1]) for val in flux_raw])
     eflux = np.sqrt(eflux_sys**2 + eflux_form**2)
     choose = freq == 9
+
+    # add the Margutti point
+    x = np.hstack((days[choose], 83.51))
+    y = np.hstack((flux[choose], 9.1)) * nu
     lum = plot_line(
-            ax[1], d, days[choose], nu*flux[choose], 
+            ax[1], d, x, y,
             'AT2018cow', None, col, legend, zorder=10)
-    ax[1].text(days[choose][-1]/1.2, lum[-1], 'AT2018cow', fontsize=11,
-            verticalalignment='top',
-            horizontalalignment='right')
+    ax[1].text(x[-1], lum[-1]*1.2, 'AT2018cow', fontsize=11,
+            verticalalignment='bottom',
+            horizontalalignment='center')
 
 
 def maxi(ax):
@@ -568,7 +572,7 @@ if __name__=="__main__":
     sn2009bb(axarr, '#bc3754', legend=True)
     sn1998bw(axarr, '#bc3754', None)
 
-    #at2018cow(axarr, 'k', None)
+    at2018cow(axarr, 'k', None)
 
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
@@ -586,4 +590,4 @@ if __name__=="__main__":
 
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
-    plt.savefig("lum_evolution_no18cow.png")
+    plt.savefig("lum_evolution.png")
