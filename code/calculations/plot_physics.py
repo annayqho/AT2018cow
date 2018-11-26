@@ -170,12 +170,12 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
 
 
 def at2018cow():
-    nupeak = 100
-    fpeak = 94E-3
+    nupeak = 231.5
+    fpeak = 16.19E-3
     p = 3
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     d_mpc = Planck15.luminosity_distance(z=0.014).value
-    run(22, nupeak, fpeak, d, p, d_mpc)
+    run(5.39, nupeak, fpeak, d, p, d_mpc)
 
 
 def tde():
