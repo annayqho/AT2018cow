@@ -45,16 +45,22 @@ def vel_lines(ax, x, v):
     return yvals
 
 
-def mdot_curves(ax, x, mdotv):
-    # Mdot divided by v
+def mdot_curves(ax, x, y, mdotv):
+    """ 
+    x: x-coordinate for where to put the text
+    y: y-coordinate for where to put the text
+    mdotv: Mdot divided by v, in units of (10^{-4} Msol/yr) / (1000 km/s)
+    x: (dt/1 day) * (nu_p / 5 GHz)
+    """
+    #mdotv = mdotv_scaled * 1000 / 1E-4
     xvals = np.linspace(1,3000)
     logy = (19/4) * np.log10(0.002) - (19/4)*np.log10(mdotv) + \
             (2*19/4)*np.log10(xvals) 
-    yvals = 10**logy
+    yvals = 1E26 * 10**logy
     ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
     rotangle = 84
     ax.text(
-            x, 9E29, 
+            x, y, 
             "$\dot{M}/v = 10^{%s}$" %int(np.log10(mdotv)), 
             fontsize=smallsize, rotation=rotangle,
             horizontalalignment='left', verticalalignment='top')
@@ -223,18 +229,18 @@ def lumtnu(ax):
             horizontalalignment='left')
 
     # From the Margutti paper
-    # x2 = 91*10/5
-    # y2 = 4.3E28
-    # ax.scatter(
-    #         x2, y2, marker='*', s=100, 
-    #         facecolors='black', edgecolors='black')
-    # ax.text(
-    #         x2*1.1, y2*1, "$\Delta t$=91\,d", fontsize=10, 
-    #         verticalalignment='bottom', 
-    #         horizontalalignment='left')
+    x2 = 91*10/5
+    y2 = 4.3E28
+    ax.scatter(
+            x2, y2, marker='*', s=100, 
+            facecolors='black', edgecolors='black')
+    ax.text(
+            x2*1.1, y2*1, "$\Delta t$=91\,d", fontsize=10, 
+            verticalalignment='bottom', 
+            horizontalalignment='left')
 
-    # # Arrow from one to the other
-    # plt.arrow(x1,y1,x2-x1,y2-y1)
+    # Arrow from one to the other
+    plt.arrow(x1,y1,x2-x1,y2-y1)
 
 
     ax.set_xlim(2, 3000)
@@ -249,10 +255,10 @@ def lumtnu(ax):
     
 fig,ax = plt.subplots(1,1, figsize=(6,6))
 lumtnu(ax)
-# y = mdot_curves(ax, 1.8, 1E-10)
-# y = mdot_curves(ax, 18, 1E-8)
-# y = mdot_curves(ax, 180, 1E-6)
-# y = mdot_curves(ax, 1800, 1E-4)
+y = mdot_curves(ax, 480, 2.5E29, 100)
+y = mdot_curves(ax, 50, 4E29, 1)
+y = mdot_curves(ax, 5.2, 6.4E29, 0.01)
+#y = mdot_curves(ax, 1800, 1E-4)
 ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
     fontsize=bigsize)
 #ax.get_yaxis().set_visible(False)

@@ -52,18 +52,22 @@ def plot_line(ax, d, t, nufnu, name, label, col, legend=False, zorder=1):
             marker='o'
             s=nsize
             fcol = col # fill color
+            label = 'Supernova'
         elif label=='GRB':
             marker='o'
             fcol = 'white' # unfilled
             s=nsize
+            label = 'Gamma-ray burst'
         elif label=='Rel. SN':
             marker='s'
             fcol = col 
             s=nsize
+            label = 'Relativistic supernova'
         elif label=='TDE':
             marker='s'
             fcol = 'white' #unfilled
             s=nsize
+            label='Tidal disruption event'
     ax.scatter(
             t, lum, facecolor=fcol, edgecolor=col, 
             marker=marker, s=s, zorder=zorder)
