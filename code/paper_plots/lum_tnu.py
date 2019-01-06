@@ -54,7 +54,8 @@ def mdot_curves(ax, x, y, mdotv):
     """
     #mdotv = mdotv_scaled * 1000 / 1E-4
     xvals = np.linspace(1,3000)
-    logy = (19/4) * np.log10(0.002) - (19/4)*np.log10(mdotv) + \
+    eps_B = 1/3
+    logy = (19/4) * np.log10(0.0005/eps_B) - (19/4)*np.log10(mdotv) + \
             (2*19/4)*np.log10(xvals) 
     yvals = 1E26 * 10**logy
     ax.plot(xvals, yvals, ls=':', c='k', lw=0.5)
@@ -255,9 +256,9 @@ def lumtnu(ax):
     
 fig,ax = plt.subplots(1,1, figsize=(6,6))
 lumtnu(ax)
-y = mdot_curves(ax, 480, 2.5E29, 100)
-y = mdot_curves(ax, 50, 4E29, 1)
-y = mdot_curves(ax, 5.2, 6.4E29, 0.01)
+y = mdot_curves(ax, 550, 2.5E29, 100)
+y = mdot_curves(ax, 58, 4E29, 1)
+y = mdot_curves(ax, 5.9, 6.4E29, 0.01)
 #y = mdot_curves(ax, 1800, 1E-4)
 ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
     fontsize=bigsize)
@@ -283,4 +284,4 @@ plt.tight_layout()
 
 
 #plt.show()
-plt.savefig("lum_tnu.png")
+plt.savefig("lum_tnu.pdf")

@@ -12,6 +12,20 @@ sys.path.append('/Users/annaho/Dropbox/Projects/Research/AT2018cow/code')
 from xray_lc import get_xrt, get_nustar
 from scale_fluxes import sma_lc
 
+# size for paper
+figx = 8
+figy = 6
+bigfont = 16
+midfont = 14
+smallfont = 12
+
+# size for poster
+# figx = 16
+# figy = 12
+# bigfont = 27
+# midfont = 25
+# smallfont = 23
+# 
 
 def sma(ax):
     data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
@@ -93,23 +107,23 @@ def sma(ax):
             fmt='o', mec='#57106e', lw=1.5, ms=7,
             label="ATCA: 34 GHz", mfc='white')
     ax.plot(x, y, ls='--', c='#57106e')
-    ax.text(17, 9.5, r'$f_\nu \propto t^2$', fontsize=12)
+    ax.text(17, 9.5, r'$f_\nu \propto t^2$', fontsize=midfont)
 
     # for SMA proposal
     #ax.axvline(x=5, color='#8da0cb', alpha=0.5, lw=7)
     #ax.axvline(x=12, color='#8da0cb', alpha=0.5, lw=7)
 
     # cross hatches for the Day 10, Day 13/14, and Day 22 measurements
-    ax.text(10, 70, 'S', fontsize=12)
-    ax.text(14, 70, 'S', fontsize=12)
-    ax.text(22, 70, 'S', fontsize=12)
+    ax.text(10, 70, 'S', fontsize=smallfont)
+    ax.text(14, 70, 'S', fontsize=smallfont)
+    ax.text(22, 70, 'S', fontsize=smallfont)
 
     ax.set_ylim(0.5,100)
     ax.set_yscale('log')
     ax.set_xscale('log')
-    ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=16)
-    ax.yaxis.set_tick_params(labelsize=14)
-    ax.legend(fontsize=12, loc='lower left',ncol=1)
+    ax.set_ylabel("$f_{\\nu}$ [mJy]", fontsize=bigfont)
+    ax.yaxis.set_tick_params(labelsize=midfont)
+    ax.legend(fontsize=smallfont, loc='lower left',ncol=1)
     ax.set_yticks([0.5, 10, 50])
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
 
@@ -147,19 +161,20 @@ def xray(ax):
     ax.axvspan(20, 100, color='grey', alpha=0.2)
     ax.text(
             0.95, 0.9, "Decline phase", 
-            fontsize=12, transform=ax.transAxes, 
+            fontsize=smallfont, transform=ax.transAxes, 
             horizontalalignment='right', verticalalignment='top')
     ax.text(
             0.05, 0.7, "Plateau phase", 
-            fontsize=12, transform=ax.transAxes, 
+            fontsize=smallfont, transform=ax.transAxes, 
             horizontalalignment='left', verticalalignment='center')
 
-    ax.set_xlabel("Days (observer frame)  since MJD 58285.0 (2018 June 16 UT)", fontsize=16)
+    ax.set_xlabel("Days (observer frame)  since MJD 58285.0 (2018 June 16 UT)",
+            fontsize=bigfont)
     ax.set_xlim(2.5,100)
-    ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=16)
+    ax.set_ylabel("$F_{X}$ [$10^{-12}$ erg/cm${}^2$/s]", fontsize=bigfont)
     ax.locator_params(axis='y', nbins=2)
-    ax.xaxis.set_tick_params(labelsize=14)
-    ax.yaxis.set_tick_params(labelsize=14)
+    ax.xaxis.set_tick_params(labelsize=midfont)
+    ax.yaxis.set_tick_params(labelsize=midfont)
     ax.set_yscale('log')
     ax.legend(fontsize=11, loc='lower left', ncol=3)
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
@@ -168,7 +183,7 @@ def xray(ax):
 
 if __name__=="__main__":
     """ Plot radio and X-ray light curves """
-    fig = plt.subplots(figsize=(8,6))
+    fig = plt.subplots(figsize=(figx,figy))
     gs = gridspec.GridSpec(2, 1, height_ratios=[5,4], hspace=0.0)
     gs.update(left=0.15, right=0.9)
 
@@ -179,5 +194,5 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    plt.savefig("lc.png")
+    plt.savefig("lc.pdf")
     #plt.show()

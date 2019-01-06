@@ -594,4 +594,4 @@ if __name__=="__main__":
 
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
-    plt.savefig("lum_evolution.png")
+    plt.savefig("lum_evolution.pdf")
