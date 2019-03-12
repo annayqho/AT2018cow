@@ -560,8 +560,8 @@ if __name__=="__main__":
     # and two dark ones.
 
     #maxi(ax)
-    tde(axarr, '#57106e', legend=True)
-    asassn14li(axarr, '#57106e', None)
+    #tde(axarr, '#57106e', legend=True)
+    #asassn14li(axarr, '#57106e', None)
 
     sn2003L(axarr, 'lightblue', legend=True)
     sn1979c(axarr, 'lightblue', None)
@@ -586,7 +586,7 @@ if __name__=="__main__":
     for ax in axarr:
         ax.tick_params(axis='both', labelsize=14)
         ax.set_xlim(0.3, 2000) 
-        ax.set_ylim(1E34, 1E44)
+        ax.set_ylim(1E34, 2E43)
         ax.set_xscale('log')
         ax.set_yscale('log')
         ax.set_xlabel(r"Time [days; rest frame]", fontsize=16)
@@ -594,4 +594,4 @@ if __name__=="__main__":
 
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
-    plt.savefig("lum_evolution.pdf")
+    plt.savefig("lum_evolution.png")

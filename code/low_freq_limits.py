@@ -37,12 +37,18 @@ lc = np.array(lc)
 # Step 3: Plot the 3 GHz light curve as luminosity
 # give them all 20% uncertainties
 dcm = Planck15.luminosity_distance(z=0.014).cgs.value
-lum = 3E9*lc*1E-3*1E-23*4*np.pi*dcm**2
+lum = 3E9 * lc * 1E-3 * 1E-23 * 4 * np.pi * dcm**2
 # but only t <= 40 days or so
 choose = dt <= 40
 plt.errorbar(dt[choose], lum[choose], yerr=0.2*lum[choose], 
         c='k', fmt='.', ms=10, 
         label='AT2018cow, 3 GHz')
+
+# Now, plot the Margutti (2018) low-freqeuncy data as a luminosity...
+# choose the 3.5 GHz point, which is at 83.52 days
+lum = 3.5E9 * 3.24 * 1E-3 * 1E-23 * 4 * np.pi * dcm**2
+elum = 3.5E9 * 0.06 * 1E-3 * 1E-23 * 4 * np.pi * dcm**2
+plt.errorbar(83.52, lum, yerr=elum, c='k', fmt='.', ms=10)
 
 # Step 4: Add in the VLASS limits
 dat = ascii.read("paper_plots/radio_lims.dat")
@@ -71,4 +77,5 @@ plt.ylabel(r"$\nu L_{\nu}$ [erg/s]", fontsize=16)
 plt.xlabel("$\Delta t$ [days]", fontsize=16)
 plt.legend(fontsize=12, loc='upper left')
 
-plt.show()
+#plt.show()
+plt.savefig("vlass_lims.png")

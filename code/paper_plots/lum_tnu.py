@@ -91,15 +91,15 @@ def density_curves(ax, x, ne):
 
 def lumtnu(ax):
     # ASASSN14li
-    tnu = (143)*(8.20/5)
-    lpeak = 1.8E28
-    ax.scatter(
-            tnu, lpeak, marker='o', edgecolor='k', facecolor='black', s=100,
-            label='TDE')
-    ax.text(
-            tnu, lpeak/1.3, "ASASSN14li", fontsize=medsize,
-            verticalalignment='top',
-            horizontalalignment='center')
+    # tnu = (143)*(8.20/5)
+    # lpeak = 1.8E28
+    # ax.scatter(
+    #         tnu, lpeak, marker='o', edgecolor='k', facecolor='black', s=100,
+    #         label='TDE')
+    # ax.text(
+    #         tnu, lpeak/1.3, "ASASSN14li", fontsize=medsize,
+    #         verticalalignment='top',
+    #         horizontalalignment='center')
 
     # 88Z
     tnu = (1253)*(5/5)
@@ -263,7 +263,9 @@ y = mdot_curves(ax, 5.9, 6.4E29, 0.01)
 ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
     fontsize=bigsize)
 #ax.get_yaxis().set_visible(False)
-ax.legend(loc='lower center', ncol=2, fontsize=medsize)#, columnspacing=0.1)
+ax.legend(
+        loc='lower center', ncol=3, fontsize=medsize, 
+        columnspacing=0.01, borderpad=0.3)#, columnspacing=0.1)
 #y = mdot_curves(ax, 700, 1E1)
 
 # make a twin axis
