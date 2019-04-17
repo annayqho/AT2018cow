@@ -398,4 +398,11 @@ def grb031203():
     
 
 if __name__=="__main__":
-    sn2009bb()
+    # run for 06jd
+    redshift = 0.0107
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    gamma = 3
+    nupeak = 5
+    fpeak = 0.12*1E-3
+    run(900, nupeak, fpeak, d, gamma, d_mpc)

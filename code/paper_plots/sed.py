@@ -274,5 +274,5 @@ plt.legend(fontsize=bigsize, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.png")
-#plt.show()
+#plt.savefig("sed.png")
+plt.show()
