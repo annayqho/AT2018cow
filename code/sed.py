@@ -151,7 +151,7 @@ def plot_xray(flux, c):
 
 
 # set up the plot
-fig = plt.figure(figsize=(7,4.7))
+fig = plt.figure(figsize=(7,4.7), dpi=100)
 
 # the days that have ALMA data:
 # 14, 22, 24
@@ -274,5 +274,6 @@ plt.legend(fontsize=bigsize, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.eps", format='eps', dpi=1000)
+plt.savefig("sed.eps", format='eps')
+plt.close()
 #plt.show()

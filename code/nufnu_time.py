@@ -535,7 +535,8 @@ def othersn(ax):
 
 
 if __name__=="__main__":
-    fig, axarr = plt.subplots(1, 2, figsize=(10,7), sharex=True, sharey=True)
+    fig, axarr = plt.subplots(
+            1, 2, figsize=(10,7), sharex=True, sharey=True, dpi=100)
     props = dict(boxstyle='round', facecolor='white')
 
     # viridis color palette
@@ -579,23 +580,23 @@ if __name__=="__main__":
     at2018cow(axarr, 'k', None)
 
     # Nearby CC followed up by SMA
-    axarr[0].scatter(5, 1E38, marker='v', c='k')
-    axarr[0].text(5, 1E38, "SN2019hsw", fontsize=11)
+    #axarr[0].scatter(5, 1E38, marker='v', c='k')
+    #axarr[0].text(5, 1E38, "SN2019hsw", fontsize=11)
 
     # Gap transient
-    axarr[0].scatter(2, 2E39, marker='v', c='black')
-    axarr[0].text(3.3, 1.6E39, "ZTF18abfcmjw", fontsize=11,
-            verticalalignment='top', horizontalalignment='right')
+    #axarr[0].scatter(2, 2E39, marker='v', c='black')
+    #axarr[0].text(3.3, 1.6E39, "ZTF18abfcmjw", fontsize=11,
+    #        verticalalignment='top', horizontalalignment='right')
 
     # Ibn 
-    axarr[0].scatter(24, 2E39, marker='v', c='black')
-    axarr[0].text(20, 1.5E39, "ZTF19aakssbm", fontsize=11,
-            horizontalalignment='center',
-            verticalalignment='top')
+    #axarr[0].scatter(24, 2E39, marker='v', c='black')
+    #axarr[0].text(20, 1.5E39, "ZTF19aakssbm", fontsize=11,
+    #        horizontalalignment='center',
+    #        verticalalignment='top')
 
     # Ibn 
-    axarr[0].scatter(6, 3E39, marker='v', c='black')
-    axarr[0].text(2, 4E39, "ZTF18abukavn", fontsize=11)
+    #axarr[0].scatter(6, 3E39, marker='v', c='black')
+    #axarr[0].text(2, 4E39, "ZTF18abukavn", fontsize=11)
 
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
@@ -613,4 +614,6 @@ if __name__=="__main__":
 
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
-    plt.savefig("lum_evolution.png", dpi=1000)
+    plt.savefig(
+            "lum_evolution.eps", format='eps', 
+            bbox_inches='tight', pad_inches=0.1)
