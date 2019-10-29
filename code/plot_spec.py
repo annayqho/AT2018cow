@@ -117,7 +117,7 @@ def plot_day(ax,day,nu,flux,tel,islim,formatting=True,fit_peak=True,quad=False,s
 
 if __name__=="__main__":
     fig, axarr = plt.subplots(
-            3, 1, figsize=(8,8), sharex=True, sharey=True)
+            3, 1, figsize=(8,8), sharex=True, sharey=True, dpi=100)
 
     # spectrum on Day 10
     # 10.26 for SMA, 10.48 for ATCA
@@ -189,6 +189,5 @@ if __name__=="__main__":
     axins.xaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
     axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
 
-
-    plt.show()
-    #plt.savefig("spec.pdf")
+    #plt.show()
+    plt.savefig("spec.eps", format='eps', bbox_inches='tight', pad_inches=0.1)
