@@ -12,7 +12,7 @@ from astropy.cosmology import Planck15
 from astropy.table import Table
 
 
-fig,axarr = fig.subplots(2,1)
+fig,axarr = plt.subplots(2,1)
 
 # for AT2018cow
 d = Planck15.luminosity_distance(z=0.014).cgs.value
@@ -23,7 +23,7 @@ axarr[0].errorbar(10, lum, yerr=lum_err, marker='o', c='k', label="AT2018cow")
 
 # for 1998bw
 dat = Table.read(
-    "../data/radio_compilations/1998bw.dat", 
+    "../../data/radio_compilations/1998bw.dat", 
     delimiter="&", format='ascii.fixed_width')
 freq = dat['freq']
 choose = freq==8.64
@@ -36,7 +36,7 @@ axarr[0].plot(t, lum, c='grey', label="1998bw")
 
 # for 2009bb
 dat = Table.read(
-    "../data/radio_compilations/2009bb.dat", 
+    "../../data/radio_compilations/2009bb.dat", 
     delimiter="&", format='ascii.fixed_width')
 freq = dat['freq']
 choose = freq==8.46

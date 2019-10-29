@@ -194,5 +194,7 @@ if __name__=="__main__":
     plt.setp(sma_ax.get_xticklabels(), visible=False)
     #plt.tight_layout()
 
-    plt.savefig("lc.pdf")
+    plt.savefig(
+            "lc.eps", format='eps', dpi=1000, 
+            bbox_inches='tight', pad_inches=0.1)
     #plt.show()

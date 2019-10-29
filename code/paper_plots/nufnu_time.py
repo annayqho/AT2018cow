@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
-sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/radio_compilations/Zauderer2011")
+sys.path.append("/Users/annaho/Dropbox/Projects/Research/IcBL/data/radio_compilations/Zauderer2011")
 from astropy.cosmology import Planck15
 from get_radio import *
 from scale_fluxes import sma_lc
@@ -514,9 +514,9 @@ def sn1998bw(ax, col, legend):
     nu = 2.3E9
     t = np.array([11.7, 14.6, 15.7, 16.5, 17.8, 19.7, 21.6, 23.6, 25.9, 26.8, 28.8, 30.0, 32.9, 34.7, 36.8, 38.8, 40.0, 45.7, 51.7, 57.7, 64.7, 67.7, 80.5])
     f = np.array([19.7, 22.3, 23.5, 23.9, 25.1, 25.3, 20.9, 22.9, 28.0, 28.7, 31.1, 31.3, 27.3, 33.5, 31.8, 31, 31.3, 26.8, 23.1, 18.5, 15.6, 15.6, 9.6])
-    ax[0].text(t[0], lum[0]/2, '1998bw', fontsize=11,
-            verticalalignment='top',
-            horizontalalignment='center')
+    ax[0].text(t[0]*1.2, lum[0], '98bw', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
     lum = plot_line(ax[1], d, t, nu*f, 'SN1998bw', 'Rel. SN', col, legend)
     ax[1].text(t[0]/1.05, lum[0], '1998bw', fontsize=11,
             verticalalignment='center',
@@ -560,8 +560,8 @@ if __name__=="__main__":
     # and two dark ones.
 
     #maxi(ax)
-    #tde(axarr, '#57106e', legend=True)
-    #asassn14li(axarr, '#57106e', None)
+    tde(axarr, '#57106e', legend=True)
+    asassn14li(axarr, '#57106e', None)
 
     sn2003L(axarr, 'lightblue', legend=True)
     sn1979c(axarr, 'lightblue', None)
@@ -578,6 +578,25 @@ if __name__=="__main__":
 
     at2018cow(axarr, 'k', None)
 
+    # Nearby CC followed up by SMA
+    axarr[0].scatter(5, 1E38, marker='v', c='k')
+    axarr[0].text(5, 1E38, "SN2019hsw", fontsize=11)
+
+    # Gap transient
+    axarr[0].scatter(2, 2E39, marker='v', c='black')
+    axarr[0].text(3.3, 1.6E39, "ZTF18abfcmjw", fontsize=11,
+            verticalalignment='top', horizontalalignment='right')
+
+    # Ibn 
+    axarr[0].scatter(24, 2E39, marker='v', c='black')
+    axarr[0].text(20, 1.5E39, "ZTF19aakssbm", fontsize=11,
+            horizontalalignment='center',
+            verticalalignment='top')
+
+    # Ibn 
+    axarr[0].scatter(6, 3E39, marker='v', c='black')
+    axarr[0].text(2, 4E39, "ZTF18abukavn", fontsize=11)
+
     axarr[0].set_ylabel(
             r"Luminosity $\nu L_{\nu}$ [erg\,s$^{-1}$]", 
             fontsize=16)
@@ -593,5 +612,5 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    plt.show()
-    #plt.savefig("lum_evolution.png")
+    #plt.show()
+    plt.savefig("lum_evolution.png", dpi=1000)

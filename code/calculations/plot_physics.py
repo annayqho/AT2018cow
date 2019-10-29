@@ -32,10 +32,39 @@ def get_R_full(Fp, nup):
     return Rp
 
 
+def get_R_corsi(Fp, nup, d_mpc):
+    """
+    This is Equation (12) from Corsi+ 2017
+    Fp in Jy
+    nup in GHz
+    Assumes that the power-law index gamma = 2.1
+
+    Returns Rp in cm
+    """
+    Rp = 6.6E15 * (Fp)**(8.1/17.2) * \
+         d_mpc**(16.2/17.2) * (nup/5)**(-1)
+    return Rp
+
+
+def get_B_corsi(Fp, nup, d_mpc):
+    """
+    This is Equation (13) from Corsi+ 2017
+    Fp in Jy
+    nup in GHz
+    Assumes that the power-law index gamma = 2.1
+
+    Returns Bp in G
+    """
+    Rp = 0.5 * (Fp)**(-2/17.2) * \
+         d_mpc**(-4/17.2) * (nup/5)**(-1)
+    return Rp
+
+
 def get_R(Fp, nup, d_mpc):
     """ This is Equation 13 in C98
     Fp in Jy
     nup in GHz
+    Assumes that the power-law index gamma = 3
 
     Returns Rp in cm
     """
@@ -177,6 +206,15 @@ def at2018cow():
     d = Planck15.luminosity_distance(z=0.014).cgs.value
     d_mpc = Planck15.luminosity_distance(z=0.014).value
     run(83, nupeak, fpeak, d, p, d_mpc)
+
+
+def koala():
+    nupeak = 10
+    fpeak = 0.34E-3
+    p = 3
+    d = Planck15.luminosity_distance(z=0.2714).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.2714).value
+    run(81, nupeak, fpeak, d, p, d_mpc)
 
 
 def tde():
@@ -397,7 +435,7 @@ def grb031203():
     run(1, nupeak, fpeak, d, gamma, d_mpc)
     
 
-if __name__=="__main__":
+def sn2006jd():
     # run for 06jd
     redshift = 0.0107
     d = Planck15.luminosity_distance(z=redshift).cgs.value
@@ -406,3 +444,7 @@ if __name__=="__main__":
     nupeak = 5
     fpeak = 0.12*1E-3
     run(900, nupeak, fpeak, d, gamma, d_mpc)
+
+
+if __name__=="__main__":
+    koala()

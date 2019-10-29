@@ -3,7 +3,8 @@
 import numpy as np
 
 
-DATA_DIREC = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/radio_compilations"
+#DATA_DIREC = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/radio_compilations"
+DATA_DIREC = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/radio_compilations"
 
 
 def zauderer():

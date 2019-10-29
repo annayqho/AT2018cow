@@ -193,4 +193,4 @@ vele(ax)
 plt.tight_layout()
 
 #plt.show()
-plt.savefig("vel_e.png")
+plt.savefig("vel_e.eps", format='eps', dpi=1000)
