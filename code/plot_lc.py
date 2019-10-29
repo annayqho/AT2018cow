@@ -14,7 +14,7 @@ from scale_fluxes import sma_lc
 
 # size for paper
 figx = 8
-figy = 6
+figy = 7
 bigfont = 16
 midfont = 14
 smallfont = 12
@@ -118,6 +118,50 @@ def sma(ax):
     ax.text(14, 70, 'S', fontsize=smallfont)
     ax.text(22, 70, 'S', fontsize=smallfont)
 
+    # optical timeline:
+    ax.text(3, 100, r'broad ($>0.1c$) feature', fontsize=smallfont,
+            verticalalignment='bottom')
+    ax.annotate('', xy=(8.5,100), xytext=(8.5,150),
+            arrowprops=dict(arrowstyle="-", color='k'))
+    ax.text(9, 100, r'HeII ($0.03c$)', fontsize=smallfont,
+            verticalalignment='bottom')
+    ax.text(6, 150, r'IR excess appears', fontsize=smallfont,
+            verticalalignment='bottom')
+    ax.annotate('', xy=(16,100), xytext=(16,290),
+            arrowprops=dict(arrowstyle="-", color='k'))
+    ax.text(
+            20, 400, 
+            r'Redshifted HeI ($0.01c$) and', 
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='right')
+    ax.text(
+            20, 270, 
+            r'Balmer emission ($0.02c$) appear', 
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='right')
+    ax.text(
+            17, 150, 
+            r'Lines evolve blueward',
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='left')
+    ax.text(
+            17, 100, 
+            r'and develop wedge shape',
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='left')
+    ax.annotate('', xy=(30,100), xytext=(30,290),
+            arrowprops=dict(arrowstyle="-", color='k'))
+    ax.text(
+            27, 400, 
+            r'Emergence of HeI, CaII, OI,', 
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='left')
+    ax.text(
+            27, 270, 
+            r'$z$-band excess', 
+            fontsize=smallfont, verticalalignment='bottom',
+            horizontalalignment='left')
+
     ax.set_ylim(0.5,100)
     ax.set_yscale('log')
     ax.set_xscale('log')
@@ -183,9 +227,9 @@ def xray(ax):
 
 if __name__=="__main__":
     """ Plot radio and X-ray light curves """
-    fig = plt.subplots(figsize=(figx,figy))
+    fig = plt.subplots(figsize=(figx,figy), dpi=100)
     gs = gridspec.GridSpec(2, 1, height_ratios=[5,4], hspace=0.0)
-    gs.update(left=0.15, right=0.9)
+    gs.update(left=0.1, right=0.97, top=0.85)
 
     xray_ax = plt.subplot(gs[1])
     sma_ax = plt.subplot(gs[0], sharex=xray_ax)
@@ -195,6 +239,5 @@ if __name__=="__main__":
     #plt.tight_layout()
 
     plt.savefig(
-            "lc.eps", format='eps', dpi=1000, 
-            bbox_inches='tight', pad_inches=0.1)
+            "lc.eps", format='eps')
     #plt.show()
