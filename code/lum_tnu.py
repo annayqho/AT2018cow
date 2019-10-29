@@ -254,11 +254,11 @@ def lumtnu(ax):
         fontsize=bigsize)
 
     
-fig,ax = plt.subplots(1,1, figsize=(6,6))
+fig,ax = plt.subplots(1,1, figsize=(6,6), dpi=100)
 lumtnu(ax)
-# y = mdot_curves(ax, 550, 2.5E29, 100)
-# y = mdot_curves(ax, 58, 4E29, 1)
-# y = mdot_curves(ax, 5.9, 6.4E29, 0.01)
+y = mdot_curves(ax, 550, 2.5E29, 100)
+y = mdot_curves(ax, 58, 4E29, 1)
+y = mdot_curves(ax, 5.9, 6.4E29, 0.01)
 #y = mdot_curves(ax, 1800, 1E-4)
 ax.set_ylabel("Peak Radio Luminosity ($\mathrm{erg\,s^{-1}\,Hz^{-1}}$)",
     fontsize=bigsize)
@@ -286,4 +286,4 @@ plt.tight_layout()
 
 
 #plt.show()
-plt.savefig("lum_tnu.eps", format='eps', dpi=1000)
+plt.savefig("lum_tnu.eps", format='eps', bbox_inches='tight', pad_inches=0.1)

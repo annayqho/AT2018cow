@@ -32,14 +32,6 @@ def vele(ax):
     # Swift TDE
     # just use one epoch
     # epoch 3: day 18
-    v = 1.7
-    E = 2.690162794624484e+51
-    ax.scatter(
-            v, E, marker='o', edgecolor='k', facecolor='k', s=50, label="TDE")
-    ax.text(
-            v/1.1, E, "Swift J1644", fontsize=12,
-            horizontalalignment='right',
-            verticalalignment='top')
 
     # ASASSN14li
     # Using Day 143, the first day the peak is resolved
@@ -188,9 +180,9 @@ def vele(ax):
     ax2.set_xlim(4E-3, 8)
     ax.set_xlim(4E-3, 8)
 
-fig,ax = plt.subplots(1,1, figsize=(5,5))
+fig,ax = plt.subplots(1,1, figsize=(5,6), dpi=100)
 vele(ax)
-plt.tight_layout()
 
 #plt.show()
-plt.savefig("vel_e.eps", format='eps', dpi=1000)
+plt.savefig("vel_e.eps", format='eps', bbox_inches='tight')
+plt.close()
