@@ -31,7 +31,8 @@ c = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c']
 markers = ['o', 's', 'v', '^']
 nlab = len(c)
 
-fig,axarr = plt.subplots(4,1, figsize=(8,12), sharex=True, sharey=True)
+fig,axarr = plt.subplots(
+        4,1, figsize=(8,12), sharex=True, sharey=True, dpi=100)
 plt.subplots_adjust(hspace=0.1)
 
 ax = axarr[0]
@@ -113,4 +114,4 @@ ax.set_ylim(1.0,100)
 ax.set_xlabel("Time Since June 16 UT (MJD 58285) [d]", fontsize=16)
 
 #plt.show()
-plt.savefig("full_lc.png")
+plt.savefig("full_lc.eps", format='eps', bbox_inches='tight', pad_inches=0.1)
