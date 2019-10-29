@@ -299,7 +299,7 @@ def jun25(ax):
 
 
 if __name__=="__main__":
-    fig,axarr = plt.subplots(3,2,figsize=(8,8))
+    fig,axarr = plt.subplots(3,2,figsize=(8,8), dpi=100)
     jun21(axarr[0,0])
     jun22(axarr[0,1])
     jun23(axarr[1,0])
@@ -309,4 +309,5 @@ if __name__=="__main__":
     axarr[2,1].axis('off')
     #plt.tight_layout()
     #plt.show()
-    plt.savefig("lc_zoom.png")
+    plt.savefig(
+            "lc_zoom.eps", format='eps', bbox_inches='tight', pad_inches=0.1)
