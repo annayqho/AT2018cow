@@ -1,15 +1,39 @@
 """ Print table with VLASS limits """
 
 import numpy as np
+import sys
+sys.path.append("/Users/annaho/Github/Query_VLASS")
 from vlass_search import search_vlass
+sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
+from astropy.coordinates import SkyCoord
+from astropy import units as u
+from astropy.io import ascii
 from ret_radio import get_transients
 
-headings = np.array(['ID', 'RA', 'Dec', '$\Delta t$ (d)', 'Limit ($\\mu$Jy)'])
-label = "vlass"
-caption = "VLASS Limits for Rapidly Evolving Transients"
-names, ra_raw, dec_raw, dates = get_transients()
-limits, obsdates = search_vlass()
+def get_lims():
+    headings = np.array(['ID', 'RA [hh:mm:ss]', 'Dec [dd:mm:ss]', '$\Delta t$', 'Limit ($\mu$Jy)'])
+    label = "vlass"
+    caption = "VLASS Limits for Rapidly Evolving Transients"
+    names, ra_raw, dec_raw, dates, z = get_transients()
+    dt = []
+    limits = []
 
+    for ii,name in enumerate(names):
+        c = SkyCoord(ra_raw[ii], dec_raw[ii], unit=(u.hourangle, u.deg))
+        out = search_vlass(name, c, dates[ii])
+        if out is not None:
+            lim, obsdate =out
+            limits.append(lim)
+            dt.append(obsdate-dates[ii])
+        else:
+            limits.append(None)
+            dt.append(None)
+    return names, ra_raw, dec_raw, dates, z, dt, limits
+
+
+names, ra_raw, dec_raw, dates, z, dt, limits = get_lims()
+ascii.write([names, ra_raw, dec_raw, dates, z, dt, limits], 'radio_lims.dat',
+    names=['Name', 'RA', 'Dec', 'Date', 'z', 'dt', 'limit'])
 ncol = len(headings) 
 colstr = ""
 colstr += 'l'
@@ -37,18 +61,15 @@ outputf.write("\\tabletypesize{\scriptsize} \n")
 outputf.write("\startdata \n")
 
 for ii,ID in enumerate(names):
-    datediff = obsdates[ii] - dates[ii]
-    bad_date = np.logical_or(dates[ii] < 0, datediff < 0)
-    bad_im = limits[ii] < 0
-    if np.logical_or(bad_date, bad_im):
-        datestr = '-'
+    if np.logical_or(limits[ii] == None, limits[ii] == 'nan'):
         limitstr = '-'
+        tstr = '-'
     else:
-        datestr = str(datediff)
-        limitstr = str(limits[ii])
-    row = rowstr %(ID, ra_raw[ii], dec_raw[ii], datestr, limitstr)
-    print(row)
-    outputf.write(row)
+        limitstr = int(limits[ii])
+        tstr = int(dt[ii])
+        row = rowstr %(ID, ra_raw[ii], dec_raw[ii], tstr, limitstr)
+        # only print if not none
+        outputf.write(row)
 outputf.write("\enddata \n")
 outputf.write("\end{deluxetable} \n")
 outputf.close()
