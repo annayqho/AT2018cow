@@ -175,19 +175,19 @@ if __name__=="__main__":
             horizontalalignment='left', verticalalignment='top') 
 
     # Zoomed-in window
-    axins = inset_axes(
-            ax, 2, 1, loc=1,
-            bbox_to_anchor=(0.4,0.8),
-            bbox_transform=ax.transAxes)
-    plot_day(
-            axins, 22, nu, f, t, islim,
-            formatting=False, fit_peak=False, quad=True)
-    axins.set_xlim(88, 106)
-    axins.set_ylim(90, 95)
-    axins.tick_params(axis='both', labelsize=12)
-    mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec="0.5")
-    axins.xaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
-    axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
+    # axins = inset_axes(
+    #         ax, 2, 1, loc=1,
+    #         bbox_to_anchor=(0.4,0.8),
+    #         bbox_transform=ax.transAxes)
+    # plot_day(
+    #         axins, 22, nu, f, t, islim,
+    #         formatting=False, fit_peak=False, quad=True)
+    # axins.set_xlim(88, 106)
+    # axins.set_ylim(90, 95)
+    # axins.tick_params(axis='both', labelsize=12)
+    # mark_inset(ax, axins, loc1=2, loc2=4, fc="none", ec="0.5")
+    # axins.xaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
+    # axins.yaxis.set_major_locator(MaxNLocator(nbins=2, prune='lower'))
 
-    #plt.show()
-    plt.savefig("spec.eps", format='eps', bbox_inches='tight', pad_inches=0.1)
+    plt.show()
+    #plt.savefig("spec.eps", format='eps', bbox_inches='tight', pad_inches=0.1)

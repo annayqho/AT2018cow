@@ -225,14 +225,14 @@ plt.plot(x, nuLnu, ls='--', c='grey')
 # Plot lines from Day 24
 xplt = np.logspace(np.log10(1E12), np.log10(1.5E14))
 yplt = 9E40*(xplt/600E9)**(1-0.75)
-plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
+#plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
 ind = int(len(xplt)/2)
-plt.text(xplt[ind], yplt[ind], r'$\nu L_\nu \propto \nu^{0.25}$', fontsize=smallsize,
-        horizontalalignment='center', verticalalignment='bottom')
-yplt = 9E40*(xplt/600E9)**(1-1)
-plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
-plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{0}$', fontsize=smallsize,
-        horizontalalignment='center', verticalalignment='top')
+#plt.text(xplt[ind], yplt[ind], r'$\nu L_\nu \propto \nu^{0.25}$', fontsize=smallsize,
+#        horizontalalignment='center', verticalalignment='bottom')
+#yplt = 9E40*(xplt/600E9)**(1-1)
+#plt.plot(xplt, yplt, ls='--', c='grey', lw=1.0)
+#plt.text(xplt[ind], yplt[ind]/1.5, '$\propto \\nu^{0}$', fontsize=smallsize,
+#        horizontalalignment='center', verticalalignment='top')
 
 # Plot the NuSTAR data
 dt, f1, ef1, f2, ef2, f3, ef3, f4, ef4 = get_nustar()
@@ -274,6 +274,6 @@ plt.legend(fontsize=bigsize, loc='upper left')
 
 plt.tight_layout()
 
-plt.savefig("sed.eps", format='eps')
-plt.close()
-#plt.show()
+#plt.savefig("sed.eps", format='eps')
+#plt.close()
+plt.show()

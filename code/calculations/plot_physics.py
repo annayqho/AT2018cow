@@ -209,13 +209,24 @@ def at2018cow():
 
 
 def koala():
+    # First epoch
     nupeak = 10
-    fpeak = 0.34E-3
+    fpeak = 0.364E-3
     p = 3
     d = Planck15.luminosity_distance(z=0.2714).cgs.value
     d_mpc = Planck15.luminosity_distance(z=0.2714).value
-    run(81, nupeak, fpeak, d, p, d_mpc)
+    dt = 81/1.2714
+    run(dt, nupeak, fpeak, d, p, d_mpc)
 
+    # Second epoch
+    nupeak = 6
+    fpeak = 0.09E-3
+    p = 3
+    d = Planck15.luminosity_distance(z=0.2714).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.2714).value
+    dt = 350
+
+ 
 
 def tde():
     """ we use the values at 4 different days """
@@ -445,6 +456,15 @@ def sn2006jd():
     fpeak = 0.12*1E-3
     run(900, nupeak, fpeak, d, gamma, d_mpc)
 
+
+def sn2020bvc():
+    nupeak = 3
+    fpeak = 0.110E-3
+    p = 3
+    d = Planck15.luminosity_distance(z=0.02507).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=0.02507).value
+    dt = 20
+    run(dt, nupeak, fpeak, d, p, d_mpc)
 
 if __name__=="__main__":
     koala()
