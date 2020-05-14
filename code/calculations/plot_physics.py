@@ -89,7 +89,7 @@ def get_B(Fp, nup, d_mpc):
 
 def get_U(Fp, nup, d_mpc):
     """ This is Equation 12 in our paper
-    Fp in Jy, nup in GHz, D in Mpc """
+    Fp in Jy, nup in GHz, D is the ANGULAR DIAMETER DISTANCE in Mpc """
     prefactor = 1.92E46
     U = prefactor * (1/eps_B) * (eps_e/eps_B)**(-11/19) * (f/0.5)**(8/19) * \
             (Fp)**(23/19) * (d_mpc)**(46/19) * (nup/5)**(-1)
@@ -155,17 +155,41 @@ def multiple_days():
         plt.close()
 
 
-def run(dt, nupeak, fpeak, d, p, d_mpc):
-    """ nupeak in GHz, fpeak in Jy, dist in cm """
-    print("lpeak", fpeak*1E-23*4*np.pi*d**2)
-    R = get_R(fpeak, nupeak, d_mpc)
+def run(dt, nupeak, fpeak, p, z):
+    """ 
+    dt: time in days (observer frame)
+    nupeak: peak frequency in GHz (observed I think)
+    fpeak: peak flux density  in Jy
+    p: Lorentz factor power index
+    z: redshift to the source
+    """
+
+    # To convert from flux density to luminosity,
+    # you need to use the luminosity distance
+    DL_cm = Planck15.luminosity_distance(z=z).cgs.value
+    print("lpeak", fpeak*1E-23*4*np.pi*DL_cm**2)
+
+    # In the Chevalier 98 equation, D is the angular diameter distance
+    DA_mpc = Planck15.angular_diameter_distance(z=z).value
+    R = get_R(fpeak, nupeak, DA_mpc)
     print("R", R/10**15)
-    B = get_B(fpeak, nupeak, d_mpc)
+    V = (4/3) * f * np.pi * R**3 # volume
+
+    B = get_B(fpeak, nupeak, DA_mpc)
     print("B", B)
-    V = (4/3) * f * np.pi * R**3
-    v = R/(86400*dt)
-    beta = v/c
+
+    # Convert time to rest-frame...or maybe not?
+    dt_rest = dt/(1+z)
+    #dt_rest = dt
+    v = R/(86400*dt_rest)
+    print("v/c", v/3E10)
+    gammabeta = v/c
+    print("gamma beta", gammabeta)
+    beta = 1/(1+(3E10/v)**2)**0.5
     print("Beta", beta)
+    gamma = 1/(1-beta**2)
+    print("gamma", gamma)
+
     P = B**2/(8*np.pi*eps_B)
     rho = (4*P/3)/v**2
     print("rho", rho)
@@ -173,7 +197,8 @@ def run(dt, nupeak, fpeak, d, p, d_mpc):
     n_e = n_p
     print("ne", n_e)
     UB = V * (B**2)/(8*np.pi) 
-    U = get_U(fpeak, nupeak, d_mpc)
+
+    U = get_U(fpeak, nupeak, DA_mpc)
     print("E", U)
     tauff = 8.235E-2 * n_e**2 * (R/3.086E18) * (8000)**(-1.35)
     print("tau_ff", tauff)
@@ -210,23 +235,13 @@ def at2018cow():
 
 def koala():
     # First epoch
-    nupeak = 10
+    nupeak = 8
     fpeak = 0.364E-3
     p = 3
-    d = Planck15.luminosity_distance(z=0.2714).cgs.value
-    d_mpc = Planck15.luminosity_distance(z=0.2714).value
-    dt = 81/1.2714
-    run(dt, nupeak, fpeak, d, p, d_mpc)
+    dt = 81
+    z = 0.2714
+    run(dt, nupeak, fpeak, p, z) 
 
-    # Second epoch
-    nupeak = 6
-    fpeak = 0.09E-3
-    p = 3
-    d = Planck15.luminosity_distance(z=0.2714).cgs.value
-    d_mpc = Planck15.luminosity_distance(z=0.2714).value
-    dt = 350
-
- 
 
 def tde():
     """ we use the values at 4 different days """
@@ -459,12 +474,13 @@ def sn2006jd():
 
 def sn2020bvc():
     nupeak = 3
-    fpeak = 0.110E-3
+    fpeak = 113E-6
     p = 3
-    d = Planck15.luminosity_distance(z=0.02507).cgs.value
-    d_mpc = Planck15.luminosity_distance(z=0.02507).value
-    dt = 20
-    run(dt, nupeak, fpeak, d, p, d_mpc)
+    z = 0.025201
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=z).value
+    dt = 24
+    run(dt, nupeak, fpeak, p, z)
 
 if __name__=="__main__":
-    koala()
+    sn2020bvc()

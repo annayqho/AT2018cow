@@ -523,6 +523,26 @@ def sn1998bw(ax, col, legend):
             horizontalalignment='right')
 
 
+def sn2017iuk(ax, col, legend):
+    """ SN 2017iuk
+    """
+    d = Planck15.luminosity_distance(z=0.0368).cgs.value
+    nu = 92E9 # Band 3
+    t = np.array([6.10])
+    f = np.array([28])
+    lum = plot_line(ax[0], d, t, nu*f, 'SN2017iuk', 'Rel. SN', col, legend)
+    nu = 3E9
+    t = np.array([4.3])
+    f = np.array([3])
+    ax[0].text(t[0]*1.5, lum[0], '17iuk', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='left')
+    lum = plot_line(ax[1], d, t, nu*f, '17iuk', 'Rel. SN', col, legend)
+    ax[1].text(t[0]/1.05, lum[0], '17iuk', fontsize=11,
+            verticalalignment='center',
+            horizontalalignment='right')
+
+
 def othersn(ax):
     """ 
     SN 2013ak
@@ -576,6 +596,7 @@ if __name__=="__main__":
 
     sn2009bb(axarr, '#bc3754', legend=True)
     sn1998bw(axarr, '#bc3754', None)
+    sn2017iuk(axarr, '#bc3754', None)
 
     at2018cow(axarr, 'k', None)
 
@@ -613,7 +634,7 @@ if __name__=="__main__":
     axarr[1].legend(fontsize=12, loc='upper right')
 
     plt.subplots_adjust(wspace=0.05)
-    plt.show()
-    #plt.savefig(
-    #        "lum_evolution.eps", format='eps', 
-    #        bbox_inches='tight', pad_inches=0.1)
+    #plt.show()
+    plt.savefig(
+            "lum_evolution.eps", format='eps', 
+            bbox_inches='tight', pad_inches=0.1)
