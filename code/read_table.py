@@ -1,10 +1,10 @@
 """ Read the table from the radio data """
 
 import numpy as np
+import pandas as pd
 
 
-#DATA_DIREC = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data/radio_compilations"
-DATA_DIREC = "/Users/annaho/Dropbox/Projects/Research/IcBL/data/radio_compilations"
+DATA_DIREC = "/Users/annaho/Dropbox/astronomy/projects_proto/IcBL/old/data/radio_compilations"
 
 
 def zauderer():
@@ -41,47 +41,26 @@ def zauderer():
 
 def read_2003L():
     """ this paper doesn't give upper limits """
-    lines = open(
-            "%s/SN2003L/table.txt" %DATA_DIREC, "r").readlines()
     dt = []
     nu = []
     f = []
     ef = []
+    
+    lines = pd.read_table(
+            "table.txt", delimiter='&', 
+            names=['Date', 'dt', 'F4.9', 'F8.5', 'F15.0', 'F22.5', 'Config'])
 
-    for line in lines:
-        if 'nodata' not in str(line.split("&")[2]):
-            dt.append(float(line.split("&")[1]))
-            nu.append(4.9E9)
-            f.append(float(
-                line.split("&")[2].split("$")[0]))
-            ef.append(float(
-                line.split("&")[2].split("$")[2]))
-        if 'nodata' not in str(line.split("&")[3]):
-            dt.append(float(line.split("&")[1]))
-            nu.append(8.5E9)
-            f.append(float(
-                line.split("&")[3].split("$")[0]))
-            ef.append(float(
-                line.split("&")[3].split("$")[2]))
-        if 'nodata' not in str(line.split("&")[4]):
-            dt.append(float(line.split("&")[1]))
-            nu.append(15E9)
-            f.append(float(
-                line.split("&")[4].split("$")[0]))
-            ef.append(float(
-                line.split("&")[4].split("$")[2]))
-        if 'nodata' not in str(line.split("&")[5]):
-            dt.append(float(line.split("&")[1]))
-            nu.append(22.5E9)
-            f.append(float(
-                line.split("&")[5].split("$")[0]))
-            ef.append(float(
-                line.split("&")[5].split("$")[2]))
+    for freq in ['4.9', '8.5', '15.0', '22.5']:
+        choose = ~np.array(['nodata' in line for line in lines['F%s' %freq]])
+        [dt.append(val) for val in lines['dt'].values[choose]]
+        [nu.append(freq) for val in np.arange(sum(choose))]
+        [f.append(float(val.split("$pm$")[0])) for val in lines['F%s' %freq][choose].values]
+        [ef.append(float(val.split("$pm$")[1])) for val in lines['F%s' %freq][choose].values]
 
-    dt = np.array(dt)
-    nu = np.array(nu)
-    f = np.array(f)
-    ef = np.array(ef)
+    dt = np.array(dt).astype(float)
+    nu = np.array(nu).astype(float)
+    f = np.array(f).astype(float)
+    ef = np.array(ef).astype(float)
 
     return nu, dt, f, ef
 

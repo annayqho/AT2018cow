@@ -285,5 +285,5 @@ ax2.set_xlim(2,3000)
 plt.tight_layout()
 
 
-#plt.show()
-plt.savefig("lum_tnu.eps", format='eps', bbox_inches='tight', pad_inches=0.1)
+plt.show()
+#plt.savefig("lum_tnu.eps", format='eps', bbox_inches='tight', pad_inches=0.1)

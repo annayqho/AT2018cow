@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.cosmology import Planck15
 import sys
-sys.path.append("/Users/annaho/Dropbox/Projects/Research/AT2018cow/code")
+sys.path.append("/Users/annaho/Dropbox/astronomy/papers_complete/AT2018cow/code")
 from get_radio import get_spectrum
 from synchrotron_fit import self_abs, fit_self_abs
 
@@ -384,13 +384,14 @@ def sn2010bh():
     they find that at 30 days, self-absorption frequency is around 5 GHz
     and the flux is 130 uJy
     """
-    redshift = 0.0593
-    d = Planck15.luminosity_distance(z=redshift).cgs.value
-    d_mpc = Planck15.luminosity_distance(z=redshift).value
-    gamma = 3
+    z = 0.0593
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=z).value
+    p = 3
     nupeak = 5
     fpeak = 130E-6
-    run(30, nupeak, fpeak, d, gamma, d_mpc)
+    dt = 30
+    run(dt, nupeak, fpeak, p, z)
 
 
 def ptf11qcj():
@@ -407,6 +408,19 @@ def ptf11qcj():
     nupeak = 5
     fpeak = 1E23 * 7E28 / (4 * np.pi * d**2) # in Jy
     run(10, nupeak, fpeak, d, gamma, d_mpc)
+
+
+def sn2017iuk():
+    """ our data
+    """
+    redshift = 0.0368
+    d = Planck15.luminosity_distance(z=redshift).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    p = 3
+    nupeak = 15
+    fpeak = 16 *1E-3
+    dt = 9
+    run(dt, nupeak, fpeak, p, redshift)
 
 
 def sn88Z():
@@ -473,14 +487,26 @@ def sn2006jd():
 
 
 def sn2020bvc():
-    nupeak = 3
-    fpeak = 113E-6
+    nupeak = 6
+    fpeak = 83E-6
     p = 3
     z = 0.025201
     d = Planck15.luminosity_distance(z=z).cgs.value
     d_mpc = Planck15.luminosity_distance(z=z).value
-    dt = 24
+    dt = 17
     run(dt, nupeak, fpeak, p, z)
 
+
+def at2020xnd():
+    nupeak = 70
+    fpeak = 0.6E-3 # 
+    p = 3
+    z = 0.2442
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=z).value
+    dt = 21
+    run(dt, nupeak, fpeak, p, z)
+
+
 if __name__=="__main__":
-    sn2020bvc()
+    at2020xnd()

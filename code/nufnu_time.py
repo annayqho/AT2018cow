@@ -532,8 +532,8 @@ def sn2017iuk(ax, col, legend):
     f = np.array([28])
     lum = plot_line(ax[0], d, t, nu*f, 'SN2017iuk', 'Rel. SN', col, legend)
     nu = 3E9
-    t = np.array([4.3])
-    f = np.array([3])
+    t = np.array([4.3, 9, 18, 33, 50, 859, 884])
+    f = np.array([3, 2.28, 6.1, 7.8, 5.7, 0.708, 0.816])
     ax[0].text(t[0]*1.5, lum[0], '17iuk', fontsize=11,
             verticalalignment='center',
             horizontalalignment='left')
@@ -636,5 +636,5 @@ if __name__=="__main__":
     plt.subplots_adjust(wspace=0.05)
     #plt.show()
     plt.savefig(
-            "lum_evolution.eps", format='eps', 
+            "lum_evolution.eps",  dpi=300,
             bbox_inches='tight', pad_inches=0.1)

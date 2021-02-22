@@ -8,7 +8,7 @@ import numpy as np
 from astropy.time import Time
 
 def sma_lc():
-    data_dir = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+    data_dir = "/Users/annaho/Dropbox/astronomy/papers_complete/AT2018cow/data"
     lines = open("%s/SMA_AT2018cow_quasar.txt" %data_dir, "r").readlines()
     t0 = Time(58285, format='mjd') # our zero-point
     dt = []
