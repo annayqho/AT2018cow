@@ -47,7 +47,7 @@ def read_2003L():
     ef = []
     
     lines = pd.read_table(
-            "table.txt", delimiter='&', 
+            "%s/SN2003L/table.txt" %DATA_DIREC, delimiter='&', 
             names=['Date', 'dt', 'F4.9', 'F8.5', 'F15.0', 'F22.5', 'Config'])
 
     for freq in ['4.9', '8.5', '15.0', '22.5']:

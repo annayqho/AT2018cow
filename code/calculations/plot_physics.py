@@ -157,9 +157,9 @@ def multiple_days():
 
 def run(dt, nupeak, fpeak, p, z):
     """ 
-    dt: time in days (observer frame)
-    nupeak: peak frequency in GHz (observed I think)
-    fpeak: peak flux density  in Jy
+    dt: time in days (rest-frame)
+    nupeak: peak frequency in GHz (rest-frame)
+    fpeak: peak flux density  in Jy (rest-frame)
     p: Lorentz factor power index
     z: redshift to the source
     """
@@ -170,7 +170,7 @@ def run(dt, nupeak, fpeak, p, z):
     print("lpeak", fpeak*1E-23*4*np.pi*DL_cm**2)
 
     # In the Chevalier 98 equation, D is the angular diameter distance
-    DA_mpc = Planck15.angular_diameter_distance(z=z).value
+    DA_mpc = Planck15.luminosity_distance(z=z).value
     R = get_R(fpeak, nupeak, DA_mpc)
     print("R", R/10**15)
     V = (4/3) * f * np.pi * R**3 # volume
@@ -178,10 +178,7 @@ def run(dt, nupeak, fpeak, p, z):
     B = get_B(fpeak, nupeak, DA_mpc)
     print("B", B)
 
-    # Convert time to rest-frame...or maybe not?
-    dt_rest = dt/(1+z)
-    #dt_rest = dt
-    v = R/(86400*dt_rest)
+    v = R/(86400*dt)
     print("v/c", v/3E10)
     gammabeta = v/c
     print("gamma beta", gammabeta)
@@ -284,7 +281,7 @@ def sn2003L():
     gamma = -2*beta+1
     nupeak = 22.5
     fpeak = 3.2E-3
-    run(30, nupeak, fpeak, d, gamma, d_mpc)
+    run(30, nupeak, fpeak, gamma, 0.0205)
 
 
 def sn2007bg():
@@ -316,7 +313,7 @@ def sn2003bg():
     gamma = -2*beta+1
     nupeak = 22.5
     fpeak = 85E-3
-    run(35, nupeak, fpeak, d, gamma, d_mpc)
+    run(35, nupeak, fpeak, 3, redshift)
 
 
 def sn1998bw():
@@ -324,7 +321,7 @@ def sn1998bw():
     on Day 10 infer a peak frequency of 10 GHz and associated
     peak flux 50 mJy
     distance = 38 Mpc
-    redshift is 0.0083
+    redshift is 0.0085
     optically thin spectral index is -0.75 on Day 40
     they use alpha = 1
     which I think means beta = -1, so that's 3.
@@ -337,7 +334,8 @@ def sn1998bw():
     gamma = -2*beta+1
     nupeak = 10
     fpeak = 50E-3
-    run(10, nupeak, fpeak, d, gamma, d_mpc)
+    epoch = 10
+    run(epoch, nupeak, fpeak, gamma, redshift)
 
 
 def sn2009bb():
@@ -400,14 +398,16 @@ def ptf11qcj():
     gamma = 3
     the peak luminosity at 5 GHz is around 7E28 erg/s/Hz
     and that was at 10 days
+
+    These values come from me reading off the plot...Fig 13
+    panel 2012-Jun-23
     """
     redshift = 0.0287
-    d = Planck15.luminosity_distance(z=redshift).cgs.value
-    d_mpc = Planck15.luminosity_distance(z=redshift).value
+    dcm = Planck15.luminosity_distance(z=redshift).cgs.value
     gamma = 3
-    nupeak = 5
-    fpeak = 1E23 * 7E28 / (4 * np.pi * d**2) # in Jy
-    run(10, nupeak, fpeak, d, gamma, d_mpc)
+    nupeak = 9
+    fpeak = 3E-3
+    run(235, nupeak, fpeak, gamma, redshift)
 
 
 def sn2017iuk():
@@ -498,15 +498,42 @@ def sn2020bvc():
 
 
 def at2020xnd():
-    nupeak = 70
-    fpeak = 0.6E-3 # 
+    # if you know it in the observer-frame
+    nupeak = 12 * 1.2442
+    fpeak = 0.1E-3 / 1.2442
+    # if you know it in the rest-frame
+    nupeak = 27
+    fpeak = 0.39E-3
     p = 3
     z = 0.2442
     d = Planck15.luminosity_distance(z=z).cgs.value
     d_mpc = Planck15.luminosity_distance(z=z).value
-    dt = 21
+    dt = 71/ 1.2442
+    run(dt, nupeak, fpeak, p, z)
+
+
+def srg():
+    nupeak = 6
+    fpeak = 0.3E-3 #
+    p = 3
+    z = 0.115
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=z).value
+    dt = 300
+    run(dt, nupeak, fpeak, p, z)
+
+
+def maxi():
+    # Dillon's MAXI object
+    nupeak = 5
+    fpeak = 5.9E-3 #
+    p = 3
+    z = 0.03472
+    d = Planck15.luminosity_distance(z=z).cgs.value
+    d_mpc = Planck15.luminosity_distance(z=z).value
+    dt = 1385
     run(dt, nupeak, fpeak, p, z)
 
 
 if __name__=="__main__":
-    at2020xnd()
+    sn2003L()

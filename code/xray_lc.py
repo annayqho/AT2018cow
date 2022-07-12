@@ -10,7 +10,7 @@ from matplotlib import rc
 rc("font", family="serif")
 rc("text", usetex=True)
 
-direc = "/Users/annaho/Dropbox/Projects/Research/AT2018cow/data"
+direc = "/Users/annaho/Dropbox/astronomy/papers_complete/AT2018cow/data"
 
 def get_xrt():
     """ Get the X-ray data
